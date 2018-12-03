@@ -13,7 +13,12 @@ db.once('open', function() {
 
 var itemSchema = mongoose.Schema({
   quantity: Number,
-  description: String
+  description: String,
+  image: String,
+  is_closed: Boolean,
+  price: String,
+  title: String,
+  coordinates: Object,
 });
 
 var Item = mongoose.model('Item', itemSchema);
@@ -28,4 +33,14 @@ var selectAll = function(callback) {
   });
 };
 
+var Add = (item, cb) => {
+  Item.create(item, (err, item) => {
+    if (err) {
+      throw err;
+    }
+    cb(item);
+  });
+};
+
 module.exports.selectAll = selectAll;
+module.exports.Add = Add;

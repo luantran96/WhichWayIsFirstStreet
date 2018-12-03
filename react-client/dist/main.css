@@ -8,13 +8,11 @@ html, body {
     margin-top:20px;
     display: flex;
     height: 800px;
-    border: 2px solid black;
 }
 
 #nav-bar {
     width: 100%;
     display : flex;
-    border: 1px solid red;
 }
 
 
@@ -26,13 +24,14 @@ html, body {
 }
 
 #left {
-    border: 1px solid blue;
     width:70%;
     height: 100%;
+    border: 1px solid black;
+    border-right: 1px;
 }
 
 #right {
-    border: 1px solid green;
+    border: 1px solid black;
     width:30%;
     height: 100%;
 }
@@ -40,4 +39,23 @@ html, body {
 #map {
     height: 100%;
     width: 100%;
+}
+
+.list-item:hover {
+    background-color: yellow;
+}
+
+.ui.items>.item>.image>img {
+    height: 150px;
+    width: 150px;
+    margin-bottom: 5px;
+
+}
+.ui.items>.item:hover {
+    background-color: #eeeeeeb4;
+}
+
+.ui.items>.item>.content {
+    padding-top:20px;
+    margin-bottom: 5px;
 }

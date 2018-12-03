@@ -1,24 +1,52 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var map = require('../react-client/dist/googleMaps/updateMap');
-
-let initMap = map.initMap;
+var cors = require('cors');
+var request = require('request');
+var API = require('./../react-client/src/API.js');
 
 // UNCOMMENT THE DATABASE YOU'D LIKE TO USE
 // var items = require('../database-mysql');
-// var items = require('../database-mongo');
+var items = require('../database-mongo');
 
 var app = express();
 app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(cors());
+app.use(bodyParser.json());
 
-app.get('/items', function (req, res) {
-  items.selectAll(function(err, data) {
-    if(err) {
-      res.sendStatus(500);
-    } else {
-      res.json(data);
-    }
+app.get('/selectAll', (req, res) => {
+  items.selectAll((err, items) => {
+    res.json(items);
   });
+});
+
+app.post('/add', (req, res) => {
+  const {result} = req.body;
+  items.Add(result, (item) => {
+    
+    console.log('item added: ', item);
+    res.end('OK');
+  });
+});
+
+app.get('/search/', (req, res) => {
+  const { name } = req.query;
+  const latitude = 37.691109;
+  const longitude = -122.472221;
+
+  var options = {
+    url:`https://api.yelp.com/v3/businesses/search?term=${name}&latitude=${latitude}&longitude=${longitude}`,
+    headers: {
+      'Authorization': `Bearer ${API.YELP}`,
+    },
+  };
+
+  request(options, (err, response, body) => {
+    if (!err && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      res.json(info);
+    } 
+  });
+
 });
 
 app.listen(3000, function() {
