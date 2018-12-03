@@ -16,7 +16,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // TODO: FIX THIS
     axios.get('/selectAll')
     .then((items) => {
        console.log('items in /selectAll: ', items.data);
@@ -28,24 +27,37 @@ class App extends React.Component {
 
   updateRestaurants(e, { result }) {
     console.log('selected restaurant: ', result);
-    axios.post('/add', {
-      result,
-    })
-    .then((res) => {
-      let { restaurants } = this.state;
-      restaurants.push(result);
-  
-      this.setState({
-        restaurants,
+
+    axios.get('/getHours',
+    {
+      params: {
+        id: result.id,
+      }
+    }).then((hours) => {
+      result.hours = hours.data;
+
+      axios.post('/add', {
+        result,
+      })
+      .then((res) => {
+        let { restaurants } = this.state;
+        restaurants.push(result);
+    
+        this.setState({
+          restaurants,
+        });
       });
     });
   }
 
   render () {
-
     let { restaurants } = this.state;
-
-    let locations = restaurants.map(restaurant => restaurant.coordinates);
+    let locations = restaurants.map(restaurant => {
+      return {
+        coordinates: restaurant.coordinates,
+        title: restaurant.title,
+      };
+    });
 
     console.log('restaurants in render(): ', restaurants);
 

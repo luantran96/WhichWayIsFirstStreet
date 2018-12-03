@@ -10,6 +10,7 @@ class Map extends Component {
       locations: this.props.locations,
       map: undefined,
       markers: [],
+      infoWindows: {},
     };
 
   this.deleteMarkers = this.deleteMarkers.bind(this);
@@ -35,7 +36,6 @@ class Map extends Component {
   }
 
   deleteMarkers() {
-  
   const { map, markers } = this.state;
 
     markers.forEach(marker => {
@@ -52,43 +52,63 @@ class Map extends Component {
     let newLocations = this.props.locations;
     let isChanged = false;
 
+    console.log(newLocations);
     newLocations.forEach((location, i) => {
-      if(!prevProps.locations[i] || location.lat !== prevProps.locations[i].lat && location.lng !== prevProps.locations[i].lng) {
+      if(!prevProps.locations[i] || location.coordinates.lat !== prevProps.locations[i].coordinates.lat && location.coordinates.lng !== prevProps.locations[i].coordinates.lng) {
         isChanged = true;
       }
     });
 
     if (isChanged) {
-
       // Delete all markers on map
       this.deleteMarkers();
 
-        // Create an array of alphabetical characters used to label the markers.
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    
-        var markers = newLocations.map(function(location, i) {
-          return new google.maps.Marker({ 
-            position: location,
-            label: labels[i % labels.length]
-          });
+      // Create an array of alphabetical characters used to label the markers.
+      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      let newInfoWindows = {};
+
+
+      // newInfoWindows[labels[i % labels.length]] = new google.maps.infoWindow({
+      //   content: location.title,
+      //   map: map,
+      // });
+      // google.maps.event.addListener(newMarker, 'click', function() {
+      //   console.log(this);
+      //   //infowindow.open(map, this);
+      // });
+
+      var markers = [];
+
+      newLocations.forEach((location, i) => {
+        var newMarker = new google.maps.Marker({ 
+          position: location.coordinates,
+          label: labels[i % labels.length]
         });
 
-         // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers, {
-        imagePath:'./googleMaps/images/',
+        newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
+          content: location.title,
+          map: map,
         });
+      
+      google.maps.event.addListener(newMarker, 'click', function() {
+        newInfoWindows[this.label].open(map, this);
+      });
 
+        markers.push(newMarker);
+      });
 
-        this.setState({
-          locations: newLocations,
-          markers,
-        });
+      // Add a marker clusterer to manage the markers.
+      var markerCluster = new MarkerClusterer(map, markers, {
+      imagePath:'./googleMaps/images/',
+      });
 
-      }
-  }
+      this.setState({
+        locations: newLocations,
+        markers,
+        infoWindows: newInfoWindows,
+      });
 
-  handleClick() {
-    window.google.maps.event.trigger(map, 'resize');
+    }
   }
 
   render() {

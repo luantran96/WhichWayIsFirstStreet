@@ -19,6 +19,7 @@ var itemSchema = mongoose.Schema({
   price: String,
   title: String,
   coordinates: Object,
+  hours: Object,
 });
 
 var Item = mongoose.model('Item', itemSchema);

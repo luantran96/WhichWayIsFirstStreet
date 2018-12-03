@@ -19,6 +19,27 @@ app.get('/selectAll', (req, res) => {
   });
 });
 
+app.get('/getHours', (req, res) => {
+
+  const { id } = req.query;
+  console.log(req.query);
+
+  var options = {
+    url:`https://api.yelp.com/v3/businesses/${id}`,
+    headers: {
+      'Authorization': `Bearer ${API.YELP}`,
+    },
+  };
+
+  request(options, (err, response, body) => {
+    if (!err && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      res.json(info.hours[0].open[new Date().getDay()]);
+    } 
+  });
+
+});
+
 app.post('/add', (req, res) => {
   const {result} = req.body;
   items.Add(result, (item) => {

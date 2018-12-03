@@ -13,7 +13,7 @@ const ListItem = ({restaurant}) => (
             <Item.Header>{restaurant.title}</Item.Header>
             <Item.Meta>{restaurant.description}</Item.Meta>
             <Item.Description>
-               {`Is it open: ${restaurant.is_closed ? 'NO WHY !?!?!?' : 'YES !!!!!'}`}
+               {`Today's hours: ${restaurant.hours.start} to ${restaurant.hours.end}`}
             </Item.Description>
             <Item.Extra>{restaurant.price}</Item.Extra>
         </Item.Content>
