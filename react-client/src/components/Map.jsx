@@ -7,6 +7,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentPosition: {},
       locations: this.props.locations,
       map: undefined,
       markers: [],
@@ -14,11 +15,13 @@ class Map extends Component {
     };
 
   this.deleteMarkers = this.deleteMarkers.bind(this);
-
+  this.calculateAndDisplayRoute = this.calculateAndDisplayRoute.bind(this);
   }
 
   componentDidMount() {
     const { locations } = this.state;
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
 
       let currentPosition = {
         lat: 37.744385,
@@ -30,8 +33,13 @@ class Map extends Component {
         zoom: 11
       });
   
+      directionsDisplay.setMap(map);
+
       this.setState({
         map,
+        currentPosition,
+        directionsService,
+        directionsDisplay,
       });
   }
 
@@ -48,7 +56,7 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    let { map } = this.state;
+    let { map, directionsDisplay, directionsService } = this.state;
     let newLocations = this.props.locations;
     let isChanged = false;
 
@@ -62,21 +70,11 @@ class Map extends Component {
     if (isChanged) {
       // Delete all markers on map
       this.deleteMarkers();
+      let calculateAndDisplayRoute = this.calculateAndDisplayRoute;
 
       // Create an array of alphabetical characters used to label the markers.
       var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       let newInfoWindows = {};
-
-
-      // newInfoWindows[labels[i % labels.length]] = new google.maps.infoWindow({
-      //   content: location.title,
-      //   map: map,
-      // });
-      // google.maps.event.addListener(newMarker, 'click', function() {
-      //   console.log(this);
-      //   //infowindow.open(map, this);
-      // });
-
       var markers = [];
 
       newLocations.forEach((location, i) => {
@@ -90,9 +88,17 @@ class Map extends Component {
           map: map,
         });
       
-      google.maps.event.addListener(newMarker, 'click', function() {
-        newInfoWindows[this.label].open(map, this);
-      });
+        google.maps.event.addListener(newMarker, 'mouseover', function() {
+          newInfoWindows[this.label].open(map, this);
+        });
+     
+        google.maps.event.addListener(newMarker, 'mouseout', function() {
+          newInfoWindows[this.label].close();
+        });
+
+        google.maps.event.addListener(newMarker, 'click', function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay, this);
+        });
 
         markers.push(newMarker);
       });
@@ -110,6 +116,32 @@ class Map extends Component {
 
     }
   }
+
+  calculateAndDisplayRoute(directionsService, directionsDisplay, marker) {
+    console.log(marker.position.lat());
+    console.log(marker.position.lng());
+
+    const {map, currentPosition} = this.state;
+    console.log('currentPosition: ', currentPosition);
+    console.log('map: ', map);
+
+    let origin = new google.maps.LatLng(currentPosition.lat, currentPosition.lng);
+    let destination = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+
+    directionsService.route({
+      origin,
+      destination, 
+      travelMode: 'DRIVING'
+    }, function(response, status) {
+      if (status === 'OK') {
+        console.log('OK');
+        directionsDisplay.setDirections(response);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+  }
+
 
   render() {
     return (
