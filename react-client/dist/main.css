@@ -34,6 +34,7 @@ html, body {
     border: 1px solid black;
     width:30%;
     height: 100%;
+    overflow: scroll;
 }
 
 #map {
@@ -53,6 +54,7 @@ html, body {
 }
 .ui.items>.item:hover {
     background-color: #eeeeeeb4;
+    cursor: pointer;
 }
 
 .ui.items>.item>.content {

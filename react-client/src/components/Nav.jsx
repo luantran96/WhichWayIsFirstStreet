@@ -59,7 +59,10 @@ class Nav extends React.Component {
             description: business.location.display_address.join(),
             image: business.image_url,
             price: price[business.price],
-            coordinates: business.coordinates,
+            coordinates: {
+              lat: business.coordinates.latitude,
+              lng: business.coordinates.longitude,
+            },
             is_closed: business.is_closed,
           }
           
@@ -71,7 +74,7 @@ class Nav extends React.Component {
           isLoading: false,
         });
       });
-    },300);
+    }, 300);
     
     }
 

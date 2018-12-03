@@ -9,19 +9,21 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      restaurants: []
+      restaurants: [],
     }
 
     this.updateRestaurants = this.updateRestaurants.bind(this);
   }
 
   componentDidMount() {
-    // axios.get('/selectAll')
-    // .then((items) => {
-    //   this.setState({
-    //     restaurants: items.data
-    //   });
-    // });
+    // TODO: FIX THIS
+    axios.get('/selectAll')
+    .then((items) => {
+       console.log('items in /selectAll: ', items.data);
+      this.setState({
+        restaurants: items.data
+      });
+    });
   }
 
   updateRestaurants(e, { result }) {
@@ -43,22 +45,26 @@ class App extends React.Component {
 
     let { restaurants } = this.state;
 
+    let locations = restaurants.map(restaurant => restaurant.coordinates);
+
+    console.log('restaurants in render(): ', restaurants);
+
     return (  
-  <div id="body">
-    <div id="nav-bar">
-      <Nav 
-      updateRestaurants={this.updateRestaurants}
-      />
-    </div>
-    <div id="main">
-      <div id="left">
-        <Map />
+      <div id="body">
+        <div id="nav-bar">
+          <Nav 
+          updateRestaurants={this.updateRestaurants}
+          />
+        </div>
+        <div id="main">
+          <div id="left">
+            <Map locations={locations}/>
+          </div>
+          <div id="right">
+          <List restaurants={restaurants} />
+          </div>
+        </div>
       </div>
-      <div id="right">
-      <List restaurants={restaurants} />
-      </div>
-    </div>
-  </div>
     );
   }
 

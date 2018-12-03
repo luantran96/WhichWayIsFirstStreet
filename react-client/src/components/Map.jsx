@@ -6,39 +6,85 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
+      locations: this.props.locations,
+      map: undefined,
       markers: [],
     };
+
+  this.deleteMarkers = this.deleteMarkers.bind(this);
 
   }
 
   componentDidMount() {
+    const { locations } = this.state;
 
-    var locations = [
-      {lat: 37.691109, lng: 147.154312},
-    ];
-
-    const map = new window.google.maps.Map(document.getElementById('map'), {
-      center: {lat: 37.691109, lng: -122.472221},
-      zoom: 5
-    });
-
-    // Create an array of alphabetical characters used to label the markers.
-    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-    var markers = locations.map(function(location, i) {
-      return new google.maps.Marker({
-        position: location,
-        label: labels[i % labels.length]
+      let currentPosition = {
+        lat: 37.744385,
+        lng: -122.417046,
+      };
+          
+      const map = new window.google.maps.Map(document.getElementById('map'), {
+        center: currentPosition,
+        zoom: 11
       });
+  
+      this.setState({
+        map,
+      });
+  }
+
+  deleteMarkers() {
+  
+  const { map, markers } = this.state;
+
+    markers.forEach(marker => {
+      marker.setMap(null);
     });
 
+    this.setState({
+      locations: [],
+    });
+  }
 
-        // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers, {
-          imagePath:'./googleMaps/images/',
+  componentDidUpdate(prevProps) {
+    let { map } = this.state;
+    let newLocations = this.props.locations;
+    let isChanged = false;
+
+    newLocations.forEach((location, i) => {
+      if(!prevProps.locations[i] || location.lat !== prevProps.locations[i].lat && location.lng !== prevProps.locations[i].lng) {
+        isChanged = true;
+      }
+    });
+
+    if (isChanged) {
+
+      // Delete all markers on map
+      this.deleteMarkers();
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    
+        var markers = newLocations.map(function(location, i) {
+          return new google.maps.Marker({ 
+            position: location,
+            label: labels[i % labels.length]
+          });
         });
+
+         // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers, {
+        imagePath:'./googleMaps/images/',
+        });
+
+
+        this.setState({
+          locations: newLocations,
+          markers,
+        });
+
+      }
   }
 
   handleClick() {

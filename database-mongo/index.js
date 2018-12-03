@@ -42,5 +42,12 @@ var Add = (item, cb) => {
   });
 };
 
+var deleteAll = (cb) => {
+  Item.deleteMany({}, (err) => {
+    cb();
+  })
+};
+
 module.exports.selectAll = selectAll;
+module.exports.deleteAll = deleteAll;
 module.exports.Add = Add;

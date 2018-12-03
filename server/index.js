@@ -28,7 +28,7 @@ app.post('/add', (req, res) => {
   });
 });
 
-app.get('/search/', (req, res) => {
+app.get('/search', (req, res) => {
   const { name } = req.query;
   const latitude = 37.691109;
   const longitude = -122.472221;
@@ -47,6 +47,12 @@ app.get('/search/', (req, res) => {
     } 
   });
 
+});
+
+app.get('/deleteAll', (req, res) => {
+  items.deleteAll(() => {
+    res.end();
+  });
 });
 
 app.listen(3000, function() {
