@@ -4,15 +4,20 @@ import axios from 'axios';
 import Nav from './components/Nav.jsx';
 import Map from './components/Map.jsx';
 import List from './components/List.jsx';
+import Directions from './components/Directions.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       restaurants: [],
+      directions: undefined,
     }
 
     this.updateRestaurants = this.updateRestaurants.bind(this);
+    this.updateDestination = this.updateDestination.bind(this);
+    this.renderDirections = this.renderDirections.bind(this);
+
   }
 
   componentDidMount() {
@@ -50,16 +55,41 @@ class App extends React.Component {
     });
   }
 
+  updateDestination(destination, origin) {
+    console.log('new destination: ', destination);
+
+    axios.get('/getRoutes', {
+      params: {
+        end_lat: destination.lat,
+        end_lng: destination.lng,
+        start_lat: origin.lat,
+        start_lng: origin.lng,
+      }
+    })
+    .then((res) => {
+      console.log(res.data[0]);
+      this.setState({
+        directions: res.data[0],
+      });
+    });
+  }
+
+  renderDirections() {
+    let {directions} = this.state;
+
+    if (directions) {
+      return <Directions directions={directions} />;
+    } 
+  }
+
   render () {
-    let { restaurants } = this.state;
+    let { restaurants, directions } = this.state;
     let locations = restaurants.map(restaurant => {
       return {
         coordinates: restaurant.coordinates,
         title: restaurant.title,
       };
     });
-
-    console.log('restaurants in render(): ', restaurants);
 
     return (  
       <div id="body">
@@ -69,13 +99,17 @@ class App extends React.Component {
           />
         </div>
         <div id="main">
+
           <div id="left">
-            <Map locations={locations}/>
+            <Map locations={locations} updateDestination={this.updateDestination}/>
           </div>
           <div id="right">
-          <List restaurants={restaurants} />
+          <List restaurants={restaurants}/>
           </div>
         </div>
+        <div id="directions">
+          {this.renderDirections()}
+          </div>
       </div>
     );
   }

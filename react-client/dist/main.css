@@ -10,6 +10,10 @@ html, body {
     height: 800px;
 }
 
+#direction-title {
+    font-size: 18px;
+}
+
 #nav-bar {
     width: 100%;
     display : flex;
@@ -30,6 +34,17 @@ html, body {
     border-right: 1px;
 }
 
+#direction-headers {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#direction-distance, #direction-duration {
+    font-size:25px;
+}
+
+
 #right {
     border: 1px solid black;
     width:30%;
@@ -37,6 +52,12 @@ html, body {
     overflow: scroll;
 }
 
+#directions {
+    padding: 20px;
+    height: 300px;
+    width: 100%;
+    overflow: scroll;
+}
 #map {
     height: 100%;
     width: 100%;
@@ -61,3 +82,4 @@ html, body {
     padding-top:20px;
     margin-bottom: 5px;
 }
+

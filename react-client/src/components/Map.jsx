@@ -24,8 +24,8 @@ class Map extends Component {
     var directionsDisplay = new google.maps.DirectionsRenderer;
 
       let currentPosition = {
-        lat: 37.744385,
-        lng: -122.417046,
+        lat: 37.787484,
+        lng: -122.396397,
       };
           
       const map = new window.google.maps.Map(document.getElementById('map'), {
@@ -60,7 +60,6 @@ class Map extends Component {
     let newLocations = this.props.locations;
     let isChanged = false;
 
-    console.log(newLocations);
     newLocations.forEach((location, i) => {
       if(!prevProps.locations[i] || location.coordinates.lat !== prevProps.locations[i].coordinates.lat && location.coordinates.lng !== prevProps.locations[i].coordinates.lng) {
         isChanged = true;
@@ -118,15 +117,15 @@ class Map extends Component {
   }
 
   calculateAndDisplayRoute(directionsService, directionsDisplay, marker) {
-    console.log(marker.position.lat());
-    console.log(marker.position.lng());
-
     const {map, currentPosition} = this.state;
-    console.log('currentPosition: ', currentPosition);
-    console.log('map: ', map);
-
+    
     let origin = new google.maps.LatLng(currentPosition.lat, currentPosition.lng);
     let destination = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+
+    this.props.updateDestination({
+      lat : marker.position.lat(),
+      lng: marker.position.lng(),
+    },currentPosition);
 
     directionsService.route({
       origin,
@@ -142,10 +141,9 @@ class Map extends Component {
     });
   }
 
-
   render() {
     return (
-      <div id="map" />
+        <div id="map" />
     );
   }
 }

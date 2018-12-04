@@ -2,10 +2,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var request = require('request');
+var https = require('https');
+var fs = require('fs');
+var path = require('path');
 var API = require('./../react-client/src/API.js');
 
-// UNCOMMENT THE DATABASE YOU'D LIKE TO USE
-// var items = require('../database-mysql');
+
 var items = require('../database-mongo');
 
 var app = express();
@@ -70,11 +72,45 @@ app.get('/search', (req, res) => {
 
 });
 
+
+app.get('/getRoutes', (req, res) => {
+
+  const { start_lat, start_lng, end_lat, end_lng } = req.query;
+
+  const origin = {
+    lat: start_lat,
+    lng: start_lng,
+  }
+
+  const destination = {
+    lat: end_lat,
+    lng: end_lng,
+  }
+
+  var options = {
+    url:`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&key=${API.GOOGLE}`,
+  };
+
+  request(options, (err, response, body) => {
+    if (!err && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      res.json(info.routes);
+    } 
+  });
+
+});
+
 app.get('/deleteAll', (req, res) => {
   items.deleteAll(() => {
     res.end();
   });
 });
+
+// https.createServer({
+//   key: fs.readFileSync('server/server.key'),
+//   cert: fs.readFileSync('server/server.cert'),
+// }, app)
+//   .listen(3000, () => console.log('listening on port 3000!'));
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');
