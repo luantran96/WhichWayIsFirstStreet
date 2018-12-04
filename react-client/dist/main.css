@@ -70,8 +70,20 @@ html, body {
     height: 150px;
     width: 150px;
     margin-bottom: 5px;
-
 }
+
+.ui.items>.item>.content>.extra{
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    padding-top:5px;
+}
+.ui.button {    
+    position: absolute;
+    left: 200px;
+    top: -5px;
+}
+
 .ui.items>.item:hover {
     background-color: #eeeeeeb4;
     cursor: pointer;

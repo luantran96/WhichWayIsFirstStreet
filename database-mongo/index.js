@@ -34,6 +34,12 @@ var selectAll = function(callback) {
   });
 };
 
+var deleteOne = (id, cb) => {
+  Item.findByIdAndRemove(id, (err, item) => {
+    cb(item);
+  });
+};
+
 var Add = (item, cb) => {
   Item.create(item, (err, item) => {
     if (err) {
@@ -52,3 +58,4 @@ var deleteAll = (cb) => {
 module.exports.selectAll = selectAll;
 module.exports.deleteAll = deleteAll;
 module.exports.Add = Add;
+module.exports.deleteOne = deleteOne;

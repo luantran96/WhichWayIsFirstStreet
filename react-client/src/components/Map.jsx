@@ -135,6 +135,7 @@ class Map extends Component {
   }
 
   calculateAndDisplayRoute(directionsService, directionsDisplay, marker, passedDestination = null) {
+    this.deleteMarkers();
     const {map, currentPosition} = this.state;
     
     let origin = new google.maps.LatLng(currentPosition.lat, currentPosition.lng);

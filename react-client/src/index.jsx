@@ -19,7 +19,7 @@ class App extends React.Component {
     this.updateDestination = this.updateDestination.bind(this);
     this.renderDirections = this.renderDirections.bind(this);
     this.handleRestaurantListItemClick = this.handleRestaurantListItemClick.bind(this);
-
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   componentDidMount() {
@@ -79,11 +79,31 @@ class App extends React.Component {
   renderDirections() {
     let {directions} = this.state;
 
-    console.log('directions in index.jsx: ', directions);
-    
     if (directions) {
       return <Directions directions={directions} />;
     } 
+  }
+
+  handleButtonClick(restaurant) {
+    let { restaurants } = this.state;
+
+    let idx = restaurants.findIndex(element => element.description === restaurant.description);
+    let restaurantToDelete = restaurants[idx];
+
+    restaurants.splice(idx, 1);
+
+    axios.delete('/delete', {
+      params:{
+        _id: restaurantToDelete._id,
+      },
+    })
+    .then((res) => {
+      console.log('OK');
+    }); 
+
+    this.setState({
+      restaurants,
+    });
   }
 
   handleRestaurantListItemClick(restaurant) {
@@ -122,10 +142,16 @@ class App extends React.Component {
         <div id="main">
 
           <div id="left">
-            <Map locations={locations} updateDestination={this.updateDestination} destination={destination}/>
+            <Map 
+            locations={locations} 
+            updateDestination={this.updateDestination} 
+            destination={destination}/>
           </div>
           <div id="right">
-            <List restaurants={restaurants} handleRestaurantListItemClick={this.handleRestaurantListItemClick}/>
+            <List 
+            restaurants={restaurants} 
+            handleRestaurantListItemClick={this.handleRestaurantListItemClick}
+            handleButtonClick={this.handleButtonClick}/>
           </div>
         </div>
         <div id="directions">

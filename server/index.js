@@ -72,6 +72,12 @@ app.get('/search', (req, res) => {
 
 });
 
+app.delete('/delete', (req, res) => {
+    const { _id } = req.query;
+    items.deleteOne(_id, (item) => {
+      res.end();
+    });
+});
 
 app.get('/getRoutes', (req, res) => {
 
