@@ -51,7 +51,7 @@ html, body {
     overflow: scroll;
 }
 
-#directions {
+#details {
     padding: 20px;
     height: 300px;
     width: 100%;
@@ -62,34 +62,54 @@ html, body {
     width: 100%;
 }
 
-.list-item:hover {
-    background-color: yellow;
-}
-
-.ui.items>.item>.image>img {
+.ui.items>.list-item>.image>img {
     height: 150px;
     width: 150px;
     margin-bottom: 5px;
 }
 
-.ui.items>.item>.content>.extra{
+.ui.items>.list-item>.content>.extra{
     display: flex;
     justify-content: space-between;
     font-size: 20px;
     padding-top:5px;
 }
-.ui.button {    
+.ui.buttons {    
     position: absolute;
-    left: 200px;
-    top: -5px;
+    top: -6px;
+    left: 130px;
 }
 
-.ui.items>.item:hover {
+.ui.items>.item>.restaurantInfoContent>.description>.descriptionContent{  
+    display: flex;
+    height: 200px;
+}
+
+.ui.items>.item>.restaurantInfoContent>.description>.descriptionContent>.details {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+.ui.items>.item>.restaurantInfoContent>.description>.descriptionContent>.reviews {
+    height:100%;
+    margin-left: 35px;
+    width: 50%;
+    /* border: 2px solid red; */
+}
+
+
+.ui.items>.item>.restaurantInfoImage>img {
+    width: 300px;
+    height: 220px;
+}
+
+.ui.items>.list-item:hover {
     background-color: #eeeeeeb4;
     cursor: pointer;
 }
 
-.ui.items>.item>.content {
+.ui.items>.list-item>.content {
     padding-top:20px;
     margin-bottom: 5px;
 }

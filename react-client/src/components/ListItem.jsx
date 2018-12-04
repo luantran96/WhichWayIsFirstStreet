@@ -4,15 +4,15 @@ import $ from 'jquery';
 import axios from 'axios';
 import { Item, Button } from 'semantic-ui-react';
 
-const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick}) => (
+const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick, showDetails}) => (
   <div>
   <Item.Group>
     <Item 
     className="list-item"
     >
       <Item.Image 
-      onClick={() => handleRestaurantListItemClick(restaurant)}
-      src={restaurant.image} />
+      src={restaurant.image}
+      onClick={() => showDetails(restaurant)} />
         <Item.Content>
             <Item.Header>{restaurant.title}</Item.Header>
             <Item.Meta>{restaurant.description}</Item.Meta>
@@ -20,9 +20,24 @@ const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick}
                {`Today's hours: ${restaurant.hours.start} to ${restaurant.hours.end}`}
             </Item.Description> 
             <Item.Extra>{restaurant.price} 
-            <Button 
-            negative
-            onClick={() => handleButtonClick(restaurant)}>Delete</Button> </Item.Extra>
+            {/* <Button.Group>
+              <Button>Map</Button>
+              <Button.Or />
+              <Button 
+              negative
+              onClick={() => handleButtonClick(restaurant)}>Delete</Button> 
+            </Button.Group> */}
+            
+              <Button.Group>
+                <Button 
+                onClick={() => handleRestaurantListItemClick(restaurant)}
+                positive > Map </Button>
+                <Button.Or />
+                <Button 
+                onClick={() => handleButtonClick(restaurant)}
+                negative>Delete</Button>
+              </Button.Group>
+            </Item.Extra>
         </Item.Content>
     </Item>
   </Item.Group>

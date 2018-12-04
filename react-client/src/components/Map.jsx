@@ -47,17 +47,18 @@ class Map extends Component {
   deleteMarkers() {
   const { map, markers } = this.state;
 
-    markers.forEach(marker => {
-      marker.setMap(null);
-    });
-
+  
+  markers.forEach(marker => {
+    marker.setMap(null);
+  });
+  
     this.setState({
       locations: [],
+      markers,
     });
   }
 
   componentDidUpdate(prevProps) {
-  
     let { map, directionsDisplay, directionsService } = this.state;
     let calculateAndDisplayRoute = this.calculateAndDisplayRoute;
     let newLocations = this.props.locations;

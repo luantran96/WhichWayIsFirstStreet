@@ -55,7 +55,8 @@ class Nav extends React.Component {
 
         let entries = businesses.slice(0,5).map((business) => {
           let entry = {
-            id: business.id,
+            yelpId: business.id,
+            url: business.url,
             title: business.name,
             description: business.location.display_address.join(),
             image: business.image_url,

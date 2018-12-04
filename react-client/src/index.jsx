@@ -5,21 +5,25 @@ import Nav from './components/Nav.jsx';
 import Map from './components/Map.jsx';
 import List from './components/List.jsx';
 import Directions from './components/Directions.jsx';
+import RestaurantInfo from './components/RestaurantInfo.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       restaurants: [],
+      restaurant: null,
+      render: 'directions',
       directions: undefined,
       destination: undefined,
     }
 
     this.updateRestaurants = this.updateRestaurants.bind(this);
     this.updateDestination = this.updateDestination.bind(this);
-    this.renderDirections = this.renderDirections.bind(this);
+    this.renderDetails = this.renderDetails.bind(this);
     this.handleRestaurantListItemClick = this.handleRestaurantListItemClick.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.showDetails = this.showDetails.bind(this);
   }
 
   componentDidMount() {
@@ -32,13 +36,30 @@ class App extends React.Component {
     });
   }
 
+  showDetails(restaurant) {
+    console.log(restaurant);
+
+    axios.get('/getInfo',
+    {
+      params: {
+        id: restaurant.yelpId,
+      }
+    }).then((res) => {
+      console.log(res.data);
+      this.setState({
+        restaurant: res.data,
+        render: 'restaurantInfo',
+      });
+    });
+  }
+
   updateRestaurants(e, { result }) {
     console.log('selected restaurant: ', result);
 
     axios.get('/getHours',
     {
       params: {
-        id: result.id,
+        id: result.yelpId,
       }
     }).then((hours) => {
       result.hours = hours.data;
@@ -57,7 +78,10 @@ class App extends React.Component {
     });
   }
 
-  updateDestination(destination, origin) {
+  updateDestination(destination, origin = {
+    lat: 37.787484,
+    lng: -122.396397,
+  }) {
     console.log('new destination: ', destination);
 
     axios.get('/getRoutes', {
@@ -69,19 +93,23 @@ class App extends React.Component {
       }
     })
     .then((res) => {
-      console.log(res.data[0]);
       this.setState({
         directions: res.data[0],
+        render: 'directions',
       });
     });
   }
 
-  renderDirections() {
-    let {directions} = this.state;
-
-    if (directions) {
+  renderDetails() {
+    let {directions, render, restaurant} = this.state;
+    
+    console.log('restaurant in renderDetails(): ', restaurant);
+    
+    if (render === 'directions' && directions) {
       return <Directions directions={directions} />;
-    } 
+    } else if (render === 'restaurantInfo' && restaurant) {
+      return <RestaurantInfo restaurant={restaurant} />;
+    }
   }
 
   handleButtonClick(restaurant) {
@@ -151,11 +179,12 @@ class App extends React.Component {
             <List 
             restaurants={restaurants} 
             handleRestaurantListItemClick={this.handleRestaurantListItemClick}
-            handleButtonClick={this.handleButtonClick}/>
+            handleButtonClick={this.handleButtonClick}
+            showDetails={this.showDetails}/>
           </div>
         </div>
-        <div id="directions">
-          {this.renderDirections()}
+        <div id="details">
+          {this.renderDetails()}
           </div>
       </div>
     );

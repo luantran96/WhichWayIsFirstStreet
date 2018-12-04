@@ -12,6 +12,7 @@ db.once('open', function() {
 });
 
 var itemSchema = mongoose.Schema({
+  yelpId: String,
   quantity: Number,
   description: String,
   image: String,
@@ -20,6 +21,7 @@ var itemSchema = mongoose.Schema({
   title: String,
   coordinates: Object,
   hours: Object,
+  url: String,
 });
 
 var Item = mongoose.model('Item', itemSchema);

@@ -21,6 +21,27 @@ app.get('/selectAll', (req, res) => {
   });
 });
 
+app.get('/getInfo', (req, res) => {
+
+  const { id } = req.query;
+  console.log(req.query);
+
+  var options = {
+    url:`https://api.yelp.com/v3/businesses/${id}`,
+    headers: {
+      'Authorization': `Bearer ${API.YELP}`,
+    },
+  };
+
+  request(options, (err, response, body) => {
+    if (!err && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      res.json(info);
+    } 
+  });
+  
+});
+
 app.get('/getHours', (req, res) => {
 
   const { id } = req.query;
