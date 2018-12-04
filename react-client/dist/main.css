@@ -7,7 +7,7 @@ html, body {
 #main {
     margin-top:10px;
     display: flex;
-    height: 800px;
+    height: 600px;
 }
 
 #direction-title {
@@ -43,7 +43,6 @@ html, body {
 #direction-distance, #direction-duration {
     font-size:25px;
 }
-
 
 #right {
     border: 1px solid black;

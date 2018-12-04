@@ -4,10 +4,12 @@ import $ from 'jquery';
 import axios from 'axios';
 import { Item } from 'semantic-ui-react';
 
-const ListItem = ({restaurant}) => (
+const ListItem = ({restaurant, handleRestaurantListItemClick}) => (
   <div>
   <Item.Group>
-    <Item className="list-item">
+    <Item 
+    className="list-item"
+    onClick={() => handleRestaurantListItemClick(restaurant)}>
       <Item.Image src={restaurant.image} />
         <Item.Content>
             <Item.Header>{restaurant.title}</Item.Header>

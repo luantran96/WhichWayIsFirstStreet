@@ -12,6 +12,7 @@ class Map extends Component {
       map: undefined,
       markers: [],
       infoWindows: {},
+      destination: this.props.destination,
     };
 
   this.deleteMarkers = this.deleteMarkers.bind(this);
@@ -56,9 +57,27 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
+  
     let { map, directionsDisplay, directionsService } = this.state;
+    let calculateAndDisplayRoute = this.calculateAndDisplayRoute;
     let newLocations = this.props.locations;
     let isChanged = false;
+
+    if (prevProps.destination) {
+      if (prevProps.destination.lat !== this.props.destination.lat && prevProps.destination.lng !== this.props.destination.lng) {
+        calculateAndDisplayRoute(directionsService, directionsDisplay, null, this.props.destination);
+
+        this.setState({
+          destination: this.props.destination,
+        });
+      } 
+    } else if (this.props.destination) {
+      calculateAndDisplayRoute(directionsService, directionsDisplay, null, this.props.destination);
+
+      this.setState({
+        destination: this.props.destination,
+      });     
+    }
 
     newLocations.forEach((location, i) => {
       if(!prevProps.locations[i] || location.coordinates.lat !== prevProps.locations[i].coordinates.lat && location.coordinates.lng !== prevProps.locations[i].coordinates.lng) {
@@ -69,7 +88,6 @@ class Map extends Component {
     if (isChanged) {
       // Delete all markers on map
       this.deleteMarkers();
-      let calculateAndDisplayRoute = this.calculateAndDisplayRoute;
 
       // Create an array of alphabetical characters used to label the markers.
       var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -116,15 +134,25 @@ class Map extends Component {
     }
   }
 
-  calculateAndDisplayRoute(directionsService, directionsDisplay, marker) {
+  calculateAndDisplayRoute(directionsService, directionsDisplay, marker, passedDestination = null) {
     const {map, currentPosition} = this.state;
     
     let origin = new google.maps.LatLng(currentPosition.lat, currentPosition.lng);
-    let destination = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+    let destination;
+
+    if (marker) {
+      destination = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+    }
+
+    if(passedDestination) {
+      destination = new google.maps.LatLng(passedDestination.lat, passedDestination.lng);
+    }
+
+    console.log('LatLng object:', destination);
 
     this.props.updateDestination({
-      lat : marker.position.lat(),
-      lng: marker.position.lng(),
+      lat : destination.lat(),
+      lng: destination.lng(),
     },currentPosition);
 
     directionsService.route({

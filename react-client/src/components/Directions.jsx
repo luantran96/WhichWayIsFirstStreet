@@ -11,7 +11,7 @@ const Directions = ({directions}) => (
         </div>
 
         <div>
-          <span id="direction-duration">{`Duration: ${directions.legs[0].duration.text}`} </span> 
+          <span id="direction-duration">{`ETA: ${directions.legs[0].duration.text}`} </span> 
         </div>
     </div>
 

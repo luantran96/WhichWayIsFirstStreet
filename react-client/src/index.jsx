@@ -12,11 +12,13 @@ class App extends React.Component {
     this.state = { 
       restaurants: [],
       directions: undefined,
+      destination: undefined,
     }
 
     this.updateRestaurants = this.updateRestaurants.bind(this);
     this.updateDestination = this.updateDestination.bind(this);
     this.renderDirections = this.renderDirections.bind(this);
+    this.handleRestaurantListItemClick = this.handleRestaurantListItemClick.bind(this);
 
   }
 
@@ -77,13 +79,32 @@ class App extends React.Component {
   renderDirections() {
     let {directions} = this.state;
 
+    console.log('directions in index.jsx: ', directions);
+    
     if (directions) {
       return <Directions directions={directions} />;
     } 
   }
 
+  handleRestaurantListItemClick(restaurant) {
+    console.log(restaurant);
+
+    // Hardcoded origin position 
+
+    let currentPosition = {
+      lat: 37.787484,
+      lng: -122.396397,
+    };
+
+    this.updateDestination(restaurant.coordinates, currentPosition);
+
+    this.setState({
+      destination: restaurant.coordinates,
+    });
+  }
+
   render () {
-    let { restaurants, directions } = this.state;
+    let { restaurants, directions, destination } = this.state;
     let locations = restaurants.map(restaurant => {
       return {
         coordinates: restaurant.coordinates,
@@ -101,10 +122,10 @@ class App extends React.Component {
         <div id="main">
 
           <div id="left">
-            <Map locations={locations} updateDestination={this.updateDestination}/>
+            <Map locations={locations} updateDestination={this.updateDestination} destination={destination}/>
           </div>
           <div id="right">
-          <List restaurants={restaurants}/>
+            <List restaurants={restaurants} handleRestaurantListItemClick={this.handleRestaurantListItemClick}/>
           </div>
         </div>
         <div id="directions">
