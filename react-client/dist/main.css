@@ -114,23 +114,28 @@ h1#title {
 
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent{  
     display: flex;
-    height: 200px;
+    height: 250px;
 }
 
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent>.details {
-    border: 2px solid blue;
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
     height: 170px;
-    font-size: 17px;
+    width:75%;
+    font-size: 15px;   
+}
+
+.ui.collapsing.table {
+    width: 100%;
 }
 
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent>.reviews {
     height:170px;
     margin-left: 35px;
     width: 50%;
-    border: 2px solid red;
+    overflow: scroll;
+    /* border: 2px solid red; */
 }
 
 .ui.items>.item>.restaurantInfoContent>.restaurantInfoHeader>a {

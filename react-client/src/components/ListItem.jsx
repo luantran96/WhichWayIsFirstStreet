@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import axios from 'axios';
 import { Item, Button } from 'semantic-ui-react';
+import moment from 'moment';
 
 const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick, showDetails}) => (
   <div>
@@ -20,14 +21,6 @@ const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick,
                {`Today's hours: ${restaurant.hours.start} to ${restaurant.hours.end}`}
             </Item.Description> 
             <Item.Extra>{restaurant.price} 
-            {/* <Button.Group>
-              <Button>Map</Button>
-              <Button.Or />
-              <Button 
-              negative
-              onClick={() => handleButtonClick(restaurant)}>Delete</Button> 
-            </Button.Group> */}
-            
               <Button.Group>
                 <Button 
                 onClick={() => handleRestaurantListItemClick(restaurant)}
