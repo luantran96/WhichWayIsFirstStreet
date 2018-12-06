@@ -162,7 +162,7 @@ class App extends React.Component {
 
     return (  
       <div id="body">
-        <div id="nav-bar">
+        <div>
           <Nav 
           updateRestaurants={this.updateRestaurants}
           />

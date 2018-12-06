@@ -85,9 +85,10 @@ class Nav extends React.Component {
       const { updateRestaurants } = this.props;
 
         return (
-          <div>
+          <div id="nav-bar">
             <div>
               <Search
+              fluid
               id="search"
               loading={isLoading}
               onResultSelect={updateRestaurants}
@@ -97,7 +98,10 @@ class Nav extends React.Component {
               results={results}
               />
             </div>
-        </div>
+            <div id="login">
+              SIGN IN
+            </div>
+          </div>
         );
     }
 }

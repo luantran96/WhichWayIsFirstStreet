@@ -2,6 +2,18 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-style:'thin';
+}
+
+
+.ui.items>.list-item>.image>img {
+    box-shadow: 1px 1px 5px 1px #ccc;
+    border-radius: 10px;
+}
+
+.labels {
+    font-weight: bold;
 }
 
 #main {
@@ -11,20 +23,40 @@ html, body {
 }
 
 #direction-title {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 #nav-bar {
     width: 100%;
     display : flex;
+    justify-content: space-between;
+    align-items: baseline;
 }
 
 #search {
-    margin: 10px 0;
-    margin-top: 15px;
-    margin-left: 20px;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-left: 30px;
     height: 50px;
     width: 400px;
+}
+
+#login {
+    font-size: 22px;
+    margin-right: 30px;
+    padding-bottom: 20px;
+}
+
+#login:hover {
+    cursor: pointer;
+    border-bottom: 3px solid black;
+}
+
+h1#title {
+    width: 330px;
+    margin: 0 auto;
+    margin-top: 50px;
+    font-size: 50px;
 }
 
 #left {
@@ -64,8 +96,8 @@ html, body {
 
 .ui.items>.list-item>.image>img {
     height: 150px;
-    width: 150px;
-    margin-bottom: 5px;
+    width: 165px;
+    margin: 5px;
 }
 
 .ui.items>.list-item>.content>.extra{
@@ -86,18 +118,28 @@ html, body {
 }
 
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent>.details {
+    border: 2px solid blue;
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
+    height: 170px;
+    font-size: 17px;
 }
 
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent>.reviews {
-    height:100%;
+    height:170px;
     margin-left: 35px;
     width: 50%;
-    /* border: 2px solid red; */
+    border: 2px solid red;
 }
 
+.ui.items>.item>.restaurantInfoContent>.restaurantInfoHeader>a {
+    font-size: 30px;
+}
+
+.ui.items>.item>.restaurantInfoContent {
+    margin-top: 10px;
+}
 
 .ui.items>.item>.restaurantInfoImage>img {
     width: 300px;

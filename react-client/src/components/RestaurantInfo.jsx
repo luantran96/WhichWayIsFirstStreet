@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Table, Rating, Item } from 'semantic-ui-react'
+import { Header, Image, Rating, Item } from 'semantic-ui-react'
 
 const RestaurantInfo = ({restaurant}) => (
     <div>
@@ -10,28 +10,30 @@ const RestaurantInfo = ({restaurant}) => (
       className="restaurantInfoImage"
       src={restaurant.image_url} />
       <Item.Content className="restaurantInfoContent">
-        <Item.Header><a href={restaurant.url}>{restaurant.name}</a></Item.Header>
+        <Item.Header className="restaurantInfoHeader"><a href={restaurant.url}>{restaurant.name}</a></Item.Header>
         <Item.Description>
         <div className="descriptionContent">
           <div className="details">
             <div>
-              <span className='price'>{`Price range: ${restaurant.price}`}</span>
+              <span className='labels'>Price range:</span> {`${restaurant.price}`}
             </div>
             <div>
-              <span className='address'>{`Address: ${Object.values(restaurant.location).join(' ')}`}</span>
+              <span className='labels'>Address:</span> {`${Object.values(restaurant.location).join(' ')}`}
             </div>
             <div>
-              <span className='phone'>{` Contact: ${restaurant.display_phone}`}</span>
+              <span className='labels'>Contact:</span> {`${restaurant.display_phone}`}
             </div>
             <div>
-              <span className='rating'><Rating rating={restaurant.rating} maxRating={5}/></span>
+              <span className='ratings'><Rating icon='star' size='huge' rating={restaurant.rating} maxRating={5}/></span>
             </div>
             <div>
-              <span className='reviews'>{`Reviews: ${restaurant.review_count}`}</span>
+              <span className='labels'>Reviews: </span> {`${restaurant.review_count}`}
             </div>
           </div>
           <div className="reviews">
-
+          <Header as='h2'>
+            <Image circular src='https://react.semantic-ui.com/images/avatar/large/patrick.png' /> Hours:
+          </Header>
           </div>
         </div>
         </Item.Description>
