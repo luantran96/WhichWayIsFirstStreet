@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack -d --watch",
+    "build": "webpack -d --watch -p",
     "start": "nodemon server/index.js"
   },
   "author": "Beth Johnson",
@@ -29,6 +29,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-markdown": "^4.0.4",
+    "react-paginate": "^6.0.0",
     "react-redux": "^5.1.1",
     "react-responsive-carousel": "^3.1.43",
     "request": "^2.88.0",

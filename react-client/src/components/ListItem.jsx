@@ -1,9 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import $ from 'jquery';
-import axios from 'axios';
 import { Item, Button } from 'semantic-ui-react';
-import moment from 'moment';
 
 const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick, showDetails}) => (
   <div>

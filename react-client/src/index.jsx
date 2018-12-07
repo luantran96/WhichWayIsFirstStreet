@@ -12,10 +12,11 @@ class App extends React.Component {
     super(props);
     this.state = { 
       restaurants: [],
-      restaurant: null,
-      render: 'directions',
+      restaurant: undefined,
+      restaurant_reviews: undefined,
       directions: undefined,
       destination: undefined,
+      render: 'directions',
     }
 
     this.updateRestaurants = this.updateRestaurants.bind(this);
@@ -29,28 +30,28 @@ class App extends React.Component {
   componentDidMount() {
     axios.get('/selectAll')
     .then((items) => {
-       console.log('items in /selectAll: ', items.data);
       this.setState({
         restaurants: items.data
       });
     });
   }
-
-  showDetails(restaurant) {
-    console.log(restaurant);
-
-    axios.get('/getInfo',
-    {
-      params: {
-        id: restaurant.yelpId,
-      }
-    }).then((res) => {
-      console.log(res.data);
-      this.setState({
-        restaurant: res.data,
-        render: 'restaurantInfo',
+  
+  showDetails(restaurant) {    
+    this.getReviews(restaurant.yelpId, (reviews) => {
+      axios.get('/getInfo',
+      {
+        params: {
+          id: restaurant.yelpId,
+        }
+      }).then((res) => {
+        this.setState({
+          restaurant: res.data,
+          render: 'restaurantInfo',
+          restaurant_reviews: reviews,
+        });
       });
     });
+
   }
 
   updateRestaurants(e, { result }) {
@@ -100,15 +101,24 @@ class App extends React.Component {
     });
   }
 
+  getReviews(yelpId, cb) {
+    axios.get('/reviews', {
+      params: {
+        id: yelpId,
+      }
+    })
+    .then((res) => {
+      cb(res.data);
+    });   
+  }
+
   renderDetails() {
-    let {directions, render, restaurant} = this.state;
-    
-    console.log('restaurant in renderDetails(): ', restaurant);
-    
+    let {directions, render, restaurant, restaurant_reviews} = this.state;
+        
     if (render === 'directions' && directions) {
       return <Directions directions={directions} />;
     } else if (render === 'restaurantInfo' && restaurant) {
-      return <RestaurantInfo restaurant={restaurant} />;
+      return <RestaurantInfo restaurant={restaurant} restaurant_reviews={restaurant_reviews}/>;
     }
   }
 
@@ -135,8 +145,6 @@ class App extends React.Component {
   }
 
   handleRestaurantListItemClick(restaurant) {
-    console.log(restaurant);
-
     // Hardcoded origin position 
 
     let currentPosition = {

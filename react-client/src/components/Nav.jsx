@@ -1,12 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import $ from 'jquery';
 import axios from 'axios';
 import { Search, Grid, Header, Segment } from 'semantic-ui-react'
-import KEY from '../API.js';
-
-
 
 class Nav extends React.Component {
     constructor(props) {
@@ -16,7 +11,7 @@ class Nav extends React.Component {
           "results": [],
           "searchResults": [],
           "value": "", 
-        }
+        } 
 
       this.handleSearchChange = this.handleSearchChange.bind(this);
       }
