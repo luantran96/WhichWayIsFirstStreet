@@ -1,5 +1,7 @@
 import React from 'react';
 import { Table, Rating, Item, Form, TextArea } from 'semantic-ui-react'
+import {connect} from 'react-redux';
+
 
 const RestaurantInfo = ({restaurant, restaurant_reviews}) => {  
   let hours = {
@@ -98,6 +100,12 @@ const RestaurantInfo = ({restaurant, restaurant_reviews}) => {
     </div>
   )
 };
+
+// const wrappedRestaurantInfo = connect((store) => {
+//   return {
+//     restaurant: store.restaurantInfo.restaurant,
+//   }
+// })(RestaurantInfo);
 
 export default RestaurantInfo;
 

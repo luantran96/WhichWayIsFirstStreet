@@ -11,14 +11,6 @@ import RestaurantInfo from './RestaurantInfo.jsx';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = { 
-    //   restaurants: [],
-    //   restaurant: undefined,
-    //   restaurant_reviews: undefined,
-    //   directions: undefined,
-    //   destination: undefined,
-    //   render: 'directions',
-    // }
 
     this.updateRestaurants = this.updateRestaurants.bind(this);
     this.updateDestination = this.updateDestination.bind(this);
@@ -29,37 +21,63 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
+    
     this.props.dispatch({
       type: 'FETCH_RESTAURANTS', 
       payload: axios.get('/selectAll'),
     });
-
-    // axios.get('/selectAll')
-    // .then((items) => {
-    //   this.setState({
-    //     restaurants: items.data
-    //   });
-    // });
   }
-  
+
+  getReviews(yelpId, cb) {
+    // this.store.dispatch({
+    //   type: 'GET_REVIEWS',
+    //   payload: axios.get('/reviews', {
+    //     params: {
+    //       id: yelpId,
+    //     }
+    //   }),
+    // });
+
+    // axios.get('/reviews', {
+    //   params: {
+    //     id: yelpId,
+    //   }
+    // })
+    // .then((res) => {
+    //   cb(res.data);
+    // });   
+  }
+
   showDetails(restaurant) {    
-    this.getReviews(restaurant.yelpId, (reviews) => {
-      axios.get('/getInfo',
+
+    this.props.dispatch({
+      type: 'GET_INFO',
+      payload: axios.get('/getInfo',
       {
         params: {
           id: restaurant.yelpId,
         }
-      }).then((res) => {
-        this.setState({
-          restaurant: res.data,
-          render: 'restaurantInfo',
-          restaurant_reviews: reviews,
-        });
-      });
+      }),
     });
 
+    // this.getReviews(restaurant.yelpId, (reviews) => {
+    //   axios.get('/getInfo',
+    //   {
+    //     params: {
+    //       id: restaurant.yelpId,
+    //     }
+    //   }).then((res) => {
+    //     this.setState({
+    //       restaurant: res.data,
+    //       render: 'restaurantInfo',
+    //       restaurant_reviews: reviews,
+    //     });
+    //   });
+    // });
+
   }
+
+  
 
   updateRestaurants(e, { result }) {
     console.log('selected restaurant: ', result);
@@ -108,24 +126,16 @@ class App extends React.Component {
     });
   }
 
-  getReviews(yelpId, cb) {
-    axios.get('/reviews', {
-      params: {
-        id: yelpId,
-      }
-    })
-    .then((res) => {
-      cb(res.data);
-    });   
-  }
+
 
   renderDetails() {
-    let {directions, render, restaurant, restaurant_reviews} = this.props;
+    let {directions, render, restaurant} = this.props;
         
     if (render === 'directions' && directions) {
       return <Directions directions={directions} />;
     } else if (render === 'restaurantInfo' && restaurant) {
-      return <RestaurantInfo restaurant={restaurant} restaurant_reviews={restaurant_reviews}/>;
+      // return <RestaurantInfo />;
+      return <RestaurantInfo restaurant={restaurant}/>;
     }
   }
 
@@ -214,7 +224,11 @@ const wrappedApp = connect((store) => {
     restaurants: store.app.restaurants,
     directions: store.app.directions,
     destination: store.app.destination,
+    render: store.restaurantInfo.render,
+    restaurant: store.restaurantInfo.restaurant,
   }
 })(App);
+
+
 
 export default wrappedApp;

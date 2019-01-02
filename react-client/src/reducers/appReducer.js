@@ -15,8 +15,14 @@ let reducer = (state = {
         ...state, 
         restaurants: action.payload.data,
       }
-
       break;
+    }
+
+    case 'GET_INFO_FULFILLED': {
+      return {
+        ...state,
+        
+      }
     }
   }
     return state;
