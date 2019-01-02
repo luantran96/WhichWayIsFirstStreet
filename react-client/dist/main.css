@@ -160,6 +160,11 @@ h1#title {
     margin-top: 85px;
 }
 
+.ui.search>.results .result .image img { 
+height: 92px;
+width: 80px;
+}
+
 #reviews {
     height: 150px;
     width: 19.5%;
