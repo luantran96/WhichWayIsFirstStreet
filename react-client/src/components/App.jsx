@@ -11,8 +11,7 @@ import RestaurantInfo from './RestaurantInfo.jsx';
 class App extends React.Component {
   constructor(props) {
     super(props);
-
-    this.updateRestaurants = this.updateRestaurants.bind(this);
+    console.log(props);
     this.updateDestination = this.updateDestination.bind(this);
     this.renderDetails = this.renderDetails.bind(this);
     this.handleRestaurantListItemClick = this.handleRestaurantListItemClick.bind(this);
@@ -20,95 +19,18 @@ class App extends React.Component {
     this.showDetails = this.showDetails.bind(this);
   }
 
-  componentDidMount() {
-    
-    this.props.dispatch({
-      type: 'FETCH_RESTAURANTS', 
-      payload: axios.get('/selectAll'),
-    });
+  componentDidMount() { 
+    this.props.fetchRestaurants();  
   }
 
-  getReviews(yelpId, cb) {
-    // this.store.dispatch({
-    //   type: 'GET_REVIEWS',
-    //   payload: axios.get('/reviews', {
-    //     params: {
-    //       id: yelpId,
-    //     }
-    //   }),
-    // });
-
-    // axios.get('/reviews', {
-    //   params: {
-    //     id: yelpId,
-    //   }
-    // })
-    // .then((res) => {
-    //   cb(res.data);
-    // });   
-  }
-
-  showDetails(restaurant) {    
-
-    this.props.dispatch({
-      type: 'GET_INFO',
-      payload: axios.get('/getInfo',
-      {
-        params: {
-          id: restaurant.yelpId,
-        }
-      }),
-    });
-
-    // this.getReviews(restaurant.yelpId, (reviews) => {
-    //   axios.get('/getInfo',
-    //   {
-    //     params: {
-    //       id: restaurant.yelpId,
-    //     }
-    //   }).then((res) => {
-    //     this.setState({
-    //       restaurant: res.data,
-    //       render: 'restaurantInfo',
-    //       restaurant_reviews: reviews,
-    //     });
-    //   });
-    // });
-
-  }
-
-  
-
-  updateRestaurants(e, { result }) {
-    console.log('selected restaurant: ', result);
-
-    axios.get('/getHours',
-    {
-      params: {
-        id: result.yelpId,
-      }
-    }).then((hours) => {
-      result.hours = hours.data;
-
-      axios.post('/add', {
-        result,
-      })
-      .then((res) => {
-        let { restaurants } = this.state;
-        restaurants.push(result);
-    
-        this.setState({
-          restaurants,
-        });
-      });
-    });
+  showDetails(restaurant) {   
+    this.props.getRestaurantInfo(restaurant.yelpId);
   }
 
   updateDestination(destination, origin = {
     lat: 37.787484,
     lng: -122.396397,
   }) {
-    console.log('new destination: ', destination);
 
     axios.get('/getRoutes', {
       params: {
@@ -134,7 +56,6 @@ class App extends React.Component {
     if (render === 'directions' && directions) {
       return <Directions directions={directions} />;
     } else if (render === 'restaurantInfo' && restaurant) {
-      // return <RestaurantInfo />;
       return <RestaurantInfo restaurant={restaurant}/>;
     }
   }
@@ -176,8 +97,7 @@ class App extends React.Component {
     });
   }
 
-  render () {
-    console.log(this.props);
+  render() {
     let { restaurants, directions, destination } = this.props;
     let locations = restaurants.map(restaurant => {
       return {
@@ -189,9 +109,7 @@ class App extends React.Component {
     return (  
       <div id="body">
         <div>
-          <Nav 
-          updateRestaurants={this.updateRestaurants}
-          />
+          <Nav />
         </div>
         <div id="main">
 
@@ -219,7 +137,7 @@ class App extends React.Component {
 
 }
 
-const wrappedApp = connect((store) => {
+const mapStateToProps = (store) => {
   return {
     restaurants: store.app.restaurants,
     directions: store.app.directions,
@@ -227,7 +145,31 @@ const wrappedApp = connect((store) => {
     render: store.restaurantInfo.render,
     restaurant: store.restaurantInfo.restaurant,
   }
-})(App);
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchRestaurants: () => 
+      dispatch({
+        type: 'FETCH_RESTAURANTS', 
+        payload: axios.get('/selectAll'),
+      }),
+
+    getRestaurantInfo: (yelpId) => 
+      dispatch({
+        type: 'GET_INFO',
+        payload: axios.get('/getInfo',
+        {
+          params: {
+            id: yelpId,
+          }
+        }),
+      }),
+      
+  }
+}
+
+const wrappedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 
 
 

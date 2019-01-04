@@ -64,14 +64,29 @@ app.get('/getHours', (req, res) => {
 });
 
 app.post('/add', (req, res) => {
-  const {result} = req.body;
-  items.Add(result, (item) => {
-    
-    console.log('item added: ', item);
-    res.end('OK');
-  });
-});
+  const {result, id} = req.body;
 
+  var options = {
+    url:`https://api.yelp.com/v3/businesses/${id}`,
+    headers: {
+      'Authorization': `Bearer ${API.YELP}`,
+    },
+  };
+
+  request(options, (err, response, body) => {
+    if (!err && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      let hours = info.hours[0].open[new Date().getDay()];
+      result.hours = hours;
+      items.Add(result, (item) => { 
+        console.log('item added: ', item);
+        res.json(result);
+      });
+    } 
+  });
+
+});
+ 
 app.get('/search', (req, res) => {
   const { name } = req.query;
   const latitude = 37.691109;

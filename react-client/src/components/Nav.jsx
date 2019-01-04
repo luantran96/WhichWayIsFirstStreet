@@ -1,84 +1,60 @@
 import _ from 'lodash';
 import React from 'react';
 import axios from 'axios';
+import {connect} from 'react-redux';
+
 import { Search, Grid, Header, Segment } from 'semantic-ui-react'
 
 class Nav extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
-          "isLoading": false,
-          "results": [],
-          "searchResults": [],
-          "value": "", 
-        } 
 
       this.handleSearchChange = this.handleSearchChange.bind(this);
+      this.updateRestaurants = this.updateRestaurants.bind(this);
       }
+    
+    updateRestaurants(e, { result }) {
+      console.log('selected restaurant: ', result);
+      const { dispatch } = this.props;
+      
+      dispatch({type: 'ADD_RESTAURANT_TO_DB', 
+      payload: axios.post('/add', 
+        {
+          id: result.yelpId,
+          result,
+        }),
+      });
+    
+    }
 
     handleSearchChange(e, { value }) {
-      let price = {
-        '$': 'under $10',
-        '$$': '$11-$30',
-        '$$$': '$31-$60',
-        '$$$$': 'above $61',
-      };
-
-      this.setState(
-        { 
-          isLoading: true,
-          value, 
-        });
+      let {dispatch} = this.props;
       
-      if (this.state.value.length < 1) {
-        this.setState({
-          results: [],
-        });
+      dispatch({type: 'START_SEARCH', payload: value});
+
+      let search_value = this.props.value;
+
+      if (search_value.length < 1) {
+        dispatch({type: 'RESET_RESULTS'});
       }
      
-    setTimeout(() => {
-      axios.get('/search',
-      {
-        params: {
-          name: value,
-        }
-      }
-      )
-      .then((results) => {
-        const {businesses} = results.data;
-        console.log(businesses);
-
-        let entries = businesses.slice(0,5).map((business) => {
-          let entry = {
-            yelpId: business.id,
-            url: business.url,
-            title: business.name,
-            description: business.location.display_address.join(),
-            image: business.image_url,
-            price: price[business.price],
-            coordinates: {
-              lat: business.coordinates.latitude,
-              lng: business.coordinates.longitude,
-            },
-            is_closed: business.is_closed,
+    setTimeout(() => { 
+      dispatch({
+        type: 'SEARCH_RESTAURANTS',
+        payload: axios.get('/search',
+          {
+            params: {
+              name: search_value,
+            }
           }
-          
-          return entry;
-        });
-        
-        this.setState({
-          results: entries,
-          isLoading: false,
-        });
+        ),
       });
     }, 300);
     
     }
 
     render() {
-      const { isLoading, value, results } = this.state;
-      const { updateRestaurants } = this.props;
-
+      const { isLoading, value, results } = this.props;
         return (
           <div id="nav-bar">
             <div>
@@ -86,7 +62,7 @@ class Nav extends React.Component {
               fluid
               id="search"
               loading={isLoading}
-              onResultSelect={updateRestaurants}
+              onResultSelect={this.updateRestaurants}
               placeholder="Search"
               onSearchChange={_.debounce(this.handleSearchChange, 100, { leading: true })}
               value={value}
@@ -101,4 +77,13 @@ class Nav extends React.Component {
     }
 }
 
-export default Nav;
+const wrappedNav = connect((store) => {
+  return {
+    isLoading: store.nav.isLoading,
+    results: store.nav.results,
+    searchResults: store.nav.searchResults,
+    value: store.nav.value, 
+  };
+})(Nav);
+
+export default wrappedNav;

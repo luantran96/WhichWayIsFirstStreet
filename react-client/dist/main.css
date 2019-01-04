@@ -1,5 +1,5 @@
 html, body {
-    width: 97%;
+    width: 100%;
     height: 100%;
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
@@ -66,8 +66,9 @@ h1#title {
 #left {
     width:70%;
     height: 100%;
-    border: 2px solid black;
-    border-right: 1px;
+    border-width: 2px 1px 0px 0px;
+    border-style: solid;
+    border-color: black;
 }
 
 #direction-headers {
@@ -81,8 +82,13 @@ h1#title {
 }
 
 #right {
-    border: 2px solid black;
+    border-width: 2px 0px 0px 1px;
+    border-style: solid;
+    border-color: black;
+    -webkit-box-shadow: 1px 10px 5px 0 #7D7D7D;
+    box-shadow: 1px 10px 20px 0 #7D7D7D;
     width:30%;
+    z-index: 100px;
     height: 100%;
     overflow: scroll;
 }
