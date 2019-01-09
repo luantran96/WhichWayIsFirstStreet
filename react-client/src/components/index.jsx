@@ -10,9 +10,12 @@ import reducers from './../reducers/index';
 import App from './App.jsx';
 
 const middleware = applyMiddleware(promise(), thunk, createLogger());
-const store = createStore(reducers, middleware);
+const store = createStore(
+    reducers, 
+    middleware,
+    );
 
-ReactDOM.render(
+ReactDOM.render( 
     <Provider store={store}>
         <App />
     </Provider>, document.getElementById('app')

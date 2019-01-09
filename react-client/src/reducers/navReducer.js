@@ -60,18 +60,6 @@ let reducer = (state = {
       }
       break;
     }
-
-    case 'ADD_RESTAURANT_TO_DB_FULFILLED': {
-      let newRestaurant = action.payload;
-      console.log('newRestaurant:', newRestaurant);
-      let { restaurants } = state.restaurants;
-      restaurants.push(newRestaurant);
-      
-      return {
-        ...state,
-        restaurants,
-      };
-    }
   }
     return state;
 };

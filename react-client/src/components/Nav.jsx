@@ -7,16 +7,16 @@ import { Search, Grid, Header, Segment } from 'semantic-ui-react'
 
 class Nav extends React.Component {
     constructor(props) {
-        super(props);
+      super(props);
 
       this.handleSearchChange = this.handleSearchChange.bind(this);
       this.updateRestaurants = this.updateRestaurants.bind(this);
       }
     
     updateRestaurants(e, { result }) {
-      console.log('selected restaurant: ', result);
+      console.log('selected restaurant:', result);
       const { dispatch } = this.props;
-      
+
       dispatch({type: 'ADD_RESTAURANT_TO_DB', 
       payload: axios.post('/add', 
         {
@@ -49,7 +49,7 @@ class Nav extends React.Component {
           }
         ),
       });
-    }, 300);
+    }, 100);
     
     }
 

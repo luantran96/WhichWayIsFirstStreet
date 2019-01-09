@@ -1,6 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {connect} from 'react-redux';
 import ListItem from './ListItem.jsx';
+import PropTypes from 'prop-types';
+
 
 const List = ({restaurants, handleRestaurantListItemClick, handleButtonClick, showDetails}) => (
     <div>
@@ -13,5 +15,16 @@ const List = ({restaurants, handleRestaurantListItemClick, handleButtonClick, sh
     </div>
 );
 
-export default List;
+let mapStateToProps = (state) => {
+    return {
+        restaurants: state.app.restaurants,
+    }
+};
+
+List.contextTypes = {
+    store: PropTypes.object
+}
+const wrappedList = connect(mapStateToProps)(List);
+
+export default wrappedList;
 

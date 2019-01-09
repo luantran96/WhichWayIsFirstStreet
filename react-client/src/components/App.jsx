@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Nav from './Nav.jsx';
 import Map from './Map.jsx';
@@ -8,10 +9,13 @@ import List from './List.jsx';
 import Directions from './Directions.jsx';
 import RestaurantInfo from './RestaurantInfo.jsx';
 
+
+//TODO: Look up how to get subscribe to work 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    
     this.updateDestination = this.updateDestination.bind(this);
     this.renderDetails = this.renderDetails.bind(this);
     this.handleRestaurantListItemClick = this.handleRestaurantListItemClick.bind(this);
@@ -20,6 +24,8 @@ class App extends React.Component {
   }
 
   componentDidMount() { 
+    // this.context is UNDEFINED
+    console.log(this.context);
     this.props.fetchRestaurants();  
   }
 
@@ -98,13 +104,7 @@ class App extends React.Component {
   }
 
   render() {
-    let { restaurants, directions, destination } = this.props;
-    let locations = restaurants.map(restaurant => {
-      return {
-        coordinates: restaurant.coordinates,
-        title: restaurant.title,
-      };
-    });
+    let { locations, directions, destination } = this.props;
 
     return (  
       <div id="body">
@@ -112,7 +112,6 @@ class App extends React.Component {
           <Nav />
         </div>
         <div id="main">
-
           <div id="left">
             <Map 
             locations={locations} 
@@ -121,7 +120,6 @@ class App extends React.Component {
           </div>
           <div id="right">
             <List 
-            restaurants={restaurants} 
             handleRestaurantListItemClick={this.handleRestaurantListItemClick}
             handleButtonClick={this.handleButtonClick}
             showDetails={this.showDetails}/>
@@ -144,6 +142,7 @@ const mapStateToProps = (store) => {
     destination: store.app.destination,
     render: store.restaurantInfo.render,
     restaurant: store.restaurantInfo.restaurant,
+    locations: store.app.locations,
   }
 };
 
@@ -168,6 +167,13 @@ const mapDispatchToProps = (dispatch) => {
       
   }
 }
+
+// IMPORTANT
+App.contextTypes = {
+  store: PropTypes.object
+}
+
+
 
 const wrappedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 
