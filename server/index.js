@@ -80,7 +80,9 @@ app.post('/add', (req, res) => {
       result.hours = hours;
       items.Add(result, (item) => { 
         console.log('item added: ', item);
-        res.json(result);
+        items.selectAll((err, items) => {
+          res.json(items);
+        });
       });
     } 
   });
@@ -166,11 +168,6 @@ app.get('/deleteAll', (req, res) => {
   });
 });
 
-// https.createServer({
-//   key: fs.readFileSync('server/server.key'),
-//   cert: fs.readFileSync('server/server.cert'),
-// }, app)
-//   .listen(3000, () => console.log('listening on port 3000!'));
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');

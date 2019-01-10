@@ -5,7 +5,7 @@ import React from 'React';
 import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
-import reducers from './../reducers/index';
+import reducers from '../reducers/index';
 
 import App from './App.jsx';
 
@@ -14,6 +14,18 @@ const store = createStore(
     reducers, 
     middleware,
     );
+
+    let currentState;
+
+    // store.subscribe(() => {
+    //     let previousState = currentState;
+    //     let currentState = store.getState();
+
+    //     if(previousState.app.restaurantToAdd !== currentState.app.restaurantToAdd) {  
+    //       console.log('state changed ', currentState);
+    //       store.dispatch({type: 'FETCH_RESTAURANTS'});
+    //     }
+    // });
 
 ReactDOM.render( 
     <Provider store={store}>

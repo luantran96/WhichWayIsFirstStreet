@@ -12,10 +12,43 @@ import RestaurantInfo from './RestaurantInfo.jsx';
 
 //TODO: Look up how to get subscribe to work 
 
+const mapStateToProps = (state) => {
+  return {
+    restaurants: state.app.restaurants,
+    directions: state.app.directions,
+    destination: state.app.destination,
+    render: state.restaurantInfo.render,
+    restaurant: state.restaurantInfo.restaurant,
+    locations: state.app.locations,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchRestaurants: () => 
+      dispatch({
+        type: 'FETCH_RESTAURANTS', 
+        payload: axios.get('/selectAll'),
+      }),
+
+    getRestaurantInfo: (yelpId) => 
+      dispatch({
+        type: 'GET_INFO',
+        payload: axios.get('/getInfo',
+        {
+          params: {
+            id: yelpId,
+          }
+        }),
+      }),
+      
+  }
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.updateDestination = this.updateDestination.bind(this);
     this.renderDetails = this.renderDetails.bind(this);
     this.handleRestaurantListItemClick = this.handleRestaurantListItemClick.bind(this);
@@ -24,8 +57,6 @@ class App extends React.Component {
   }
 
   componentDidMount() { 
-    // this.context is UNDEFINED
-    console.log(this.context);
     this.props.fetchRestaurants();  
   }
 
@@ -62,7 +93,7 @@ class App extends React.Component {
     if (render === 'directions' && directions) {
       return <Directions directions={directions} />;
     } else if (render === 'restaurantInfo' && restaurant) {
-      return <RestaurantInfo restaurant={restaurant}/>;
+      return <RestaurantInfo />;
     }
   }
 
@@ -113,6 +144,7 @@ class App extends React.Component {
         </div>
         <div id="main">
           <div id="left">
+          {/*TODO: Refactor to redux */}
             <Map 
             locations={locations} 
             updateDestination={this.updateDestination} 
@@ -131,49 +163,7 @@ class App extends React.Component {
       </div>
     );
   }
-
-
 }
-
-const mapStateToProps = (store) => {
-  return {
-    restaurants: store.app.restaurants,
-    directions: store.app.directions,
-    destination: store.app.destination,
-    render: store.restaurantInfo.render,
-    restaurant: store.restaurantInfo.restaurant,
-    locations: store.app.locations,
-  }
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchRestaurants: () => 
-      dispatch({
-        type: 'FETCH_RESTAURANTS', 
-        payload: axios.get('/selectAll'),
-      }),
-
-    getRestaurantInfo: (yelpId) => 
-      dispatch({
-        type: 'GET_INFO',
-        payload: axios.get('/getInfo',
-        {
-          params: {
-            id: yelpId,
-          }
-        }),
-      }),
-      
-  }
-}
-
-// IMPORTANT
-App.contextTypes = {
-  store: PropTypes.object
-}
-
-
 
 const wrappedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 

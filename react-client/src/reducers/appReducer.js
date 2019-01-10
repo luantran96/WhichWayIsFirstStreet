@@ -31,11 +31,11 @@ let reducer = (state = {
     }
 
     case 'ADD_RESTAURANT_TO_DB_FULFILLED': {
-      let newRestaurant = action.payload;
-     
+      let restaurants = action.payload.data;
+      
       return {
         ...state,
-        restaurantToAdd: newRestaurant.data,
+        restaurants,
       };
     }
 
