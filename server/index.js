@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var request = require('request');
+var morgan = require('morgan');
 var https = require('https');
 var fs = require('fs');
 var path = require('path');
@@ -14,6 +15,7 @@ var app = express();
 app.use(express.static(__dirname + '/../react-client/dist'));
 app.use(cors());
 app.use(bodyParser.json());
+app.use(morgan('tiny'));
 
 app.get('/selectAll', (req, res) => {
   items.selectAll((err, items) => {
@@ -76,7 +78,9 @@ app.post('/add', (req, res) => {
   request(options, (err, response, body) => {
     if (!err && response.statusCode == 200) {
       var info = JSON.parse(body);
-      let hours = info.hours[0].open[new Date().getDay()];
+      console.log('info: ', info.hours[0].open);
+      let hours = info.hours[0].open;
+      console.log('hours: ', hours);
       result.hours = hours;
       items.Add(result, (item) => { 
         console.log('item added: ', item);
@@ -113,7 +117,9 @@ app.get('/search', (req, res) => {
 app.delete('/delete', (req, res) => {
     const { _id } = req.query;
     items.deleteOne(_id, (item) => {
-      res.end();
+      items.selectAll((err, items) => {
+        res.json(items);
+      });
     });
 });
 

@@ -178,7 +178,6 @@ width: 80px;
     margin-top: -80px; /* Fix this later*/
     /* border: 1px solid green; */
     padding-right: 25px;
-    border-right: 1px solid rgb(230, 230, 230);;
 }
 .ui.table td, .ui.table th {
     width: 50%;

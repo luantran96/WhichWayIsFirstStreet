@@ -6,12 +6,14 @@ import PropTypes from 'prop-types';
 
 const List = ({restaurants, handleRestaurantListItemClick, handleButtonClick, showDetails}) => (
     <div>
-    {restaurants.map(restaurant => <ListItem 
-    restaurant={restaurant} 
-    handleRestaurantListItemClick={handleRestaurantListItemClick}
-    handleButtonClick={handleButtonClick} 
-    showDetails={showDetails}
-    />)}
+    {restaurants.map(restaurant => 
+      <ListItem 
+      restaurant={restaurant} 
+      handleRestaurantListItemClick={handleRestaurantListItemClick}
+      handleButtonClick={handleButtonClick} 
+      showDetails={showDetails}
+      />)
+    }
     </div>
 );
 

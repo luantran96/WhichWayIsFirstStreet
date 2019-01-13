@@ -1,0 +1,108 @@
+const axios = require('axios');
+
+let reducer = (state = {
+    currentPosition: {
+      lat: 37.787484,
+      lng: -122.396397,
+    },
+    locations: [],
+    map: undefined,
+    markers: [],
+    infoWindows: {},
+    destination: [],
+    origin: undefined,
+    destination: undefined,
+    directionsService: undefined,
+    directionsDisplay: undefined,
+}, action) => {
+
+  switch (action.type) {
+    case 'INIT_MAP': {
+      var directionsService = new google.maps.DirectionsService;
+      var directionsDisplay = new google.maps.DirectionsRenderer;
+  
+      let currentPosition = state.currentPosition;
+            
+      const map = new window.google.maps.Map(document.getElementById('map'), {
+        center: currentPosition,
+        zoom: 11
+      });
+    
+      directionsDisplay.setMap(map);
+
+      return {
+        ...state,
+        map,
+        directionsService,
+        directionsDisplay,
+      }
+    }
+
+    case 'UPDATE_ORIGIN': {
+      return {
+        ...state,
+        origin: action.payload,
+      }
+    }
+
+    case 'UPDATE_DESTINATION': {
+      return {
+        ...state,
+        destination: action.payload,
+      }
+    }
+
+    case 'DELETE_MARKERS': {
+      const { map, markers } = state;
+
+      markers.forEach(marker => {
+        marker.setMap(null);
+      });
+
+      return {
+        ...state,
+        locations: [],
+        markers,
+      }
+    }
+
+    case 'CALCULATE_ROUTE': {
+      const { directionsService, directionsDisplay } = state;
+  
+      directionsService.route({
+        origin,
+        destination, 
+        travelMode: 'DRIVING'
+      }, function(response, status) {
+        if (status === 'OK') {
+          console.log('OK');
+          directionsDisplay.setDirections(response);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      });
+
+      return {
+        ...state,
+        directionsDisplay,
+        directionsService,
+      }
+    }
+
+    case 'UPDATE_MAP': {
+      const { markers, locations, infoWindows } = action.payload;
+
+      return {
+        ...state,
+        markers,
+        locations,
+        infoWindows
+      }
+      break;
+    }
+
+  }
+    return state;
+};
+
+module.exports = reducer;

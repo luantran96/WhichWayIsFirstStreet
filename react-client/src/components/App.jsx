@@ -16,8 +16,8 @@ const mapStateToProps = (state) => {
   return {
     restaurants: state.app.restaurants,
     directions: state.app.directions,
-    destination: state.app.destination,
-    render: state.restaurantInfo.render,
+    destination: state.map.destination,
+    render: state.app.render,
     restaurant: state.restaurantInfo.restaurant,
     locations: state.app.locations,
   }
@@ -25,6 +25,21 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    updateRestaurantList: (restaurants) => {
+      dispatch({
+        type: 'UPDATE_RESTAURANTS_LIST',
+        payload: restaurants,
+      })
+    },
+    deleteRestaurant: (_id) => 
+      dispatch({
+        type: 'DELETE_RESTAURANT',
+        payload: axios.delete('/delete', {
+             params:{
+              _id,
+             },
+           })
+      }),
     fetchRestaurants: () => 
       dispatch({
         type: 'FETCH_RESTAURANTS', 
@@ -41,7 +56,32 @@ const mapDispatchToProps = (dispatch) => {
           }
         }),
       }),
-      
+
+      fetchDirections: (destination, origin) =>
+        dispatch({
+          type: 'FETCH_DIRECTIONS',
+          payload:  axios.get('/getRoutes', {
+            params: {
+              end_lat: destination.lat,
+              end_lng: destination.lng,
+              start_lat: origin.lat,
+              start_lng: origin.lng,
+            }
+          })
+        }),
+
+      changeRender: (newRender) => {
+        dispatch({
+          type: 'CHANGE_RENDER',
+          payload: newRender,
+        })
+      },
+      updateDestination: (coordinates) => {
+        dispatch({
+          type: 'UPDATE_DESTINATION',
+          payload: coordinates,
+        })
+      }
   }
 }
 
@@ -49,7 +89,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.updateDestination = this.updateDestination.bind(this);
     this.renderDetails = this.renderDetails.bind(this);
     this.handleRestaurantListItemClick = this.handleRestaurantListItemClick.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
@@ -62,30 +101,8 @@ class App extends React.Component {
 
   showDetails(restaurant) {   
     this.props.getRestaurantInfo(restaurant.yelpId);
+    this.props.changeRender('restaurantInfo');
   }
-
-  updateDestination(destination, origin = {
-    lat: 37.787484,
-    lng: -122.396397,
-  }) {
-
-    axios.get('/getRoutes', {
-      params: {
-        end_lat: destination.lat,
-        end_lng: destination.lng,
-        start_lat: origin.lat,
-        start_lng: origin.lng,
-      }
-    })
-    .then((res) => {
-      this.setState({
-        directions: res.data[0],
-        render: 'directions',
-      });
-    });
-  }
-
-
 
   renderDetails() {
     let {directions, render, restaurant} = this.props;
@@ -98,40 +115,42 @@ class App extends React.Component {
   }
 
   handleButtonClick(restaurant) {
-    let { restaurants } = this.state;
+    let { restaurants } = this.props;
 
     let idx = restaurants.findIndex(element => element.description === restaurant.description);
     let restaurantToDelete = restaurants[idx];
+    // restaurants.splice(idx, 1);
 
-    restaurants.splice(idx, 1);
+    this.props.deleteRestaurant(restaurantToDelete._id);
+    // this.props.updateRestaurantList(restaurants);
 
-    axios.delete('/delete', {
-      params:{
-        _id: restaurantToDelete._id,
-      },
-    })
-    .then((res) => {
-      console.log('OK');
-    }); 
+    // axios.delete('/delete', {
+    //   params:{
+    //     _id: restaurantToDelete._id,
+    //   },
+    // })
+    // .then((res) => {
+    //   console.log('OK');
+    // }); 
 
-    this.setState({
-      restaurants,
-    });
+    // this.setState({
+    //   restaurants,
+    // });
   }
 
   handleRestaurantListItemClick(restaurant) {
     // Hardcoded origin position 
-
     let currentPosition = {
       lat: 37.787484,
       lng: -122.396397,
     };
 
-    this.updateDestination(restaurant.coordinates, currentPosition);
+    debugger;
+    this.props.fetchDirections(restaurant.coordinates, currentPosition);
+    this.props.changeRender('directions');
+    console.log(this.props);
 
-    this.setState({
-      destination: restaurant.coordinates,
-    });
+    this.props.updateDestination(restaurant.coordinates);
   }
 
   render() {
@@ -144,11 +163,7 @@ class App extends React.Component {
         </div>
         <div id="main">
           <div id="left">
-          {/*TODO: Refactor to redux */}
-            <Map 
-            locations={locations} 
-            updateDestination={this.updateDestination} 
-            destination={destination}/>
+            <Map />
           </div>
           <div id="right">
             <List 
