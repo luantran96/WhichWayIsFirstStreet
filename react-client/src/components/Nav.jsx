@@ -69,12 +69,26 @@ class Nav extends React.Component {
               results={results}
               />
             </div>
-            <div id="login">
+            <div 
+            id="login"
+            onClick={() => this.props.showModal(true)}
+            >
               SIGN IN
             </div>
           </div>
         );
     }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    showModal: (bool) => {
+      dispatch({
+        type: 'SHOW_MODAL',
+        payload: bool,
+      })
+    }
+  }
 }
 
 const wrappedNav = connect((store) => {
@@ -84,6 +98,6 @@ const wrappedNav = connect((store) => {
     searchResults: store.nav.searchResults,
     value: store.nav.value, 
   };
-})(Nav);
+}, mapDispatchToProps)(Nav);
 
 export default wrappedNav;

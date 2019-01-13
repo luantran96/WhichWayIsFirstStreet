@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Rating, Item, Form, TextArea } from 'semantic-ui-react'
+import { Table, Rating, Item, Form, TextArea, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 
 
@@ -48,7 +48,8 @@ const RestaurantInfo = ({restaurant}) => {
         <div className="descriptionContent">
           <div className="details">
           <Form id="noteForm">
-            <TextArea placeholder='Tell us more' style={{ minHeight: 250 }} />
+            <TextArea style={{ minHeight: 200, maxHeight: 200 }} placeholder='What was good here ?' />
+            <Button id= "saveButton" color='red'>Save</Button>
           </Form>
           </div>
           <div className="hours">

@@ -8,9 +8,17 @@ let reducer = (state = {
   locations: [],
   restaurantToAdd: undefined,
   render: 'directions',
+  isOpen: false,
 }, action) => {
 
   switch (action.type) {
+
+    case 'SHOW_MODAL': {
+      return {
+        ...state,
+        isOpen : action.payload,
+      }
+    }
 
     case 'UPDATE_RESTAURANTS_LIST': {
       return {

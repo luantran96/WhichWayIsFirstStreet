@@ -61,7 +61,7 @@ let reducer = (state = {
         ...state,
         markers,
       }
-      
+
 
     }
 
@@ -111,7 +111,7 @@ let reducer = (state = {
         locations,
         infoWindows
       }
-      
+
     }
 
   }

@@ -81,6 +81,10 @@ h1#title {
     font-size:25px;
 }
 
+.login {
+    margin: 0 10px 0 10px;
+}
+
 #right {
     border-width: 2px 0px 0px 1px;
     border-style: solid;
@@ -104,6 +108,20 @@ h1#title {
     width: 100%;
 }
 
+.loginModal {
+    position: fixed;
+    background-color: white;
+    top: 300px;
+    left: 35%;
+    height: 300px;
+    width: 30%;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+#saveButton {
+    margin: 10px 10px 10px 0px;
+}
+
 .ui.items>.list-item>.image>img {
     height: 150px;
     width: 165px;
@@ -120,6 +138,11 @@ h1#title {
     position: absolute;
     top: -6px;
     left: 130px;
+}
+
+.ui.items>.item>.restaurantInfoContent>.description{  
+    /* margin-top: 40px; */
+    border: 1px solid red;
 }
 
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent{  
@@ -176,7 +199,7 @@ width: 80px;
     width: 19.5%;
     /* margin-left: 35%; */
     margin-top: -80px; /* Fix this later*/
-    /* border: 1px solid green; */
+    border: 1px solid green;
     padding-right: 25px;
 }
 .ui.table td, .ui.table th {

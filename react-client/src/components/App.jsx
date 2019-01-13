@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-
+import { Form, Button } from 'semantic-ui-react';
+import Modal from 'react-modal';
 import Nav from './Nav.jsx';
 import Map from './Map.jsx';
 import List from './List.jsx';
@@ -20,11 +20,18 @@ const mapStateToProps = (state) => {
     render: state.app.render,
     restaurant: state.restaurantInfo.restaurant,
     locations: state.app.locations,
+    isOpen: state.app.isOpen,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    showModal: (bool) => {
+      dispatch({
+        type: 'SHOW_MODAL',
+        payload: bool,
+      })
+    },
     removeMarkerFromMap: (idx) => {
       dispatch({
         type: 'REMOVE_MARKER',
@@ -147,10 +154,34 @@ class App extends React.Component {
   }
 
   render() {
-    let { locations, directions, destination } = this.props;
+    let { locations, directions, destination, isOpen, showModal } = this.props;
+
+    console.log('showModal: ', showModal);
 
     return (  
       <div id="body">
+       <Modal
+          isOpen={isOpen}
+          onRequestClose={() => showModal(false)}
+          contentLabel="Login Window"
+          ariaHideApp={false}
+          className="loginModal"
+        >
+          <Form className= "login">
+            <Form.Field>
+              <label>Username</label>
+              <input placeholder='Username' />
+            </Form.Field>
+            <Form.Field>
+              <label>Password</label>
+              <input type="password" placeholder='Password' />
+            </Form.Field>
+
+            <Button color='blue' type='submit'>Submit</Button>
+          </Form>
+
+        </Modal>
+        
         <div>
           <Nav />
         </div>
