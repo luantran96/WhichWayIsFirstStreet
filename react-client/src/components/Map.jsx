@@ -87,7 +87,6 @@ class Map extends Component {
     let calculateAndDisplayRoute = this.calculateAndDisplayRoute;
     let newLocations = this.props.locations;
     let isChanged = false;
- 
 
     if (prevProps.destination) {
       if (prevProps.destination.lat !== this.props.destination.lat && prevProps.destination.lng !== this.props.destination.lng) {
@@ -110,14 +109,14 @@ class Map extends Component {
       this.props.deleteMarkers();
 
       // Create an array of alphabetical characters used to label the markers.
-      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       let newInfoWindows = {};
       var markers = [];
 
+      debugger;
       newLocations.forEach((location, i) => {
         var newMarker = new google.maps.Marker({ 
           position: location.coordinates,
-          label: labels[i % labels.length]
+          map,
         });
 
         newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
@@ -139,12 +138,6 @@ class Map extends Component {
 
         markers.push(newMarker);
       });
-
-      // Add a marker clusterer to manage the markers.
-      var markerCluster = new MarkerClusterer(map, markers, {
-      imagePath:'./googleMaps/images/',
-      });
-
 
       this.props.updateMap(newLocations, markers, newInfoWindows);
 

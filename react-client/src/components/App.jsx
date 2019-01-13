@@ -25,6 +25,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    removeMarkerFromMap: (idx) => {
+      dispatch({
+        type: 'REMOVE_MARKER',
+        payload: idx
+      })
+    },
     updateRestaurantList: (restaurants) => {
       dispatch({
         type: 'UPDATE_RESTAURANTS_LIST',
@@ -119,23 +125,10 @@ class App extends React.Component {
 
     let idx = restaurants.findIndex(element => element.description === restaurant.description);
     let restaurantToDelete = restaurants[idx];
-    // restaurants.splice(idx, 1);
 
     this.props.deleteRestaurant(restaurantToDelete._id);
-    // this.props.updateRestaurantList(restaurants);
+    this.props.removeMarkerFromMap(idx);
 
-    // axios.delete('/delete', {
-    //   params:{
-    //     _id: restaurantToDelete._id,
-    //   },
-    // })
-    // .then((res) => {
-    //   console.log('OK');
-    // }); 
-
-    // this.setState({
-    //   restaurants,
-    // });
   }
 
   handleRestaurantListItemClick(restaurant) {

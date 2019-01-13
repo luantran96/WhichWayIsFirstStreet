@@ -25,7 +25,7 @@ let reducer = (state = {
             
       const map = new window.google.maps.Map(document.getElementById('map'), {
         center: currentPosition,
-        zoom: 11
+        zoom: 10
       });
     
       directionsDisplay.setMap(map);
@@ -51,9 +51,22 @@ let reducer = (state = {
         destination: action.payload,
       }
     }
+    case 'REMOVE_MARKER': {
+      const {  markers } = state;
+      let idx = action.payload;
+      markers[idx].setMap(null);
+      markers.splice(idx, 1);
+
+      return {
+        ...state,
+        markers,
+      }
+      
+
+    }
 
     case 'DELETE_MARKERS': {
-      const { map, markers } = state;
+      const {  markers } = state;
 
       markers.forEach(marker => {
         marker.setMap(null);
@@ -62,7 +75,7 @@ let reducer = (state = {
       return {
         ...state,
         locations: [],
-        markers,
+        markers : [],
       }
     }
 
@@ -98,7 +111,7 @@ let reducer = (state = {
         locations,
         infoWindows
       }
-      break;
+      
     }
 
   }
