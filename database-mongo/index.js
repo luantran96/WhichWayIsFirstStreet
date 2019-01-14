@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+// mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/restaurants');
 
 var db = mongoose.connection;
 
@@ -17,7 +18,7 @@ var itemSchema = mongoose.Schema({
   description: String,
   image: String,
   is_closed: Boolean,
-  price: String,
+  price: String,  
   title: String,
   coordinates: Object,
   hours: Object,
