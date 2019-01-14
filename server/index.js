@@ -7,14 +7,23 @@ var https = require('https');
 var fs = require('fs');
 var path = require('path');
 var API = require('./../react-client/src/API.js');
-
+var passport = require('passport');
+var cookieParser = require('cookie-parser');
 
 var items = require('../database-mongo');
 
+// Init App
 var app = express();
 app.use(express.static(__dirname + '/../react-client/dist'));
+
+// Setup cors headers
 app.use(cors());
-app.use(bodyParser.json());
+
+// Parse cookies and other info into body
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Log requests to console
 app.use(morgan('tiny'));
 
 app.get('/selectAll', (req, res) => {

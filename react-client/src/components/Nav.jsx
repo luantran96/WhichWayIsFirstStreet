@@ -14,41 +14,24 @@ class Nav extends React.Component {
       }
     
     updateRestaurants(e, { result }) {
-      console.log('selected restaurant:', result);
       const { dispatch } = this.props;
 
-      dispatch({type: 'ADD_RESTAURANT_TO_DB', 
-      payload: axios.post('/add', 
-        {
-          id: result.yelpId,
-          result,
-        }),
-      });
-    
+      this.props.addRestaurant(result);
     }
 
     handleSearchChange(e, { value }) {
       let {dispatch} = this.props;
       
-      dispatch({type: 'START_SEARCH', payload: value});
+      this.props.handleInputValue(value);
 
       let search_value = this.props.value;
 
       if (search_value.length < 1) {
-        dispatch({type: 'RESET_RESULTS'});
+        this.props.resetSearchResults();
       }
      
     setTimeout(() => { 
-      dispatch({
-        type: 'SEARCH_RESTAURANTS',
-        payload: axios.get('/search',
-          {
-            params: {
-              name: search_value,
-            }
-          }
-        ),
-      });
+      this.props.searchRestaurants(search_value);
     }, 50);
     
     }
@@ -82,6 +65,38 @@ class Nav extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    addRestaurant: (result) => {
+      dispatch({type: 'ADD_RESTAURANT_TO_DB', 
+      payload: axios.post('/add', 
+        {
+          id: result.yelpId,
+          result,
+        }),
+      });      
+    },
+    resetSearchResults: () => {
+      dispatch({
+        type: 'RESET_RESULTS'
+      })
+    },   
+    handleInputValue: (value) => {
+      dispatch({
+        type: 'START_SEARCH',
+        payload: value,
+      })
+    },
+    searchRestaurants: (value) => {
+      dispatch({
+        type: 'SEARCH_RESTAURANTS',
+        payload: axios.get('/search',
+        {
+          params: {
+            name: value,
+          }
+        }
+      ),
+      })
+    },
     showModal: (bool) => {
       dispatch({
         type: 'SHOW_MODAL',
