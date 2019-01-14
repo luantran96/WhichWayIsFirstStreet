@@ -1,84 +1,102 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+import { connect } from 'react-redux';
 import MarkerClusterer from '@google/markerclusterer';
+import axios from 'axios';
+
+let mapStateToProps = (state) => {
+  return {
+    directionsService: state.map.directionsService,
+    directionsDisplay: state.map.directionsDisplay,
+    locations: state.app.locations,
+    currentPosition: state.map.currentPosition,
+    map: state.map.map,
+    markers: state.map.markers,
+    infoWindows: state.map.infoWindows,
+    destination: state.map.destination,    
+  }
+};
+
+let mapDispatchToProps = (dispatch) => {
+  return {
+    init: () => 
+      dispatch({
+        type: 'INIT_MAP'
+      }),
+    deleteMarkers: () => 
+      dispatch({
+        type: 'DELETE_MARKERS'
+      }),
+    displayRoute: (marker, passedDestination = null) => 
+      dispatch({
+        type: 'DISPLAY_ROUTE',
+        payload: {
+          marker,
+          passedDestination,
+        }
+      }),
+    updateOrigin: (coordinates) => {
+      dispatch({
+        type: 'UPDATE_ORIGIN',
+        payload: coordinates,
+      })
+    },
+    updateDestination: (coordinates) => {
+      dispatch({
+        type: 'UPDATE_DESTINATION',
+        payload: coordinates,
+      })
+    },
+    fetchDirections: (origin, destination) =>
+    dispatch({
+      type: 'FETCH_DIRECTIONS',
+      payload:  axios.get('/getRoutes', {
+        params: {
+          end_lat: destination.lat,
+          end_lng: destination.lng,
+          start_lat: origin.lat,
+          start_lng: origin.lng,
+        }
+      })
+    }),
+    updateMap: (locations, markers, infoWindows) => 
+      dispatch({
+        type: 'UPDATE_MAP',
+        payload: {
+          locations,
+          markers,
+          infoWindows
+        }
+    }),
+  }
+}
 
 class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      currentPosition: {},
-      locations: this.props.locations,
-      map: undefined,
-      markers: [],
-      infoWindows: {},
-      destination: this.props.destination,
-    };
 
-  this.deleteMarkers = this.deleteMarkers.bind(this);
   this.calculateAndDisplayRoute = this.calculateAndDisplayRoute.bind(this);
   }
 
   componentDidMount() {
-    const { locations } = this.state;
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-
-      let currentPosition = {
-        lat: 37.787484,
-        lng: -122.396397,
-      };
-          
-      const map = new window.google.maps.Map(document.getElementById('map'), {
-        center: currentPosition,
-        zoom: 11
-      });
-  
-      directionsDisplay.setMap(map);
-
-      this.setState({
-        map,
-        currentPosition,
-        directionsService,
-        directionsDisplay,
-      });
-  }
-
-  deleteMarkers() {
-  const { map, markers } = this.state;
-
-  
-  markers.forEach(marker => {
-    marker.setMap(null);
-  });
-  
-    this.setState({
-      locations: [],
-      markers,
-    });
+    this.props.init();
   }
 
   componentDidUpdate(prevProps) {
-    let { map, directionsDisplay, directionsService } = this.state;
+    let { map, directionsDisplay, directionsService } = this.props;
     let calculateAndDisplayRoute = this.calculateAndDisplayRoute;
     let newLocations = this.props.locations;
     let isChanged = false;
 
     if (prevProps.destination) {
       if (prevProps.destination.lat !== this.props.destination.lat && prevProps.destination.lng !== this.props.destination.lng) {
-        calculateAndDisplayRoute(directionsService, directionsDisplay, null, this.props.destination);
-
-        this.setState({
-          destination: this.props.destination,
-        });
+        calculateAndDisplayRoute(null, this.props.destination);
       } 
     } else if (this.props.destination) {
-      calculateAndDisplayRoute(directionsService, directionsDisplay, null, this.props.destination);
-
-      this.setState({
-        destination: this.props.destination,
-      });     
+      calculateAndDisplayRoute(null, this.props.destination);     
     }
+
+    this.props.updateDestination(this.props.destination);
 
     newLocations.forEach((location, i) => {
       if(!prevProps.locations[i] || location.coordinates.lat !== prevProps.locations[i].coordinates.lat && location.coordinates.lng !== prevProps.locations[i].coordinates.lng) {
@@ -88,17 +106,17 @@ class Map extends Component {
 
     if (isChanged) {
       // Delete all markers on map
-      this.deleteMarkers();
+      this.props.deleteMarkers();
 
       // Create an array of alphabetical characters used to label the markers.
-      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       let newInfoWindows = {};
       var markers = [];
 
+      debugger;
       newLocations.forEach((location, i) => {
         var newMarker = new google.maps.Marker({ 
           position: location.coordinates,
-          label: labels[i % labels.length]
+          map,
         });
 
         newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
@@ -115,31 +133,30 @@ class Map extends Component {
         });
 
         google.maps.event.addListener(newMarker, 'click', function() {
-          calculateAndDisplayRoute(directionsService, directionsDisplay, this);
+          calculateAndDisplayRoute(this);
         });
 
         markers.push(newMarker);
       });
 
-      // Add a marker clusterer to manage the markers.
-      var markerCluster = new MarkerClusterer(map, markers, {
-      imagePath:'./googleMaps/images/',
-      });
+      this.props.updateMap(newLocations, markers, newInfoWindows);
 
-      this.setState({
-        locations: newLocations,
-        markers,
-        infoWindows: newInfoWindows,
-      });
+      // this.setState({
+      //   locations: newLocations,
+      //   markers,
+      //   infoWindows: newInfoWindows,
+      // });
 
     }
   }
 
-  calculateAndDisplayRoute(directionsService, directionsDisplay, marker, passedDestination = null) {
-    this.deleteMarkers();
-    const {map, currentPosition} = this.state;
+  calculateAndDisplayRoute( marker, passedDestination = null ) {
+
+    this.props.deleteMarkers();
+    const { currentPosition } = this.props;
     
-    let origin = new google.maps.LatLng(currentPosition.lat, currentPosition.lng);
+    this.props.updateOrigin(new google.maps.LatLng(currentPosition.lat, currentPosition.lng));
+
     let destination;
 
     if (marker) {
@@ -150,25 +167,16 @@ class Map extends Component {
       destination = new google.maps.LatLng(passedDestination.lat, passedDestination.lng);
     }
 
+    this.props.updateDestination(destination);
+
     console.log('LatLng object:', destination);
 
-    this.props.updateDestination({
+    this.props.fetchDirections({
       lat : destination.lat(),
       lng: destination.lng(),
-    },currentPosition);
+    }, currentPosition);
 
-    directionsService.route({
-      origin,
-      destination, 
-      travelMode: 'DRIVING'
-    }, function(response, status) {
-      if (status === 'OK') {
-        console.log('OK');
-        directionsDisplay.setDirections(response);
-      } else {
-        window.alert('Directions request failed due to ' + status);
-      }
-    });
+    this.props.displayRoute(marker, destination);
   }
 
   render() {
@@ -178,4 +186,7 @@ class Map extends Component {
   }
 }
 
-export default Map;
+
+  let wrappedMap =  connect(mapStateToProps, mapDispatchToProps)(Map);
+
+export default wrappedMap;

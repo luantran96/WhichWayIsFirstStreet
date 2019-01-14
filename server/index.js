@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var request = require('request');
+var morgan = require('morgan');
 var https = require('https');
 var fs = require('fs');
 var path = require('path');
@@ -14,6 +15,7 @@ var app = express();
 app.use(express.static(__dirname + '/../react-client/dist'));
 app.use(cors());
 app.use(bodyParser.json());
+app.use(morgan('tiny'));
 
 app.get('/selectAll', (req, res) => {
   items.selectAll((err, items) => {
@@ -64,14 +66,33 @@ app.get('/getHours', (req, res) => {
 });
 
 app.post('/add', (req, res) => {
-  const {result} = req.body;
-  items.Add(result, (item) => {
-    
-    console.log('item added: ', item);
-    res.end('OK');
-  });
-});
+  const {result, id} = req.body;
 
+  var options = {
+    url:`https://api.yelp.com/v3/businesses/${id}`,
+    headers: {
+      'Authorization': `Bearer ${API.YELP}`,
+    },
+  };
+
+  request(options, (err, response, body) => {
+    if (!err && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      console.log('info: ', info.hours[0].open);
+      let hours = info.hours[0].open;
+      console.log('hours: ', hours);
+      result.hours = hours;
+      items.Add(result, (item) => { 
+        console.log('item added: ', item);
+        items.selectAll((err, items) => {
+          res.json(items);
+        });
+      });
+    } 
+  });
+
+});
+ 
 app.get('/search', (req, res) => {
   const { name } = req.query;
   const latitude = 37.691109;
@@ -96,7 +117,9 @@ app.get('/search', (req, res) => {
 app.delete('/delete', (req, res) => {
     const { _id } = req.query;
     items.deleteOne(_id, (item) => {
-      res.end();
+      items.selectAll((err, items) => {
+        res.json(items);
+      });
     });
 });
 
@@ -151,11 +174,6 @@ app.get('/deleteAll', (req, res) => {
   });
 });
 
-// https.createServer({
-//   key: fs.readFileSync('server/server.key'),
-//   cert: fs.readFileSync('server/server.cert'),
-// }, app)
-//   .listen(3000, () => console.log('listening on port 3000!'));
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');
