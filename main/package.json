@@ -1,0 +1,50 @@
+{
+  "name": "github-fetcher-fullstack-v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack -d --watch",
+    "start": "nodemon server/index.js"
+  },
+  "author": "Luan Tran",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/plugin-proposal-decorators": "^7.2.3",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "@google/markerclusterer": "^1.0.3",
+    "axios": "^0.18.0",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.15.0",
+    "jquery": "^3.1.1",
+    "moment": "^2.22.2",
+    "mongoose": "^4.8.6",
+    "morgan": "^1.9.1",
+    "mysql": "^2.13.0",
+    "passport": "^0.4.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-markdown": "^4.0.4",
+    "react-modal": "^3.8.1",
+    "react-paginate": "^6.0.0",
+    "react-redux": "^6.0.0",
+    "react-responsive-carousel": "^3.1.43",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-promise-middleware": "^5.1.1",
+    "redux-thunk": "^2.3.0",
+    "request": "^2.88.0",
+    "semantic-ui-react": "^0.83.0"
+  }
+}
