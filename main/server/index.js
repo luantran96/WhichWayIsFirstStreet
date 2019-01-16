@@ -27,6 +27,7 @@ app.use(cookieParser());
 app.use(morgan('tiny'));
 
 app.get('/', (req, res) => {
+  // res.redirect('/login');
   res.sendFile(path.join(__dirname, '/../react-client/dist/dashboard.html'));
 })
 

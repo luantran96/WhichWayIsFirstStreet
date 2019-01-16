@@ -112,7 +112,6 @@ class Map extends Component {
       let newInfoWindows = {};
       var markers = [];
 
-      debugger;
       newLocations.forEach((location, i) => {
         var newMarker = new google.maps.Marker({ 
           position: location.coordinates,

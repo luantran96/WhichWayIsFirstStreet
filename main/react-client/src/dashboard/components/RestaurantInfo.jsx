@@ -1,4 +1,5 @@
 import React from 'react';
+import convertTime from 'convert-time';
 import { Table, Rating, Item, Form, TextArea, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 
@@ -30,9 +31,11 @@ const RestaurantInfo = ({restaurant}) => {
   }
 
   restaurant.hours[0].open.map((day) => {
-    let hour = `${day.start} - ${day.end}`;
+    let hour = `${convertTime(day.start.slice(0,2) + ':' + day.start.slice(2))} - ${convertTime(day.end.slice(0,2) + ':' + day.end.slice(2))}`;
     hours[day.day].push(hour);
   });
+
+  console.log(`${d.getHours() + ':' + d.getMinutes()}`);
 
   return (
     <div>
@@ -90,7 +93,7 @@ const RestaurantInfo = ({restaurant}) => {
               <span className='labels'>Contact:</span> {`${restaurant.display_phone}`}
             </div>
             <div>
-              <span className='ratings'><Rating icon='star' size='huge' rating={restaurant.rating} maxRating={5}/></span>
+              <span className='ratings'><Rating icon='star' size='huge' rating={restaurant.rating} maxRating={5} disabled /></span>
             </div>
             <div>
               <span className='labels'>Reviews: </span> {`${restaurant.review_count}`}
@@ -102,9 +105,9 @@ const RestaurantInfo = ({restaurant}) => {
   )
 };
 
-const mapStateToProps = (store) => {
+const mapStateToProps = (state) => {
   return {
-    restaurant: store.restaurantInfo.restaurant,
+    restaurant: state.restaurantInfo.restaurant,
   }
 };
 

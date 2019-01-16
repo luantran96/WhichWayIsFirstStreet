@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item, Button } from 'semantic-ui-react';
+import { Item, Button, Rating } from 'semantic-ui-react';
 
 const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick, showDetails}) => (
   <div>
@@ -14,7 +14,7 @@ const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick,
             <Item.Header>{restaurant.title}</Item.Header>
             <Item.Meta>{restaurant.description}</Item.Meta>
             <Item.Description>
-               {`Today's hours: ${restaurant.hours.start} to ${restaurant.hours.end}`}
+              <span className='ratings'><Rating icon='star' size='large' rating={restaurant.rating} maxRating={5} disabled /></span>
             </Item.Description> 
             <Item.Extra>{restaurant.price} 
               <Button.Group>

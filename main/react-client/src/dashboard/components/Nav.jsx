@@ -57,7 +57,8 @@ class Nav extends React.Component {
             id="login"
             onClick={() => this.props.showModal(true)}
             >
-              <Link to='/login'>SIGN IN</Link>
+              <a href='/login'>SIGN IN</a>
+              {/* <Link to='/login'>SIGN IN</Link> */}
             </div>
           </div>
         );
