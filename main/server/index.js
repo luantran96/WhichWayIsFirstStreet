@@ -84,7 +84,7 @@ app.get('/getHours', (req, res) => {
 });
 
 app.post('/add', (req, res) => {
-  const {result, id} = req.body;
+  const { result, id } = req.body;
 
   var options = {
     url:`https://api.yelp.com/v3/businesses/${id}`,
@@ -110,6 +110,9 @@ app.post('/add', (req, res) => {
   });
 });
 
+app.post('/login', (req, res) => {
+
+});
  
 app.get('/search', (req, res) => {
   const { name } = req.query;
