@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addRestaurant: (result) => {
       dispatch({type: 'ADD_RESTAURANT_TO_DB', 
-      payload: axios.post('/add', 
+      payload: axios.post('restaurants/add', 
         {
           id: result.yelpId,
           result,

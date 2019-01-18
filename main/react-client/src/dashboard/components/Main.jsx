@@ -33,7 +33,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     deleteRestaurant: _id => dispatch({
       type: 'DELETE_RESTAURANT',
-      payload: axios.delete('/delete', {
+      payload: axios.delete('restaurants/delete', {
         params: {
           _id,
         },
@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
     }),
     fetchRestaurants: () => dispatch({
       type: 'FETCH_RESTAURANTS',
-      payload: axios.get('/selectAll'),
+      payload: axios.get('restaurants/selectAll'),
     }),
 
     getRestaurantInfo: yelpId => dispatch({

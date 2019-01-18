@@ -96,10 +96,11 @@ User.hasMany(Restaurant, {
   as: 'Restaurants',
   foreignKey: 'userId',
 });
+// {force : true}
 
-User.sync({ force: true })
+User.sync()
   .then(() => {
-    Restaurant.sync({ force: true });
+    Restaurant.sync();
   });
 
 module.exports = {
