@@ -85,6 +85,8 @@ class Main extends React.Component {
     this.showDetails = this.showDetails.bind(this);
   }
 
+  //TODO: store restaurant info locally
+
   componentDidMount() { 
     const { fetchRestaurants } = this.props;
     

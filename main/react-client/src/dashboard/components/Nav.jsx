@@ -43,22 +43,20 @@ class Nav extends React.Component {
           <div id="nav-bar">
             <div>
               <Search
-              fluid
-              id="search"
-              loading={isLoading}
-              onResultSelect={this.updateRestaurants}
-              placeholder="Search"
-              onSearchChange={_.debounce(this.handleSearchChange, 50, { leading: false })}
-              value={value}
-              results={results}
+                fluid
+                id="search"
+                loading={isLoading}
+                onResultSelect={this.updateRestaurants}
+                placeholder="Search"
+                onSearchChange={_.debounce(this.handleSearchChange, 50, { leading: false })}
+                value={value}
+                results={results}
               />
             </div>
             <div 
             id="login"
-            onClick={() => this.props.showModal(true)}
             >
               <a href='/login'>SIGN IN</a>
-              {/* <Link to='/login'>SIGN IN</Link> */}
             </div>
           </div>
         );
@@ -78,7 +76,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     resetSearchResults: () => {
       dispatch({
-        type: 'RESET_RESULTS'
+        type: 'RESET_RESULTS',
       })
     },   
     handleInputValue: (value) => {
@@ -113,7 +111,7 @@ const wrappedNav = connect((store) => {
     isLoading: store.nav.isLoading,
     results: store.nav.results,
     searchResults: store.nav.searchResults,
-    value: store.nav.value, 
+    value: store.nav.value,
   };
 }, mapDispatchToProps)(Nav);
 
