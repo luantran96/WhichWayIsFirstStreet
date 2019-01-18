@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm i --prefix main"
+    "start": "npm i --prefix main && npm run build --prefix main"
   },
   "author": "",
   "license": "ISC"
