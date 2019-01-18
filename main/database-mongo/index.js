@@ -1,6 +1,11 @@
 var mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/test');
-mongoose.connect('mongodb://localhost/restaurants');
+// id: luan
+// pass: bananaPeel5
+let dbuser = 'luan';
+let dbpass = 'bananaPeel5';
+
+mongoose.connect(`mongodb://${dbuser}:${dbpass}@ds121834.mlab.com:21834/heroku_2z1pwwqc`);
 
 var db = mongoose.connection;
 
