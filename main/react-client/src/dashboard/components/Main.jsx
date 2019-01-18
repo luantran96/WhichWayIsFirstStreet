@@ -173,4 +173,3 @@ Main.propTypes = {
 const wrappedMain = connect(mapStateToProps, mapDispatchToProps)(Main);
 
 export default wrappedMain;
-
