@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node main/server/index.js",
-    "heroku-postbuild": "npm install --prefix main && npm run build --prefix main"
+    "heroku-postbuild": "npm install --production --prefix main && npm run build --prefix main"
   },
   "author": "",
   "license": "ISC"
