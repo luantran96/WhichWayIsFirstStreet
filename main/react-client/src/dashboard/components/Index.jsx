@@ -2,7 +2,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore} from 'redux';    
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { createLogger } from 'redux-logger';
-import React from 'React';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
