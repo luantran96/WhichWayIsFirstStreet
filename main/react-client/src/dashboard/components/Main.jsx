@@ -89,7 +89,6 @@ class Main extends React.Component {
 
   componentDidMount() { 
     const { fetchRestaurants } = this.props;
-    
     fetchRestaurants();
   }
 

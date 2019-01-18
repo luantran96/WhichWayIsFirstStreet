@@ -19,10 +19,10 @@ module.exports = {
         test : /\.jsx?/,
         include : [DASHBOARD_SRC_DIR, LOGIN_SRC_DIR],
         exclude: /node_modules/,
-        loader : 'babel-loader',      
+        loader : 'babel-loader',  
         options: {
           presets: ['@babel/preset-react', '@babel/preset-env']
-       }
+      }
       },
     ]
   }

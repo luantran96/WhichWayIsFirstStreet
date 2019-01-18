@@ -9,7 +9,7 @@ const Login = () => (
   
     <div className="form-label-group">
     <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus />
-    <label htmlFor="inputEmail">Username</label>
+    <label htmlFor="inputEmail">Email</label>
   </div>
 
   <div className="form-label-group">

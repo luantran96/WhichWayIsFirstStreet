@@ -7,7 +7,7 @@ const path = require('path');
 const API = require('./../react-client/src/API.js');
 const cookieParser = require('cookie-parser');
 
-var items = require('../database-mongo');
+var items = require('../database-postgres/API');
 
 // Init App
 var app = express();
@@ -93,11 +93,11 @@ app.post('/add', (req, res) => {
   request(options, (err, response, body) => {
     if (!err && response.statusCode == 200) {
       var info = JSON.parse(body);
-      console.log('info: ', info.hours[0].open);
+      console.log('info: ', info);
       let hours = info.hours[0].open;
       console.log('hours: ', hours);
-      result.hours = hours;
-      items.Add(result, (item) => { 
+      // info.hours = hours;
+      items.Add(info, (item) => { 
         console.log('item added: ', item);
         items.selectAll((err, items) => {
           res.json(items);
