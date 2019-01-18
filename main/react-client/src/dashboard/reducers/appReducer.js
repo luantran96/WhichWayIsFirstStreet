@@ -39,6 +39,7 @@ let reducer = (state = {
 
       let locations = restaurants.map(restaurant => {
         return {
+          yelpId: restaurant.yelpId,
           coordinates: restaurant.coordinates,
           title: restaurant.title,
         };
@@ -57,6 +58,7 @@ let reducer = (state = {
 
       let locations = restaurants.map(restaurant => {
         return {
+          yelpId: restaurant.yelpId,
           coordinates: restaurant.coordinates,
           title: restaurant.title,
         };
