@@ -13,9 +13,9 @@ import Login from './../../login/components/Login.jsx';
 
 const middleware = applyMiddleware(promise(), thunk, createLogger());
 const store = createStore(
-    reducers, 
-    middleware,
-    );
+  reducers,
+  middleware
+);
 
 ReactDOM.render( 
     <BrowserRouter>

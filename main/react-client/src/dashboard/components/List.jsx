@@ -26,12 +26,13 @@ const List = ({restaurants, handleRestaurantListItemClick, handleButtonClick, sh
     </nav>
 
       <div>
-      {restaurants.map(restaurant => 
+      {restaurants.map((restaurant, idx) => 
         <ListItem 
         restaurant={restaurant} 
         handleRestaurantListItemClick={handleRestaurantListItemClick}
         handleButtonClick={handleButtonClick} 
         showDetails={showDetails}
+        idx = {idx}
         />)
       }
       </div>

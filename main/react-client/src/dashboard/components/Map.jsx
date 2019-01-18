@@ -109,18 +109,25 @@ class Map extends Component {
       this.props.deleteMarkers();
 
       // Create an array of alphabetical characters used to label the markers.
+      var label = 0;
       let newInfoWindows = {};
       var markers = [];
 
+      console.log('newLocations: ==> ', newLocations);
+
       newLocations.forEach((location, i) => {
-        var newMarker = new google.maps.Marker({ 
+
+        label += 1;
+
+        const newMarker = new google.maps.Marker({
           position: location.coordinates,
           map,
+          label : label.toString(),
         });
 
         newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
           content: location.title,
-          map: map,
+          map,
         });
       
         google.maps.event.addListener(newMarker, 'mouseover', function() {
@@ -138,13 +145,9 @@ class Map extends Component {
         markers.push(newMarker);
       });
 
-      this.props.updateMap(newLocations, markers, newInfoWindows);
+      console.log('newInfoWindows: ', newInfoWindows);
 
-      // this.setState({
-      //   locations: newLocations,
-      //   markers,
-      //   infoWindows: newInfoWindows,
-      // });
+      this.props.updateMap(newLocations, markers, newInfoWindows);
 
     }
   }

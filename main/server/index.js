@@ -1,14 +1,11 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var cors = require('cors');
-var request = require('request');
-var morgan = require('morgan');
-var https = require('https');
-var fs = require('fs');
-var path = require('path');
-var API = require('./../react-client/src/API.js');
-var passport = require('passport');
-var cookieParser = require('cookie-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const request = require('request');
+const morgan = require('morgan');
+const path = require('path');
+const API = require('./../react-client/src/API.js');
+const cookieParser = require('cookie-parser');
 
 var items = require('../database-mongo');
 
