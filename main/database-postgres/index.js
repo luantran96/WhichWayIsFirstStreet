@@ -64,7 +64,7 @@ const Restaurant = sequelize.define('restaurant', {
     type: Sequelize.INTEGER,
   },
   categories: {
-    type: Sequelize.ARRAY(Sequelize.TEXT),
+    type: Sequelize.ARRAY(Sequelize.JSON),
   },
   rating: {
     type: Sequelize.DECIMAL,
@@ -73,16 +73,16 @@ const Restaurant = sequelize.define('restaurant', {
     type: Sequelize.STRING,
   },
   coordinates: {
-    type: Sequelize.ARRAY(Sequelize.TEXT),
+    type: Sequelize.JSON,
   },
   photos: {
-    type: Sequelize.STRING,
+    type: Sequelize.ARRAY(Sequelize.TEXT),
   },
   price: {
     type: Sequelize.TEXT,
   },
   hours: {
-    type: Sequelize.ARRAY(Sequelize.TEXT),
+    type: Sequelize.ARRAY(Sequelize.JSON),
   },
   notes: {
     type: Sequelize.STRING,

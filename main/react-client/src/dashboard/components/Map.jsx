@@ -85,17 +85,10 @@ class Map extends Component {
 
   componentDidUpdate(prevProps) {
     let { map, directionsDisplay, directionsService, deleteMarkers, changeRender, getRestaurantInfo, updateMap } = this.props;
-    let calculateAndDisplayRoute = this.calculateAndDisplayRoute;
     let newLocations = this.props.locations;
     let isChanged = false;
 
-    if (prevProps.destination) {
-      if (prevProps.destination.lat !== this.props.destination.lat && prevProps.destination.lng !== this.props.destination.lng) {
-        calculateAndDisplayRoute(null, this.props.destination);
-      } 
-    } else if (this.props.destination) {
-      calculateAndDisplayRoute(null, this.props.destination);     
-    }
+    debugger;
 
     this.props.updateDestination(this.props.destination);
 
@@ -116,18 +109,20 @@ class Map extends Component {
 
       console.log('newLocations: ==> ', newLocations);
 
-      newLocations.forEach((location, i) => {
-
+      newLocations.forEach((location) => {
         label += 1;
 
         const newMarker = new google.maps.Marker({
-          position: location.coordinates,
+          position: {
+            lat: location.coordinates.latitude,
+            lng: location.coordinates.longitude,
+          },
           map,
-          label : label.toString(),
+          label: label.toString(),
         });
 
         newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
-          content: location.title,
+          content: location.name,
           map,
         });
       

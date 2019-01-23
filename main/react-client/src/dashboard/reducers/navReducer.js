@@ -20,7 +20,6 @@ let reducer = (state = {
         isLoading: true,
         value: action.payload,
       }
-      break;
     }
 
     case 'RESET_RESULTS': {
@@ -28,7 +27,6 @@ let reducer = (state = {
         ...state,
         results: [],
       }
-      break;
     }
 
     case 'SEARCH_RESTAURANTS_FULFILLED': {
@@ -58,7 +56,6 @@ let reducer = (state = {
         results: entries,
         isLoading: false,
       }
-      break;
     }
   }
     return state;

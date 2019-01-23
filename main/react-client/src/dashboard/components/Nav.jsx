@@ -2,9 +2,8 @@ import _ from 'lodash';
 import React from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import { Search, Grid, Header, Segment } from 'semantic-ui-react';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -37,41 +36,40 @@ class Nav extends React.Component {
     
     }
 
-    render() {
-      const { isLoading, value, results } = this.props;
-        return (
-          <div id="nav-bar">
-            <div>
-              <Search
-                fluid
-                id="search"
-                loading={isLoading}
-                onResultSelect={this.updateRestaurants}
-                placeholder="Search"
-                onSearchChange={_.debounce(this.handleSearchChange, 50, { leading: false })}
-                value={value}
-                results={results}
-              />
-            </div>
-            <div 
-            id="login"
-            >
-              <a href='/login'>SIGN IN</a>
-            </div>
-          </div>
-        );
-    }
+  render() {
+    const { isLoading, value, results } = this.props;
+    return (
+      <div id="nav-bar">
+        <div>
+          <Search
+            fluid
+            id="search"
+            loading={isLoading}
+            onResultSelect={this.updateRestaurants}
+            placeholder="Search"
+            onSearchChange={_.debounce(this.handleSearchChange, 50, { leading: false })}
+            value={value}
+            results={results}
+          />
+        </div>
+        <div
+        id="login"
+        >
+          <a href='/login'>SIGN IN</a>
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     addRestaurant: (result) => {
       dispatch({type: 'ADD_RESTAURANT_TO_DB', 
-      payload: axios.post('restaurants/add', 
-        {
-          id: result.yelpId,
-          result,
-        }),
+        payload: axios.post('restaurants/add', 
+          {
+            id: result.yelpId,
+          }),
       });      
     },
     resetSearchResults: () => {
@@ -88,14 +86,13 @@ const mapDispatchToProps = (dispatch) => {
     searchRestaurants: (value) => {
       dispatch({
         type: 'SEARCH_RESTAURANTS',
-        payload: axios.get('/search',
-        {
-          params: {
-            name: value,
-          }
-        }
-      ),
-      })
+        payload: axios.get('restaurants/search',
+          {
+            params: {
+              name: value,
+            },
+          }),
+      });
     },
     showModal: (bool) => {
       dispatch({

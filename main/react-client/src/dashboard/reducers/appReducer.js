@@ -12,7 +12,6 @@ let reducer = (state = {
 }, action) => {
 
   switch (action.type) {
-
     case 'SHOW_MODAL': {
       return {
         ...state,
@@ -34,16 +33,14 @@ let reducer = (state = {
     }
 
     case 'DELETE_RESTAURANT_FULFILLED': {
+      const restaurants = action.payload.data;
 
-      let restaurants = action.payload.data;
-
-      let locations = restaurants.map(restaurant => {
-        return {
-          yelpId: restaurant.yelpId,
-          coordinates: restaurant.coordinates,
-          title: restaurant.title,
-        };
-      });
+      const locations = restaurants.map(restaurant => ({
+        yelpId: restaurant.yelpId,
+        coordinates: restaurant.coordinates,
+        title: restaurant.title,
+      }
+      ));
 
       return {
         ...state,
@@ -53,34 +50,30 @@ let reducer = (state = {
     }
 
     case 'FETCH_RESTAURANTS_FULFILLED': {
+      const restaurants = action.payload.data;
 
-      let restaurants = action.payload.data;
-
-      let locations = restaurants.map(restaurant => {
-        return {
-          yelpId: restaurant.yelpId,
-          coordinates: restaurant.coordinates,
-          title: restaurant.title,
-        };
-      });
+      const locations = restaurants.map(restaurant => ({
+        yelpId: restaurant.yelpId,
+        coordinates: restaurant.coordinates,
+        title: restaurant.title,
+      }
+      ));
 
       return {
-        ...state, 
+        ...state,
         restaurants,
         locations,
-      }
-      break;
+      };
     }
 
     case 'ADD_RESTAURANT_TO_DB_FULFILLED': {
-      let restaurants = action.payload.data;
+      const restaurants = action.payload.data;
 
-      let locations = restaurants.map(restaurant => {
-        return {
-          coordinates: restaurant.coordinates,
-          title: restaurant.title,
-        };
-      });
+      const locations = restaurants.map(restaurant => ({
+        coordinates: restaurant.coordinates,
+        title: restaurant.name,
+      }
+      ));
 
       return {
         ...state,
@@ -90,16 +83,17 @@ let reducer = (state = {
     }
 
     case 'FETCH_DIRECTIONS_FULFILLED': {
-      let directions = action.payload.data[0];
+      const directions = action.payload.data[0];
 
       return {
         ...state,
         directions,
         render: 'directions',
-      }
+      };
     }
 
-
+    default:
+      return state;
   }
     return state;
 };

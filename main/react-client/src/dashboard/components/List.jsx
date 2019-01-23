@@ -4,7 +4,7 @@ import ListItem from './ListItem.jsx';
 import PropTypes from 'prop-types';
 
 
-const List = ({restaurants, handleRestaurantListItemClick, handleButtonClick, showDetails}) => (
+const List = ({ restaurants, handleRestaurantListItemClick, handleButtonClick, showDetails, price }) => (
 
   <div>
     <nav className="navbar navbar-expand-md navbar-dark bg-dark shadow mb-3 rounded">
@@ -15,9 +15,10 @@ const List = ({restaurants, handleRestaurantListItemClick, handleButtonClick, sh
           <li className="nav-item dropdown">
             <span className="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter by</span>
             <div className="dropdown-menu" aria-labelledby="dropdown01">
-              <span className="dropdown-item" href="#">Ratings</span>
+              <span className="dropdown-item" href="#">Rating</span>
               <span className="dropdown-item" href="#">Distance</span>
-              <span className="dropdown-item" href="#">most reviewed</span>
+              <span className="dropdown-item" href="#">most reviews</span>
+              <span className="dropdown-item" href="#">{price['$$']}</span>
             </div>
           </li>
         </ul>
@@ -29,6 +30,7 @@ const List = ({restaurants, handleRestaurantListItemClick, handleButtonClick, sh
         <ListItem
           restaurant={restaurant}
           handleRestaurantListItemClick={handleRestaurantListItemClick}
+          price={price}
           handleButtonClick={handleButtonClick}
           showDetails={showDetails}
           idx={idx}
@@ -39,11 +41,11 @@ const List = ({restaurants, handleRestaurantListItemClick, handleButtonClick, sh
   </div>
 );
 
-const mapStateToProps = (state) => {
-  return {
-    restaurants: state.app.restaurants,
-  };
-};
+const mapStateToProps = state => ({
+  restaurants: state.app.restaurants,
+  price: state.nav.price,
+}
+);
 
 List.contextTypes = {
   store: PropTypes.instanceOf(Object),

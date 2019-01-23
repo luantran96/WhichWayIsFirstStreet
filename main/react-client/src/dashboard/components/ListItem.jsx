@@ -1,27 +1,27 @@
 import React from 'react';
 import { Item, Button, Rating, Label } from 'semantic-ui-react';
 
-const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick, showDetails, idx}) => (
+const ListItem = ({restaurant, handleRestaurantListItemClick, handleButtonClick, showDetails, idx, price}) => (
   <div>
   <Item.Group>
     <Item 
     className="list-item"
     >
       <Item.Image 
-      src={restaurant.image}
+      src={restaurant.image_url}
       onClick={() => showDetails(restaurant)} />
         <Item.Content>
         <Label color='blue' ribbon= 'left'>
                 {idx + 1}
               </Label>
             <Item.Header>
-            {restaurant.title}
+            {restaurant.name}
             </Item.Header>
             <Item.Meta>{restaurant.description}</Item.Meta>
             <Item.Description>
               <span className='ratings'><Rating icon='star' size='large' rating={restaurant.rating} maxRating={5} disabled /></span>
             </Item.Description> 
-            <Item.Extra>{restaurant.price} 
+            <Item.Extra>{price[restaurant.price]} 
               <Button.Group>
                 <Button 
                 onClick={() => handleButtonClick(restaurant)}
