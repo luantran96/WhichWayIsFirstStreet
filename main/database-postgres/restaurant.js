@@ -65,10 +65,14 @@ module.exports.removeRestaurant = () => {
   //TODO:
 };
 
-module.exports.findAllRestaurants = (cb) => {
-  db.Restaurant.findAll()
+module.exports.findAllRestaurants = (userId, cb) => {
+  console.log('userId in db search: ', userId);
+  db.Restaurant.findAll({
+    where: {
+      userId,
+    }
+  })
     .then((restaurants) => {
       cb(restaurants);
     });
 };
-

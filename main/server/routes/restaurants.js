@@ -12,7 +12,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/selectAll', (req, res) => {
-  db.findAllRestaurants((restaurants) => {
+  const {userId} = req.query;
+
+  db.findAllRestaurants(userId, (restaurants) => {
     res.json(restaurants);
   });
 });
@@ -39,7 +41,7 @@ router.post('/add', (req, res) => {
 
       db.addRestaurant(info, (created) => {
         if (created) {
-          db.findAllRestaurants((restaurants) => {
+          db.findAllRestaurants(userId, (restaurants) => {
             res.json(restaurants);
           });
         } else {
