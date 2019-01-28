@@ -33,6 +33,7 @@
     "convert-time": "^0.3.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
+    "css-loader": "^2.1.0",
     "express": "*",
     "express-session": "^1.15.6",
     "express-validator": "^5.3.1",
@@ -62,6 +63,7 @@
     "request": "^2.88.0",
     "semantic-ui-react": "^0.83.0",
     "sequelize": "^4.42.0",
+    "style-loader": "^0.23.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
   }

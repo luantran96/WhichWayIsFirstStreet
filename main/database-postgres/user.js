@@ -13,7 +13,7 @@ const bcrypt = require('bcryptjs');
 // bcrypt.hash('bacon', 8, function(err, hash) {
 // });
 
-    // Or
+// Or
 
 // var hash = bcrypt.hashSync('bacon', 8);
 
@@ -35,7 +35,7 @@ module.exports.addUser = (newUser, cb) => {
       },
     })
     .then((foundUser) => {
-      if(!foundUser) {
+      if (!foundUser) {
         db.User
           .create({
             email: newUser.email,
@@ -51,7 +51,7 @@ module.exports.addUser = (newUser, cb) => {
     .catch((err) => {
       // print the error details
       console.log(err);
-  });
+    });
 };
 
 module.exports.checkUser = (user, cb) => {
@@ -66,19 +66,19 @@ module.exports.checkUser = (user, cb) => {
         // compare stored hash with provided hash
         // If true, login user in
         if (bcrypt.compareSync(user.password, storedHash)) {
-          cb(true);
+          cb(foundUser, true);
         } else {
           // Else, re-prompts login
-          cb(false);
+          cb(null, false);
         }
 
       } else {
-        cb(false);
+        cb(null, false);
       }
     });
 
 };
 
 module.exports.removeUser = () => {
-    //TODO:
+  //TODO:
 };

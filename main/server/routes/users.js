@@ -18,15 +18,16 @@ router.post('/login', (req, res) => {
     email,
     password,
   }, (found) => {
+    res.send(found);
 
-    console.log('Is user found: ', found);
-    if (found) {
-      // move to dashboard
+    // console.log('Is user found: ', found);
+    // if (found) {
+    //   // move to dashboard
 
-      res.redirect('/');
-    } else {
-      res.sendFile(path.join(__dirname, '/../../react-client/dist/login.html'));
-    }
+    //   res.redirect('/');
+    // } else {
+    //   res.sendFile(path.join(__dirname, '/../../react-client/dist/login.html'));
+    // }
   });
 });
 
