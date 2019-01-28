@@ -5,20 +5,21 @@ const db = require('./../../database-postgres/user');
 const router = express.Router();
 
 
+// router.get('/login', (req, res) => {
+//   res.sendFile(path.join(__dirname, '/../../react-client/dist/login.html'));
+// });
+
 router.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '/../../react-client/dist/login.html'));
-});
+  console.log(req.query);
 
-router.post('/login', (req, res) => {
-
-  console.log(req.body);
-
-  const { email, password } = req.body;
+  const { email, password } = req.query;
   db.checkUser({
     email,
     password,
-  }, (found) => {
-    res.send(found);
+  }, (user, found) => {
+    res.status(200).json(user);
+
+    // res.json(user, found);
 
     // console.log('Is user found: ', found);
     // if (found) {
@@ -31,21 +32,20 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, '/../../react-client/dist/register.html'));
-});
+// router.get('/register', (req, res) => {
+//   res.sendFile(path.join(__dirname, '/../../react-client/dist/register.html'));
+// });
 
-router.post('/register', (req, res) => {
-  const { email, password } = req.body;
+router.get('/register', (req, res) => {
+  const { email, password } = req.query;
 
   console.log('IM HERE');
 
   db.addUser({
     email,
     password,
-  }, (created) => {
-    console.log('created: ', created);
-    res.sendFile(path.join(__dirname, '/../../react-client/dist/login.html'));
+  }, (user) => {
+    res.status(200).json(user);
   });
 });
 

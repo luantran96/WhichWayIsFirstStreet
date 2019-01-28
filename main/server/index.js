@@ -42,9 +42,9 @@ app.use(session({
 app.use(flash());
 
 // Setup routes
-app.use('/', routes);
 app.use('/users', users);
 app.use('/restaurants', restaurants);
+app.use('/', routes);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}!`);

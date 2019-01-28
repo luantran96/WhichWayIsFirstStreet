@@ -9,6 +9,7 @@ let reducer = (state = {
   restaurantToAdd: undefined,
   render: 'directions',
   isOpen: false,
+  user: null,
 }, action) => {
 
   switch (action.type) {
@@ -17,6 +18,13 @@ let reducer = (state = {
         ...state,
         isOpen : action.payload,
       }
+    }
+
+    case 'AUTHENTICATE_USER_FULFILLED': {
+      return {
+        ...state,
+        user: action.payload.data,
+      };
     }
 
     case 'UPDATE_RESTAURANTS_LIST': {
@@ -30,6 +38,14 @@ let reducer = (state = {
         ...state,
         render: action.payload,
       }
+    }
+
+    case 'REGISTER_USER_FULFILLED': {
+
+      return {
+        ...state,
+        user: action.payload.data,
+      };
     }
 
     case 'DELETE_RESTAURANT_FULFILLED': {

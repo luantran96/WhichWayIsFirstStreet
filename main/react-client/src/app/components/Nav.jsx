@@ -3,7 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-import { Search, Grid, Header, Segment } from 'semantic-ui-react';
+import { Search } from 'semantic-ui-react';
 
 class Nav extends React.Component {
   constructor(props) {
@@ -14,9 +14,9 @@ class Nav extends React.Component {
   }
 
   updateRestaurants(e, { result }) {
-    const { dispatch } = this.props;
-
-    this.props.addRestaurant(result);
+    const { dispatch, userId } = this.props;
+    
+    this.props.addRestaurant(result, userId);
   }
 
   handleSearchChange(e, { value }) {
@@ -64,12 +64,13 @@ class Nav extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addRestaurant: (result) => {
+    addRestaurant: (result, userId) => {
       dispatch({
         type: 'ADD_RESTAURANT_TO_DB',
         payload: axios.post('restaurants/add',
           {
             id: result.yelpId,
+            userId,
           }),
       });
     },
@@ -104,13 +105,12 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const wrappedNav = connect((store) => {
+export default connect((state) => {
   return {
-    isLoading: store.nav.isLoading,
-    results: store.nav.results,
-    searchResults: store.nav.searchResults,
-    value: store.nav.value,
+    isLoading: state.nav.isLoading,
+    results: state.nav.results,
+    searchResults: state.nav.searchResults,
+    value: state.nav.value,
+    userId: state.app.user.uuid,
   };
 }, mapDispatchToProps)(Nav);
-
-export default wrappedNav;

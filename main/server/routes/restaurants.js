@@ -18,9 +18,9 @@ router.get('/selectAll', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-  const { id } = req.body;
+  const { id, userId } = req.body;
   
-  console.log('id: ', id);
+  console.log('id: ', req.body);
   const options = {
     url:`https://api.yelp.com/v3/businesses/${id}`,
     headers: {
@@ -31,9 +31,11 @@ router.post('/add', (req, res) => {
   request(options, (err, response, body) => {
     if (!err && response.statusCode === 200) {
       const info = JSON.parse(body);
-      console.log('info: ', info);
+      // console.log('info: ', info);
       // const hours = info.hours[0].open;
       // console.log('hours: ', hours);
+
+      info.userId = userId;
 
       db.addRestaurant(info, (created) => {
         if (created) {

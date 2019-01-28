@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
   directions: state.app.directions,
   render: state.app.render,
   restaurant: state.restaurantInfo.restaurant,
+  userId: state.app.user.uuid,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -39,9 +40,13 @@ const mapDispatchToProps = (dispatch) => {
         },
       }),
     }),
-    fetchRestaurants: () => dispatch({
+    fetchRestaurants: userId => dispatch({
       type: 'FETCH_RESTAURANTS',
-      payload: axios.get('restaurants/selectAll'),
+      payload: axios.get('restaurants/selectAll', {
+        params: {
+          userId,
+        },
+      }),
     }),
 
     getRestaurantInfo: yelpId => dispatch({
@@ -88,8 +93,8 @@ class Main extends React.Component {
   //TODO: store restaurant info locally
 
   componentDidMount() {
-    const { fetchRestaurants } = this.props;
-    fetchRestaurants();
+    const { fetchRestaurants, userId } = this.props;
+    fetchRestaurants(userId);
   }
 
   showDetails(restaurant) {

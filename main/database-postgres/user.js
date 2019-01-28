@@ -41,11 +41,11 @@ module.exports.addUser = (newUser, cb) => {
             email: newUser.email,
             password: newUser.password,
           })
-          .then(() => {
-            cb(true);
+          .then((user) => {
+            cb(user);
           });
       } else {
-        cb(false);
+        cb(null);
       }
     })
     .catch((err) => {
