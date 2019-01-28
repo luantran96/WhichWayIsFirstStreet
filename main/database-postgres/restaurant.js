@@ -1,10 +1,6 @@
 const db = require('./index');
 
 module.exports.addRestaurant = (restaurant, cb) => {
-  //TODO:
-  // Need to attach userId
-
-  // console.log('restaurant in add API:', restaurant);
   let {
     id,
     name,
@@ -22,7 +18,6 @@ module.exports.addRestaurant = (restaurant, cb) => {
     userId } = restaurant;
 
   location = location.display_address.join(' ');
-  console.log('hours: ', hours[0].open);
   hours = hours[0].open || [];
 
   console.log('location: ', location);
@@ -65,8 +60,18 @@ module.exports.removeRestaurant = () => {
   //TODO:
 };
 
+module.exports.findRestaurant = (yelpId, cb) => {
+  db.Restaurant.findAll({
+    where: {
+      yelpId,
+    }
+  })
+    .then((restaurant) => {
+      cb(restaurant);
+    });
+};
+
 module.exports.findAllRestaurants = (userId, cb) => {
-  console.log('userId in db search: ', userId);
   db.Restaurant.findAll({
     where: {
       userId,

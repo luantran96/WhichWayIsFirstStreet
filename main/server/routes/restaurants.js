@@ -73,4 +73,29 @@ router.get('/search', (req, res) => {
   });
 });
 
+router.get('/getInfo', (req, res) => {
+
+  const { id } = req.query;
+  console.log(req.query);
+
+  db.findRestaurant(id, (restaurant) => {
+    res.json(restaurant);
+  });
+
+  // var options = {
+  //   url:`https://api.yelp.com/v3/businesses/${id}`,
+  //   headers: {
+  //     'Authorization': `Bearer ${API.YELP}`,
+  //   },
+  // };
+
+  // request(options, (err, response, body) => {
+  //   if (!err && response.statusCode == 200) {
+  //     var info = JSON.parse(body);
+  //     res.json(info);
+  //   } 
+  // });
+  
+});
+
 module.exports = router;

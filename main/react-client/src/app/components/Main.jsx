@@ -51,7 +51,7 @@ const mapDispatchToProps = (dispatch) => {
 
     getRestaurantInfo: yelpId => dispatch({
       type: 'GET_INFO',
-      payload: axios.get('/getInfo',
+      payload: axios.get('restaurants/getInfo',
         {
           params: {
             id: yelpId,
@@ -103,8 +103,6 @@ class Main extends React.Component {
     getRestaurantInfo(restaurant.yelpId);
     changeRender('restaurantInfo');
   }
-
-
 
   handleButtonClick(restaurant) {
     const { restaurants, deleteRestaurant, removeMarkerFromMap } = this.props;

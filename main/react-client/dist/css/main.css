@@ -127,7 +127,8 @@ h1#title {
 #details {
     padding: 20px;
     height: 300px;
-    width: 50%;
+    min-width: 990px;
+    max-width: 30%;
     margin: auto;
 }
 #map {
@@ -194,7 +195,8 @@ h1#title {
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent>.hours {
     height:170px;
     margin-left: 35px;
-    width: 50%;
+    min-width: 300px;
+    max-width: 70%;
     /* border: 2px solid red; */
 }
 

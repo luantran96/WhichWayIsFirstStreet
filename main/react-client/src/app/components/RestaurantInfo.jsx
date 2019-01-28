@@ -30,8 +30,9 @@ const RestaurantInfo = ({ restaurant }) => {
     '6': 'Saturday',
   }
 
+  console.log('restaurant in restaurantInfo: ', restaurant);
 
-  restaurant.hours[0].open.map((day) => {
+  restaurant.hours.map((day) => {
     let hour = `${convertTime(day.start.slice(0, 2) + ':' + day.start.slice(2))} - ${convertTime(day.end.slice(0, 2) + ':' + day.end.slice(2))}`;
     hours[day.day].push(hour);
   });
@@ -53,7 +54,7 @@ const RestaurantInfo = ({ restaurant }) => {
                 <span className='labels'>Price range:</span> {`${restaurant.price}`}
               </div>
               <div>
-                <span className='labels'>Address:</span> {`${restaurant.location.display_address.join(', ')}`}
+                <span className='labels'>Address:</span> {`${restaurant.location}`}
               </div>
               <div>
                 <span className='labels'>Contact:</span> {`${restaurant.display_phone}`}

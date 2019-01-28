@@ -88,8 +88,6 @@ class Map extends Component {
     let newLocations = this.props.locations;
     let isChanged = false;
 
-    debugger;
-
     this.props.updateDestination(this.props.destination);
 
     newLocations.forEach((location, i) => {

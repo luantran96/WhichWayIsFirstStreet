@@ -7,7 +7,7 @@ let reducer = (state = {
     case 'GET_INFO_FULFILLED': {
       return {
         ...state,
-        restaurant: action.payload.data,
+        restaurant: action.payload.data[0],
       }
     }
   }
