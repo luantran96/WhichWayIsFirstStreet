@@ -11,72 +11,74 @@ const mapStateToProps = state => ({
   markers: state.map.markers,
   infoWindows: state.map.infoWindows,
   destination: state.map.destination,
+  user: state.app.user,
 }
 );
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    init: () => dispatch({
-      type: 'INIT_MAP',
-    }),
-    changeRender: newRender => dispatch({
-      type: 'CHANGE_RENDER',
-      payload: newRender,
-    }),
-    getRestaurantInfo: yelpId => dispatch({
-      type: 'GET_INFO',
-      payload: axios.get('/getInfo',
-        {
-          params: {
-            id: yelpId,
-          },
-        }),
-    }),
-    deleteMarkers: () => dispatch({
-      type: 'DELETE_MARKERS',
-    }),
-    displayRoute: (marker, passedDestination = null) => dispatch({
-      type: 'DISPLAY_ROUTE',
-      payload: {
-        marker,
-        passedDestination,
-      },
-    }),
-    updateOrigin: coordinates => dispatch({
-      type: 'UPDATE_ORIGIN',
-      payload: coordinates,
-    }),
-
-    updateDestination: coordinates => dispatch({
-      type: 'UPDATE_DESTINATION',
-      payload: coordinates,
-    }),
-    fetchDirections: (origin, destination) => dispatch({
-      type: 'FETCH_DIRECTIONS',
-      payload: axios.get('/getRoutes', {
+const mapDispatchToProps = dispatch => ({
+  recenterMap: (lat, lng) => dispatch({
+    type: 'RECENTER',
+    payload: [lat, lng],
+  }),
+  init: () => dispatch({
+    type: 'INIT_MAP',
+  }),
+  changeRender: newRender => dispatch({
+    type: 'CHANGE_RENDER',
+    payload: newRender,
+  }),
+  getRestaurantInfo: yelpId => dispatch({
+    type: 'GET_INFO',
+    payload: axios.get('/getInfo',
+      {
         params: {
-          end_lat: destination.lat,
-          end_lng: destination.lng,
-          start_lat: origin.lat,
-          start_lng: origin.lng,
+          id: yelpId,
         },
       }),
-    }),
-    updateMap: (locations, markers, infoWindows) => dispatch({
-      type: 'UPDATE_MAP',
-      payload: {
-        locations,
-        markers,
-        infoWindows,
+  }),
+  deleteMarkers: () => dispatch({
+    type: 'DELETE_MARKERS',
+  }),
+  displayRoute: (marker, passedDestination = null) => dispatch({
+    type: 'DISPLAY_ROUTE',
+    payload: {
+      marker,
+      passedDestination,
+    },
+  }),
+  updateOrigin: coordinates => dispatch({
+    type: 'UPDATE_ORIGIN',
+    payload: coordinates,
+  }),
+
+  updateDestination: coordinates => dispatch({
+    type: 'UPDATE_DESTINATION',
+    payload: coordinates,
+  }),
+  fetchDirections: (origin, destination) => dispatch({
+    type: 'FETCH_DIRECTIONS',
+    payload: axios.get('/getRoutes', {
+      params: {
+        end_lat: destination.lat,
+        end_lng: destination.lng,
+        start_lat: origin.lat,
+        start_lng: origin.lng,
       },
     }),
-  };
-};
+  }),
+  updateMap: (locations, markers, infoWindows) => dispatch({
+    type: 'UPDATE_MAP',
+    payload: {
+      locations,
+      markers,
+      infoWindows,
+    },
+  }),
+});
 
 class Map extends Component {
   constructor(props) {
     super(props);
-
   }
 
   componentDidMount() {
@@ -84,14 +86,13 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    let { map, directionsDisplay, directionsService, deleteMarkers, changeRender, getRestaurantInfo, updateMap } = this.props;
+    let {recenterMap, user, map, directionsDisplay, directionsService, deleteMarkers, changeRender, getRestaurantInfo, updateMap } = this.props;
     let newLocations = this.props.locations;
     let isChanged = false;
 
-    this.props.updateDestination(this.props.destination);
 
     newLocations.forEach((location, i) => {
-      if(!prevProps.locations[i] || location.coordinates.lat !== prevProps.locations[i].coordinates.lat && location.coordinates.lng !== prevProps.locations[i].coordinates.lng) {
+      if (!prevProps.locations[i] || location.coordinates.lat !== prevProps.locations[i].coordinates.lat && location.coordinates.lng !== prevProps.locations[i].coordinates.lng) {
         isChanged = true;
       }
     });
@@ -99,16 +100,22 @@ class Map extends Component {
     if (isChanged) {
       // Delete all markers on map
       deleteMarkers();
-
       // Create an array of alphabetical characters used to label the markers.
-      var label = 0;
-      let newInfoWindows = {};
-      var markers = [];
+      let label = 0;
+      const newInfoWindows = {};
+      const markers = [];
 
       console.log('newLocations: ==> ', newLocations);
 
       newLocations.forEach((location) => {
         label += 1;
+
+        const contentStr = '<div id="content">'+
+        `<h4 id="firstHeading">${location.title}</h4>`+
+        '<div id="bodyContent">'+
+        `<p>${location.address}</p>` +
+        '</div>'+
+        '</div>';
 
         const newMarker = new google.maps.Marker({
           position: {
@@ -116,23 +123,24 @@ class Map extends Component {
             lng: location.coordinates.longitude,
           },
           map,
+          animation: google.maps.Animation.DROP,
           label: label.toString(),
+          title: location.title,
         });
 
         newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
-          content: location.name,
-          map,
-        });
-      
-        google.maps.event.addListener(newMarker, 'mouseover', function() {
-          newInfoWindows[this.label].open(map, this);
-        });
-     
-        google.maps.event.addListener(newMarker, 'mouseout', function() {
-          newInfoWindows[this.label].close();
+          content: contentStr,
         });
 
-        google.maps.event.addListener(newMarker, 'click', function() {
+        google.maps.event.addListener(newMarker, 'mouseover', () => {
+          newInfoWindows[newMarker.label].open(map, newMarker);
+        });
+
+        google.maps.event.addListener(newMarker, 'mouseout', () => {
+          newInfoWindows[newMarker.label].close();
+        });
+
+        google.maps.event.addListener(newMarker, 'click', () => {
           getRestaurantInfo(location.yelpId);
           changeRender('restaurantInfo');
         });
@@ -140,21 +148,32 @@ class Map extends Component {
         markers.push(newMarker);
       });
 
-      console.log('newInfoWindows: ', newInfoWindows);
-
       updateMap(newLocations, markers, newInfoWindows);
-
     }
+
+    // If user location is found
+    if (user.lat && user.lng) {
+      const userMarker = new google.maps.Marker({
+        position: {
+          lat: user.lat,
+          lng: user.lng,
+        },
+        map,
+        animation: google.maps.Animation.DROP,
+        label: 'ME',
+      });
+    }
+
   }
 
   render() {
     return (
-        <div id= "map" />
+      <div id="map" />
     );
   }
 }
 
 
-  let wrappedMap =  connect(mapStateToProps, mapDispatchToProps)(Map);
+let wrappedMap = connect(mapStateToProps, mapDispatchToProps)(Map);
 
 export default wrappedMap;

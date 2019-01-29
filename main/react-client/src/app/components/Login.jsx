@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import {Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor(props) {
@@ -23,9 +23,9 @@ class Login extends React.Component {
     const { email, password } = this.state;
     console.log(this.state);
     this.props.authenticate(email, password)
-    .then((result) => {
-      this.props.history.push('/');
-    });
+      .then((result) => {
+        this.props.history.push('/');
+      });
 
     // axios.get('users/login',
     //   {

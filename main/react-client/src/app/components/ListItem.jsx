@@ -6,26 +6,31 @@ const ListItem = ({ restaurant, handleRestaurantListItemClick, handleButtonClick
     <Item.Group>
       <Item
         className="list-item"
+        onClick={() => showDetails(restaurant)}
       >
         <Item.Image
           src={restaurant.image_url}
-          onClick={() => showDetails(restaurant)} />
+        />
         <Item.Content>
-          <Label color='blue' ribbon='left'>
+          <Label color="blue" ribbon="left">
             {idx + 1}
           </Label>
           <Item.Header>
             {restaurant.name}
           </Item.Header>
-          <Item.Meta>{restaurant.description}</Item.Meta>
+          <Item.Meta><span className="ratings"><Rating icon="star" size="large" rating={restaurant.rating} maxRating={5} disabled /></span></Item.Meta>
           <Item.Description>
-            <span className='ratings'><Rating icon='star' size='large' rating={restaurant.rating} maxRating={5} disabled /></span>
+            <b>{(restaurant.review_count) + ' reviews'}</b>
           </Item.Description>
-          <Item.Extra>{price[restaurant.price]}
+          <Item.Extra>
+            {price[restaurant.price]}
             <Button.Group>
               <Button
                 onClick={() => handleButtonClick(restaurant)}
-                negative>Delete</Button>
+                negative
+              >
+                Delete
+              </Button>
             </Button.Group>
           </Item.Extra>
         </Item.Content>

@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/selectAll', (req, res) => {
-  const {userId} = req.query;
+  const { userId } = req.query;
 
   db.findAllRestaurants(userId, (restaurants) => {
     res.json(restaurants);
@@ -21,10 +21,10 @@ router.get('/selectAll', (req, res) => {
 
 router.post('/add', (req, res) => {
   const { id, userId } = req.body;
-  
+
   console.log('id: ', req.body);
   const options = {
-    url:`https://api.yelp.com/v3/businesses/${id}`,
+    url: `https://api.yelp.com/v3/businesses/${id}`,
     headers: {
       'Authorization': `Bearer ${KEY.YELP}`,
     },
@@ -39,11 +39,11 @@ router.post('/add', (req, res) => {
 
       info.userId = userId;
 
-      db.addRestaurant(info, (created) => {
-        if (created) {
-          db.findAllRestaurants(userId, (restaurants) => {
-            res.json(restaurants);
-          });
+      db.addRestaurant(info, (newRestaurant) => {
+        if (newRestaurant) {
+          res.json(newRestaurant);
+          // db.findAllRestaurants(userId, (restaurants) => {
+          // });
         } else {
           res.end();
         }
@@ -53,12 +53,18 @@ router.post('/add', (req, res) => {
 });
 
 router.get('/search', (req, res) => {
-  const { name } = req.query;
-  const latitude = 37.691109;
-  const longitude = -122.472221;
+  let { name, lat, lng } = req.query;
+
+  lat = lat || 37.691109;
+  lng = lng || -122.472221;
+
+  console.log(req.query);
+
+  // const latitude = 37.691109;
+  // const longitude = -122.472221;
 
   const options = {
-    url: `https://api.yelp.com/v3/businesses/search?term=${name}&latitude=${latitude}&longitude=${longitude}`,
+    url: `https://api.yelp.com/v3/businesses/search?term=${name}&latitude=${lat}&longitude=${lng}`,
     headers: {
       'Authorization': `Bearer ${KEY.YELP}`,
     },
@@ -69,7 +75,7 @@ router.get('/search', (req, res) => {
       const info = JSON.parse(body);
       console.log('info: ', info);
       res.json(info);
-    } 
+    }
   });
 });
 
@@ -95,7 +101,7 @@ router.get('/getInfo', (req, res) => {
   //     res.json(info);
   //   } 
   // });
-  
+
 });
 
 module.exports = router;

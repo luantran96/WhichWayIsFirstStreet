@@ -18,7 +18,8 @@ module.exports.addRestaurant = (restaurant, cb) => {
     userId } = restaurant;
 
   location = location.display_address.join(' ');
-  hours = hours[0].open || [];
+
+  hours = hours ? hours[0].open : [];
 
   console.log('location: ', location);
 
@@ -46,8 +47,9 @@ module.exports.addRestaurant = (restaurant, cb) => {
           hours,
           userId,
         })
-          .then(() => {
-            cb(true);
+          .then((rest) => {
+            console.log('rest in add:', rest.dataValues);
+            cb(rest.dataValues);
           });
       } else {
         cb(false);

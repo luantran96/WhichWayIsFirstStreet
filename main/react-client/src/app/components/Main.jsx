@@ -18,10 +18,21 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    showModal: bool => dispatch({
-      type: 'SHOW_MODAL',
-      payload: bool,
-    }),
+    findMe: () => {
+      dispatch({
+        type: 'FIND_ME',
+        payload: new Promise((resolve, reject) => {
+          if (!navigator.geolocation) {
+            window.alert("Your browser doesn't support geolocation");
+          }
+          navigator.geolocation.getCurrentPosition((position) => {
+            const { latitude, longitude } = position.coords;
+  
+            resolve([latitude, longitude]);
+          }, err => reject(err));
+        }),
+      });
+    },
     removeMarkerFromMap: idx => dispatch({
       type: 'REMOVE_MARKER',
       payload: idx,
@@ -93,7 +104,8 @@ class Main extends React.Component {
   //TODO: store restaurant info locally
 
   componentDidMount() {
-    const { fetchRestaurants, userId } = this.props;
+    const { fetchRestaurants, userId, findMe } = this.props;
+    findMe();
     fetchRestaurants(userId);
   }
 
