@@ -15,16 +15,6 @@ const sequelize = new Sequelize('luantran', '', '', {
 // Or you can simply use a connection uri
 // const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
 
-// Testing connection
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  });
-
 const User = sequelize.define('user', {
   uuid: {
     primaryKey: true,
@@ -91,17 +81,27 @@ const Restaurant = sequelize.define('restaurant', {
   timestamps: true,
 });
 
-
-User.hasMany(Restaurant, {
-  as: 'Restaurants',
-  foreignKey: 'userId',
-});
-// {force : true}
-
-User.sync()
+// Testing connection
+sequelize
+  .authenticate()
   .then(() => {
-    Restaurant.sync();
+    console.log('Connection has been established successfully.');
+    User.hasMany(Restaurant, {
+      as: 'Restaurants',
+      foreignKey: 'userId',
+    });
+    // {force : true}
+    
+    User.sync()
+      .then(() => {
+        Restaurant.sync();
+      });
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
   });
+
+
 
 module.exports = {
   User,
