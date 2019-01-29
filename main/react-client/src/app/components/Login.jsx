@@ -14,37 +14,23 @@ class Login extends React.Component {
 
   update(e) {
     // console.log(e.target.name, e.target.value);
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   }
 
   authenticate(e) {
     e.preventDefault();
 
-    const { email, password } = this.state;
+    const {
+      email,
+      password,
+    } = this.state;
     console.log(this.state);
     this.props.authenticate(email, password)
       .then((result) => {
         this.props.history.push('/');
       });
-
-    // axios.get('users/login',
-    //   {
-    //     params: {
-    //       email,
-    //       password,
-    //     },
-    //   },
-    // )
-    //   .then((res) => {
-    //     console.log(res);
-    //     this.props.history.push('/');
-    //   });
-
-
-    // put login API calls here
-    // it should be a promise
-    // once it returns a valid user auth, redirect to whichever page you want the user to 
-    // ex: this.props.history('/route')
   }
 
   render() {
@@ -53,8 +39,6 @@ class Login extends React.Component {
         className="form-signin"
         onSubmit={this.authenticate.bind(this)}
       >
-        <div className="text-center mb-4">
-        </div>
 
         <div className="form-label-group">
           <input

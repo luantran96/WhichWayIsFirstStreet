@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 const mapStateToProps = state => ({
   directionsService: state.map.directionsService,
@@ -16,6 +15,10 @@ const mapStateToProps = state => ({
 );
 
 const mapDispatchToProps = dispatch => ({
+  updateUserMarker: marker => dispatch({
+    type: 'UPDATE_USER_MARKER',
+    payload: marker,
+  }),
   recenterMap: (lat, lng) => dispatch({
     type: 'RECENTER',
     payload: [lat, lng],
@@ -29,7 +32,7 @@ const mapDispatchToProps = dispatch => ({
   }),
   getRestaurantInfo: yelpId => dispatch({
     type: 'GET_INFO',
-    payload: axios.get('/getInfo',
+    payload: axios.get('restaurants/getInfo',
       {
         params: {
           id: yelpId,
@@ -86,7 +89,7 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    let {recenterMap, user, map, directionsDisplay, directionsService, deleteMarkers, changeRender, getRestaurantInfo, updateMap } = this.props;
+    let {updateUserMarker, recenterMap, user, map, directionsDisplay, directionsService, deleteMarkers, changeRender, getRestaurantInfo, updateMap } = this.props;
     let newLocations = this.props.locations;
     let isChanged = false;
 
@@ -153,6 +156,10 @@ class Map extends Component {
 
     // If user location is found
     if (user.lat && user.lng) {
+      if (user.marker) {
+        user.marker.setMap(null);
+      }
+
       const userMarker = new google.maps.Marker({
         position: {
           lat: user.lat,
@@ -162,6 +169,8 @@ class Map extends Component {
         animation: google.maps.Animation.DROP,
         label: 'ME',
       });
+
+      updateUserMarker(userMarker);
     }
 
   }

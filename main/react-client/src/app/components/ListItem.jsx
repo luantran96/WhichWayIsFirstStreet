@@ -20,7 +20,10 @@ const ListItem = ({ restaurant, handleRestaurantListItemClick, handleButtonClick
           </Item.Header>
           <Item.Meta><span className="ratings"><Rating icon="star" size="large" rating={restaurant.rating} maxRating={5} disabled /></span></Item.Meta>
           <Item.Description>
-            <b>{(restaurant.review_count) + ' reviews'}</b>
+            <b>{restaurant.review_count + ' reviews'}</b>
+          </Item.Description>
+          <Item.Description>
+            <b><i>{restaurant.distance ? restaurant.distance.toFixed(1) + ' miles' : ''}</i></b>
           </Item.Description>
           <Item.Extra>
             {price[restaurant.price]}

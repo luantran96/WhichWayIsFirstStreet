@@ -35,8 +35,6 @@ class Register extends React.Component {
         className="form-signin"
         onSubmit={this.authenticate.bind(this)}
       >
-        <div className="text-center mb-4">
-        </div>
 
         <div className="form-label-group">
           <input

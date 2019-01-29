@@ -1,3 +1,4 @@
+const geolib = require('geolib');
 
 const reducer = (state = {
   restaurants: [],
@@ -11,64 +12,95 @@ const reducer = (state = {
   user: null,
 }, action) => {
   switch (action.type) {
-    case 'SHOW_MODAL': {
-      return {
-        ...state,
-        isOpen: action.payload,
-      };
-    }
 
-    case 'AUTHENTICATE_USER_FULFILLED': {
-      return {
-        ...state,
-        user: action.payload.data,
-      };
-    }
-
-    case 'UPDATE_RESTAURANTS_LIST': {
-      return {
-        ...state,
-        restaurants: action.payload,
-      };
-    }
-    case 'CHANGE_RENDER': {
-      return {
-        ...state,
-        render: action.payload,
-      };
-    }
-
-    case 'REGISTER_USER_FULFILLED': {
-      return {
-        ...state,
-        user: action.payload.data,
-      };
-    }
-
-    case 'FIND_ME_FULFILLED': {
-      console.log(action);
-
-      const user = { ...state.user };
-
-      user.lat = action.payload[0];
-      user.lng = action.payload[1];
-
+    case 'UPDATE_USER_MARKER': {
+      let { user } = state;
+      user.marker = action.payload;
       return {
         ...state,
         user,
       };
     }
 
-    case 'FILTER_BY': {
+    case 'SHOW_MODAL':
+    {
+      return {
+        ...state,
+        isOpen: action.payload,
+      };
+    }
+
+    case 'AUTHENTICATE_USER_FULFILLED':
+    {
+      return {
+        ...state,
+        user: action.payload.data,
+      };
+    }
+
+    case 'UPDATE_RESTAURANTS_LIST':
+    {
+      return {
+        ...state,
+        restaurants: action.payload,
+      };
+    }
+    case 'CHANGE_RENDER':
+    {
+      return {
+        ...state,
+        render: action.payload,
+      };
+    }
+
+    case 'REGISTER_USER_FULFILLED':
+    {
+      return {
+        ...state,
+        user: action.payload.data,
+      };
+    }
+
+    case 'FIND_ME_FULFILLED':
+    {
+      console.log(action);
+
+      const user = { ...state.user };
+      const restaurants = state.restaurants.slice();
+
+      user.lat = action.payload[0];
+      user.lng = action.payload[1];
+
+      const MeterToMileFactor = 0.000621371;
+      
+      restaurants.forEach((restaurant) => {
+        restaurant.distance = (geolib.getDistance({
+          latitude: restaurant.coordinates.latitude,
+          longitude: restaurant.coordinates.longitude,
+          accuracy: 1,
+        }, {
+          latitude: user.lat,
+          lng: user.lng,
+        })) * MeterToMileFactor;
+      });
+
+      return {
+        ...state,
+        user,
+        restaurants,
+      };
+    }
+
+    case 'FILTER_BY':
+    {
       const restaurants = state.restaurants.slice();
       const type = action.payload;
 
       if (type === 'reviews') {
         console.log("IN HERE");
-        restaurants.sort((a, b) => a.review_count - b.review_count);
+        restaurants.sort((a, b) => b.review_count - a.review_count);
       } else if (type === 'distance') {
-        // TODO: GET GEOLOCATION WORKING !!!
-        // restaurants.sort((a, b) => a.distance - b.distance);
+        restaurants.sort((a, b) => a.distance - b.distance);
       } else if (type === 'ratings') {
         restaurants.sort((a, b) => b.rating - a.rating);
       }
@@ -87,7 +119,8 @@ const reducer = (state = {
       };
     }
 
-    case 'DELETE_RESTAURANT_FULFILLED': {
+    case 'DELETE_RESTAURANT_FULFILLED':
+    {
       const restaurants = action.payload.data;
 
       const locations = restaurants.map(restaurant => ({
@@ -95,8 +128,7 @@ const reducer = (state = {
         coordinates: restaurant.coordinates,
         title: restaurant.name,
         address: restaurant.location,
-      }
-      ));
+      }));
 
       return {
         ...state,
@@ -105,7 +137,8 @@ const reducer = (state = {
       }
     }
 
-    case 'FETCH_RESTAURANTS_FULFILLED': {
+    case 'FETCH_RESTAURANTS_FULFILLED':
+    {
       const restaurants = action.payload.data;
 
       const locations = restaurants.map(restaurant => ({
@@ -113,8 +146,7 @@ const reducer = (state = {
         coordinates: restaurant.coordinates,
         title: restaurant.name,
         address: restaurant.location,
-      }
-      ));
+      }));
 
       return {
         ...state,
@@ -123,7 +155,8 @@ const reducer = (state = {
       };
     }
 
-    case 'ADD_RESTAURANT_TO_DB_FULFILLED': {
+    case 'ADD_RESTAURANT_TO_DB_FULFILLED':
+    {
       const restaurants = state.restaurants.slice();
       const locations = state.locations.slice();
       const newRestaurant = action.payload.data;
@@ -152,7 +185,8 @@ const reducer = (state = {
       };
     }
 
-    case 'FETCH_DIRECTIONS_FULFILLED': {
+    case 'FETCH_DIRECTIONS_FULFILLED':
+    {
       const directions = action.payload.data[0];
 
       return {
