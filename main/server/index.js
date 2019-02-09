@@ -20,7 +20,7 @@ const app = express();
 app.use(cors());
 
 // Set static folder
-app.use('/users', express.static(path.join(__dirname, '/../react-client/dist')));
+// app.use('/users', express.static(path.join(__dirname, '/../react-client/dist')));
 app.use(express.static(path.join(__dirname, '/../react-client/dist')));
 
 

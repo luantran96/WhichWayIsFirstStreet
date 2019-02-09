@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
   directions: state.app.directions,
   render: state.app.render,
   restaurant: state.restaurantInfo.restaurant,
-  userId: state.app.user.uuid,
+  userId: state.app.user.uuid
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -24,73 +24,80 @@ const mapDispatchToProps = dispatch => ({
         if (!navigator.geolocation) {
           window.alert("Your browser doesn't support geolocation");
         }
-        navigator.geolocation.getCurrentPosition((position) => {
-          const {
-            latitude,
-            longitude,
-          } = position.coords;
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const { latitude, longitude } = position.coords;
 
-          resolve([latitude, longitude]);
-        }, err => reject(err));
-      }),
+            resolve([latitude, longitude]);
+          },
+          err => reject(err)
+        );
+      })
     });
   },
-  removeMarkerFromMap: idx => dispatch({
-    type: 'REMOVE_MARKER',
-    payload: idx,
-  }),
-  updateRestaurantList: (restaurants) => {
+  removeMarkerFromMap: idx =>
+    dispatch({
+      type: 'REMOVE_MARKER',
+      payload: idx
+    }),
+  updateRestaurantList: restaurants => {
     dispatch({
       type: 'UPDATE_RESTAURANTS_LIST',
-      payload: restaurants,
+      payload: restaurants
     });
   },
-  deleteRestaurant: _id => dispatch({
-    type: 'DELETE_RESTAURANT',
-    payload: axios.delete('restaurants/delete', {
-      params: {
-        _id,
-      },
+  deleteRestaurant: (yelpId, userId) =>
+    dispatch({
+      type: 'DELETE_RESTAURANT',
+      payload: axios.delete('restaurants/delete', {
+        params: {
+          yelpId,
+          userId
+        }
+      })
     }),
-  }),
-  fetchRestaurants: userId => dispatch({
-    type: 'FETCH_RESTAURANTS',
-    payload: axios.get('restaurants/selectAll', {
-      params: {
-        userId,
-      },
+  fetchRestaurants: userId =>
+    dispatch({
+      type: 'FETCH_RESTAURANTS',
+      payload: axios.get('restaurants/selectAll', {
+        params: {
+          userId
+        }
+      })
     }),
-  }),
 
-  getRestaurantInfo: yelpId => dispatch({
-    type: 'GET_INFO',
-    payload: axios.get('restaurants/getInfo', {
-      params: {
-        id: yelpId,
-      },
+  getRestaurantInfo: yelpId =>
+    dispatch({
+      type: 'GET_INFO',
+      payload: axios.get('restaurants/getInfo', {
+        params: {
+          id: yelpId
+        }
+      })
     }),
-  }),
-  fetchDirections: (destination, origin) => dispatch({
-    type: 'FETCH_DIRECTIONS',
-    payload: axios.get('/getRoutes', {
-      params: {
-        end_lat: destination.lat,
-        end_lng: destination.lng,
-        start_lat: origin.lat,
-        start_lng: origin.lng,
-      },
+  fetchDirections: (destination, origin) =>
+    dispatch({
+      type: 'FETCH_DIRECTIONS',
+      payload: axios.get('/getRoutes', {
+        params: {
+          end_lat: destination.lat,
+          end_lng: destination.lng,
+          start_lat: origin.lat,
+          start_lng: origin.lng
+        }
+      })
     }),
-  }),
-  changeRender: newRender => dispatch({
-    type: 'CHANGE_RENDER',
-    payload: newRender,
-  }),
-  updateDestination: coordinates => dispatch({
-    type: 'UPDATE_DESTINATION',
-    payload: coordinates,
-  }),
-}
-);
+  changeRender: newRender =>
+    dispatch({
+      type: 'CHANGE_RENDER',
+      payload: newRender
+    }),
+  updateDestination: coordinates =>
+    dispatch({
+      type: 'UPDATE_DESTINATION',
+      payload: coordinates
+    })
+});
 
 class Main extends React.Component {
   constructor(props) {
@@ -103,53 +110,36 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      fetchRestaurants,
-      userId,
-      findMe,
-    } = this.props;
-    fetchRestaurants(userId)
-    .then(() => {
+    const { fetchRestaurants, userId, findMe } = this.props;
+    fetchRestaurants(userId).then(() => {
       findMe();
     });
   }
 
   showDetails(restaurant) {
-    const {
-      getRestaurantInfo,
-      changeRender,
-    } = this.props;
+    const { getRestaurantInfo, changeRender } = this.props;
 
     getRestaurantInfo(restaurant.yelpId);
     changeRender('restaurantInfo');
   }
 
   handleButtonClick(restaurant) {
-    const {
-      restaurants,
-      deleteRestaurant,
-      removeMarkerFromMap,
-    } = this.props;
+    const { restaurants, deleteRestaurant, removeMarkerFromMap, userId } = this.props;
 
     const idx = restaurants.findIndex(element => element.description === restaurant.description);
     const restaurantToDelete = restaurants[idx];
 
-    deleteRestaurant(restaurantToDelete._id);
+    deleteRestaurant(restaurantToDelete.yelpId, userId);
     removeMarkerFromMap(idx);
-
   }
 
   handleRestaurantListItemClick(restaurant) {
-    const {
-      fetchDirections,
-      changeRender,
-      updateDestination,
-    } = this.props;
+    const { fetchDirections, changeRender, updateDestination } = this.props;
 
     // Hardcoded origin position
     const currentPosition = {
       lat: 37.787484,
-      lng: -122.396397,
+      lng: -122.396397
     };
 
     fetchDirections(restaurant.coordinates, currentPosition);
@@ -159,15 +149,11 @@ class Main extends React.Component {
   }
 
   renderDetails() {
-    const {
-      directions,
-      render,
-      restaurant,
-    } = this.props;
+    const { directions, render, restaurant } = this.props;
     if (render === 'directions' && directions) {
-      return <Directions directions= {directions} />;
+      return <Directions directions={directions} />;
     } else if (render === 'restaurantInfo' && restaurant) {
-      return <RestaurantInfo /> ;
+      return <RestaurantInfo />;
     }
   }
 
@@ -189,9 +175,7 @@ class Main extends React.Component {
             />
           </div>
         </div>
-        <div id="details">
-          {this.renderDetails()}
-        </div>
+        <div id="details">{this.renderDetails()}</div>
       </div>
     );
   }
@@ -210,8 +194,11 @@ Main.propTypes = {
   fetchRestaurants: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
   findMe: PropTypes.func.isRequired,
-  getRestaurantInfo: PropTypes.func.isRequired,
+  getRestaurantInfo: PropTypes.func.isRequired
 };
-const wrappedMain = connect(mapStateToProps, mapDispatchToProps)(Main);
+const wrappedMain = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Main);
 
 export default wrappedMain;

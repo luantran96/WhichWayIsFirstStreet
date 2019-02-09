@@ -122,7 +122,7 @@ const reducer = (state = {
     case 'DELETE_RESTAURANT_FULFILLED':
     {
       const restaurants = action.payload.data;
-
+      
       const locations = restaurants.map(restaurant => ({
         yelpId: restaurant.yelpId,
         coordinates: restaurant.coordinates,

@@ -12,7 +12,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/selectAll', (req, res) => {
-  const { userId } = req.query;
+  const {
+    userId
+  } = req.query;
 
   db.findAllRestaurants(userId, (restaurants) => {
     res.json(restaurants);
@@ -20,7 +22,10 @@ router.get('/selectAll', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-  const { id, userId } = req.body;
+  const {
+    id,
+    userId
+  } = req.body;
 
   console.log('id: ', req.body);
   const options = {
@@ -33,17 +38,12 @@ router.post('/add', (req, res) => {
   request(options, (err, response, body) => {
     if (!err && response.statusCode === 200) {
       const info = JSON.parse(body);
-      // console.log('info: ', info);
-      // const hours = info.hours[0].open;
-      // console.log('hours: ', hours);
 
       info.userId = userId;
 
       db.addRestaurant(info, (newRestaurant) => {
         if (newRestaurant) {
           res.json(newRestaurant);
-          // db.findAllRestaurants(userId, (restaurants) => {
-          // });
         } else {
           res.end();
         }
@@ -53,15 +53,14 @@ router.post('/add', (req, res) => {
 });
 
 router.get('/search', (req, res) => {
-  let { name, lat, lng } = req.query;
+  let {
+    name,
+    lat,
+    lng
+  } = req.query;
 
   lat = lat || 37.691109;
   lng = lng || -122.472221;
-
-  console.log(req.query);
-
-  // const latitude = 37.691109;
-  // const longitude = -122.472221;
 
   const options = {
     url: `https://api.yelp.com/v3/businesses/search?term=${name}&latitude=${lat}&longitude=${lng}`,
@@ -80,28 +79,24 @@ router.get('/search', (req, res) => {
 });
 
 router.get('/getInfo', (req, res) => {
-
   const { id } = req.query;
   console.log(req.query);
 
-  db.findRestaurant(id, (restaurant) => {
+  db.findRestaurant(id, restaurant => {
     res.json(restaurant);
   });
+});
 
-  // var options = {
-  //   url:`https://api.yelp.com/v3/businesses/${id}`,
-  //   headers: {
-  //     'Authorization': `Bearer ${API.YELP}`,
-  //   },
-  // };
+router.delete('/delete', (req, res) => {
+  const { userId, yelpId } = req.query;
+  console.log(req.query);
 
-  // request(options, (err, response, body) => {
-  //   if (!err && response.statusCode == 200) {
-  //     var info = JSON.parse(body);
-  //     res.json(info);
-  //   } 
-  // });
-
+  db.removeRestaurant(userId, yelpId, numDelete => {
+    console.log('numDelete: ', numDelete);
+    db.findAllRestaurants(userId, (restaurants) => {
+      res.json(restaurants);
+    });
+  });
 });
 
 module.exports = router;

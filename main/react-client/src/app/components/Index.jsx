@@ -13,10 +13,7 @@ import Register from './Register.jsx';
 import AuthRoute from './AuthRoute.jsx';
 
 const middleware = applyMiddleware(promise(), thunk, createLogger());
-const store = createStore(
-  reducers,
-  middleware,
-);
+const store = createStore(reducers, middleware);
 
 ReactDOM.render(
   <BrowserRouter>
@@ -27,6 +24,6 @@ ReactDOM.render(
         <AuthRoute exact path="/" component={Main} />
       </Switch>
     </Provider>
-  </BrowserRouter>
-  , document.getElementById('app')
+  </BrowserRouter>,
+  document.getElementById('app')
 );

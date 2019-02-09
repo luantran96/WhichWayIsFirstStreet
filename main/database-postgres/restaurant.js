@@ -15,7 +15,8 @@ module.exports.addRestaurant = (restaurant, cb) => {
     photos,
     price,
     hours,
-    userId } = restaurant;
+    userId
+  } = restaurant;
 
   location = location.display_address.join(' ');
 
@@ -32,21 +33,21 @@ module.exports.addRestaurant = (restaurant, cb) => {
     .then((foundRestaurant) => {
       if (!foundRestaurant) {
         db.Restaurant.create({
-          yelpId: id,
-          name,
-          image_url,
-          url,
-          display_phone,
-          review_count,
-          categories,
-          rating,
-          location,
-          coordinates,
-          photos,
-          price,
-          hours,
-          userId,
-        })
+            yelpId: id,
+            name,
+            image_url,
+            url,
+            display_phone,
+            review_count,
+            categories,
+            rating,
+            location,
+            coordinates,
+            photos,
+            price,
+            hours,
+            userId,
+          })
           .then((rest) => {
             console.log('rest in add:', rest.dataValues);
             cb(rest.dataValues);
@@ -58,16 +59,23 @@ module.exports.addRestaurant = (restaurant, cb) => {
 
 };
 
-module.exports.removeRestaurant = () => {
-  //TODO:
+module.exports.removeRestaurant = (userId, yelpId, cb) => {
+  db.Restaurant.destroy({
+    where: {
+      yelpId,
+      userId,
+    }
+  }).then(numDelete => {
+    cb(numDelete);
+  });
 };
 
 module.exports.findRestaurant = (yelpId, cb) => {
   db.Restaurant.findAll({
-    where: {
-      yelpId,
-    }
-  })
+      where: {
+        yelpId,
+      }
+    })
     .then((restaurant) => {
       cb(restaurant);
     });
@@ -75,10 +83,10 @@ module.exports.findRestaurant = (yelpId, cb) => {
 
 module.exports.findAllRestaurants = (userId, cb) => {
   db.Restaurant.findAll({
-    where: {
-      userId,
-    }
-  })
+      where: {
+        userId,
+      }
+    })
     .then((restaurants) => {
       cb(restaurants);
     });

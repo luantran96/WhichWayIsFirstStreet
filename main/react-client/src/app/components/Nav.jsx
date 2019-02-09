@@ -16,7 +16,6 @@ class Nav extends React.Component {
   updateRestaurants(e, { result }) {
     const { dispatch, userId } = this.props;
 
-
     this.props.addRestaurant(result, userId);
   }
 
@@ -37,7 +36,6 @@ class Nav extends React.Component {
     setTimeout(() => {
       this.props.searchRestaurants(search_value, user.lat, user.lng);
     }, 50);
-
   }
 
   render() {
@@ -56,13 +54,8 @@ class Nav extends React.Component {
             results={results}
           />
         </div>
-        <div
-          id="login"
-        >
-          <Icon
-            name="location arrow"
-            onClick={() => findMe()}
-          />
+        <div id="login">
+          <Icon name="location arrow" onClick={() => findMe()} />
         </div>
       </div>
     );
@@ -77,58 +70,62 @@ const mapDispatchToProps = dispatch => ({
         if (!navigator.geolocation) {
           window.alert("Your browser doesn't support geolocation");
         }
-        navigator.geolocation.getCurrentPosition((position) => {
-          const { latitude, longitude } = position.coords;
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const { latitude, longitude } = position.coords;
 
-          resolve([latitude, longitude]);
-        }, err => reject(err));
-      }),
+            resolve([latitude, longitude]);
+          },
+          err => reject(err)
+        );
+      })
     });
   },
   addRestaurant: (result, userId) => {
     dispatch({
       type: 'ADD_RESTAURANT_TO_DB',
-      payload: axios.post('restaurants/add',
-        {
-          id: result.yelpId,
-          userId,
-        }),
+      payload: axios.post('restaurants/add', {
+        id: result.yelpId,
+        userId
+      })
     });
   },
   resetSearchResults: () => {
     dispatch({
-      type: 'RESET_RESULTS',
-    })
+      type: 'RESET_RESULTS'
+    });
   },
-  handleInputValue: value => dispatch({
-    type: 'START_SEARCH',
-    payload: value,
-  })
-  ,
-  searchRestaurants: (value, lat, lng) => dispatch({
-    type: 'SEARCH_RESTAURANTS',
-    payload: axios.get('restaurants/search',
-      {
+  handleInputValue: value =>
+    dispatch({
+      type: 'START_SEARCH',
+      payload: value
+    }),
+  searchRestaurants: (value, lat, lng) =>
+    dispatch({
+      type: 'SEARCH_RESTAURANTS',
+      payload: axios.get('restaurants/search', {
         params: {
           name: value,
           lat,
-          lng,
-        },
-      }),
-  }),
-  showModal: bool => dispatch({
-    type: 'SHOW_MODAL',
-    payload: bool,
-  }),
-
+          lng
+        }
+      })
+    }),
+  showModal: bool =>
+    dispatch({
+      type: 'SHOW_MODAL',
+      payload: bool
+    })
 });
 
-
-export default connect(state => ({
-  isLoading: state.nav.isLoading,
-  results: state.nav.results,
-  searchResults: state.nav.searchResults,
-  value: state.nav.value,
-  userId: state.app.user.uuid,
-  user: state.app.user,
-}), mapDispatchToProps)(Nav);
+export default connect(
+  state => ({
+    isLoading: state.nav.isLoading,
+    results: state.nav.results,
+    searchResults: state.nav.searchResults,
+    value: state.nav.value,
+    userId: state.app.user.uuid,
+    user: state.app.user
+  }),
+  mapDispatchToProps
+)(Nav);
