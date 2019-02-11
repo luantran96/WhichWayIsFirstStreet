@@ -10,7 +10,7 @@ const ListItem = ({
   price
 }) => (
   <div>
-    <Item.Group>
+    <Item.Group className="animated fadeInUp">
       <Item className="list-item" onClick={() => showDetails(restaurant)}>
         <Item.Image src={restaurant.image_url} />
         <Item.Content>
@@ -34,7 +34,7 @@ const ListItem = ({
           <Item.Extra>
             {price[restaurant.price]}
             <Button.Group>
-              <Button onClick={() => handleButtonClick(restaurant)} negative>
+              <Button className="delete-button" onClick={() => handleButtonClick(restaurant)} negative>
                 Delete
               </Button>
             </Button.Group>

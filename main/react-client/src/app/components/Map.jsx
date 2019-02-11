@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = state => ({
   directionsService: state.map.directionsService,
@@ -98,7 +99,7 @@ class Map extends Component {
     this.props.init();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     let {
       updateUserMarker,
       recenterMap,
@@ -112,48 +113,35 @@ class Map extends Component {
       updateMap
     } = this.props;
     let newLocations = this.props.locations;
-    let isChanged = false;
 
-    newLocations.forEach((location, i) => {
-      if (
-        !prevProps.locations[i] ||
-        (location.coordinates.lat !== prevProps.locations[i].coordinates.lat &&
-          location.coordinates.lng !== prevProps.locations[i].coordinates.lng)
-      ) {
-        isChanged = true;
-      }
-    });
 
-    if (isChanged) {
-      // Delete all markers on map
-      deleteMarkers();
-      // Create an array of alphabetical characters used to label the markers.
-      let label = 0;
-      const newInfoWindows = {};
-      const markers = [];
+    let label = 0;
+    const newInfoWindows = {};
+    const markers = [];
 
-      console.log('newLocations: ==> ', newLocations);
+    // console.log('newLocations: ==> ', newLocations);
 
-      newLocations.forEach(location => {
-        label += 1;
-
+    Object.keys(newLocations).forEach(yelpId => {
+      label += 1;
+      // If marker hasn't been drawn on Map
+      if (!newLocations[yelpId].marker) {
         const contentStr =
           '<div id="content">' +
-          `<h4 id="firstHeading">${location.title}</h4>` +
+          `<h4 id="firstHeading">${newLocations[yelpId].title}</h4>` +
           '<div id="bodyContent">' +
-          `<p>${location.address}</p>` +
+          `<p>${newLocations[yelpId].address}</p>` +
           '</div>' +
           '</div>';
 
         const newMarker = new google.maps.Marker({
           position: {
-            lat: location.coordinates.latitude,
-            lng: location.coordinates.longitude
+            lat: newLocations[yelpId].coordinates.latitude,
+            lng: newLocations[yelpId].coordinates.longitude
           },
           map,
           animation: google.maps.Animation.DROP,
           label: label.toString(),
-          title: location.title
+          title: newLocations[yelpId].title
         });
 
         newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
@@ -169,33 +157,30 @@ class Map extends Component {
         });
 
         google.maps.event.addListener(newMarker, 'click', () => {
-          getRestaurantInfo(location.yelpId);
+          getRestaurantInfo(newLocations[yelpId].yelpId);
           changeRender('restaurantInfo');
         });
 
-        markers.push(newMarker);
-      });
+        newLocations[yelpId].marker = newMarker;
+      }
+    });
 
-      updateMap(newLocations, markers, newInfoWindows);
-    }
+    // updateMap(newLocations, markers, newInfoWindows);
 
     // If user location is found
     if (user.lat && user.lng) {
-      if (user.marker) {
-        user.marker.setMap(null);
+      if (!user.marker) {
+        const userMarker = new google.maps.Marker({
+          position: {
+            lat: user.lat,
+            lng: user.lng
+          },
+          map,
+          animation: google.maps.Animation.DROP,
+          label: 'ME'
+        });
+        updateUserMarker(userMarker);
       }
-
-      const userMarker = new google.maps.Marker({
-        position: {
-          lat: user.lat,
-          lng: user.lng
-        },
-        map,
-        animation: google.maps.Animation.DROP,
-        label: 'ME'
-      });
-
-      updateUserMarker(userMarker);
     }
   }
 
@@ -203,6 +188,18 @@ class Map extends Component {
     return <div id="map" />;
   }
 }
+
+Map.propTypes = {
+  updateUserMarker: PropTypes.func.isRequired,
+  recenterMap: PropTypes.func.isRequired,
+  user: PropTypes.instanceOf(Object).isRequired,
+  map: PropTypes.instanceOf(Object).isRequired,
+  directionsService: PropTypes.instanceOf(Object).isRequired,
+  deleteMarkers: PropTypes.func.isRequired,
+  changeRender: PropTypes.func.isRequired,
+  getRestaurantInfo: PropTypes.func.isRequired,
+  updateMap: PropTypes.func.isRequired,
+};
 
 export default connect(
   mapStateToProps,

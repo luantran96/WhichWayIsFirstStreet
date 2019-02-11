@@ -121,32 +121,40 @@ const reducer = (state = {
 
     case 'DELETE_RESTAURANT_FULFILLED':
     {
-      const restaurants = action.payload.data;
-      
-      const locations = restaurants.map(restaurant => ({
-        yelpId: restaurant.yelpId,
-        coordinates: restaurant.coordinates,
-        title: restaurant.name,
-        address: restaurant.location,
-      }));
+      const yelpId = action.payload.data;
+      let locations = Object.assign({}, state.locations);
+
+      locations[yelpId].marker.setMap(null);
+
+      delete locations[yelpId];
+
+      // const locations = restaurants.map(restaurant => ({
+      //   yelpId: restaurant.yelpId,
+      //   coordinates: restaurant.coordinates,
+      //   title: restaurant.name,
+      //   address: restaurant.location,
+      // }));
 
       return {
         ...state,
-        restaurants,
         locations,
-      }
+      };
     }
 
     case 'FETCH_RESTAURANTS_FULFILLED':
     {
       const restaurants = action.payload.data;
 
-      const locations = restaurants.map(restaurant => ({
-        yelpId: restaurant.yelpId,
-        coordinates: restaurant.coordinates,
-        title: restaurant.name,
-        address: restaurant.location,
-      }));
+      const locations = {};
+
+      restaurants.forEach(restaurant => {
+        locations[restaurant.yelpId] = {
+          coordinates: restaurant.coordinates,
+          title: restaurant.name,
+          address: restaurant.location,
+          marker: null
+        };
+      });
 
       return {
         ...state,
@@ -158,25 +166,16 @@ const reducer = (state = {
     case 'ADD_RESTAURANT_TO_DB_FULFILLED':
     {
       const restaurants = state.restaurants.slice();
-      const locations = state.locations.slice();
+      const locations = Object.assign({}, state.locations);
       const newRestaurant = action.payload.data;
 
       restaurants.push(newRestaurant);
 
-      locations.push({
-        yelpId: newRestaurant.yelpId,
+      locations[newRestaurant.yelpId] = {
         coordinates: newRestaurant.coordinates,
         title: newRestaurant.name,
         address: newRestaurant.location,
-      });
-
-      // const locations = restaurants.map(restaurant => ({
-      //   yelpId: restaurant.yelpId,
-      //   coordinates: restaurant.coordinates,
-      //   title: restaurant.name,
-      //   address: restaurant.location,
-      // }
-      // ));
+      };
 
       return {
         ...state,

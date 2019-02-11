@@ -82,6 +82,10 @@ h1#title {
     border-color: transparent;
 }
 
+.delete-button {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.17), 0 -1px 0px rgba(0,0,0,0.02);
+}
+
 #direction-headers {
     margin-bottom: 20px;
     display: flex;
@@ -165,7 +169,7 @@ h1#title {
 }
 .ui.buttons {    
     position: absolute;
-    top: -6px;
+    bottom: 10px;
     left: 130px;
 }
 
@@ -338,36 +342,6 @@ width: 80px;
 
   /**************************/
 
-  @-webkit-keyframes fadeInUp {
-    from {
-      opacity: 0;
-      -webkit-transform: translate3d(0, 100%, 0);
-      transform: translate3d(0, 100%, 0);
-    }
+
   
-    to {
-      opacity: 1;
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      -webkit-transform: translate3d(0, 100%, 0);
-      transform: translate3d(0, 100%, 0);
-    }
-  
-    to {
-      opacity: 1;
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
-  
-  .fadeInUp {
-    -webkit-animation-name: fadeInUp;
-    animation-name: fadeInUp;
-  }
-  
+

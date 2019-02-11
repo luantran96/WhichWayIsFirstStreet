@@ -93,9 +93,7 @@ router.delete('/delete', (req, res) => {
 
   db.removeRestaurant(userId, yelpId, numDelete => {
     console.log('numDelete: ', numDelete);
-    db.findAllRestaurants(userId, (restaurants) => {
-      res.json(restaurants);
-    });
+      res.json(yelpId);
   });
 });
 

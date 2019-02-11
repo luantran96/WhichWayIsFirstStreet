@@ -1,16 +1,14 @@
-const axios = require('axios');
 
 let reducer = (state = {
   currentPosition: {
     lat: 37.787484,
     lng: -122.396397,
   },
-  locations: [],
+  locations: {},
   map: undefined,
   markers: [],
   infoWindows: {},
   destination: [],
-  origin: undefined,
   directionsService: undefined,
   directionsDisplay: undefined,
 }, action) => {
