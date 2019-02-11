@@ -1,17 +1,23 @@
-const axios = require('axios');
-
 let reducer = (state = {
-  restaurant: undefined,     
+  restaurant: undefined,
 }, action) => {
   switch (action.type) {
-    case 'GET_INFO_FULFILLED': {
-      return {
-        ...state,
-        restaurant: action.payload.data[0],
-      }
+    case 'SUBMIT_NOTES':
+    {
+      console.log(action.payload);
+      return state;
     }
+    case 'GET_INFO_FULFILLED':
+      {
+        return {
+          ...state,
+          restaurant: action.payload.data[0]
+        };
+      }
+
+    default:
+      return state;
   }
-    return state;
 };
 
 module.exports = reducer;

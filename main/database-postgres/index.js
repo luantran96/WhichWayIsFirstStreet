@@ -74,8 +74,14 @@ const Restaurant = sequelize.define('restaurant', {
   hours: {
     type: Sequelize.ARRAY(Sequelize.JSON),
   },
-  notes: {
-    type: Sequelize.STRING,
+  dishName: {
+    type: Sequelize.TEXT,
+  },
+  dishRatings: {
+    type: Sequelize.TEXT,
+  },
+  dishNotes: {
+    type: Sequelize.TEXT,
   },
 }, {
   timestamps: true,

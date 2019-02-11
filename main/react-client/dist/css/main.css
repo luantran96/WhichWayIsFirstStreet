@@ -115,6 +115,11 @@ h1#title {
 
 #noteForm {
     box-shadow: 0 2px 4px rgba(0,0,0,0.17), 0 -1px 0px rgba(0,0,0,0.02);
+    border: 1px red solid;
+}
+
+.fields > .rating {
+    padding-left: 5px;
 }
 
 .mapbox {

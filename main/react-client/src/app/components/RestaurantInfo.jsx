@@ -1,123 +1,340 @@
 import React from 'react';
 import convertTime from 'convert-time';
-import { Table, Rating, Item, Form, TextArea, Button } from 'semantic-ui-react';
+import { Table, Rating, Item, Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
+class RestaurantInfo extends React.Component {
+  constructor(props) {
+    super(props);
 
-const RestaurantInfo = ({ restaurant }) => {
-  let hours = {
-    '0': [],
-    '1': [],
-    '2': [],
-    '3': [],
-    '4': [],
-    '5': [],
-    '6': [],
-  };
+    this.state = {
+      dishName: '',
+      dishRating: '',
+      dishNotes: '',
+      convertToDay: {
+        '0': 'Sunday',
+        '1': 'Monday',
+        '2': 'Tuesday',
+        '3': 'Wednesday',
+        '4': 'Thursday',
+        '5': 'Friday',
+        '6': 'Saturday'
+      }
+    };
 
-  var d = new Date();
-  var n = d.getDay();
-
-  console.log(n);
-
-  let convertToDay = {
-    '0': 'Sunday',
-    '1': 'Monday',
-    '2': 'Tuesday',
-    '3': 'Wednesday',
-    '4': 'Thursday',
-    '5': 'Friday',
-    '6': 'Saturday',
+    this.handleChange = this.handleChange.bind(this);
+    this.handleRate = this.handleRate.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  console.log('restaurant in restaurantInfo: ', restaurant);
+  handleSubmit() {
+    console.log(this.props);
+    const { restaurant, submitNotes } = this.props;
+    const { dishName, dishRating, dishNotes } = this.state;
 
-  restaurant.hours.map((day) => {
-    let hour = `${convertTime(day.start.slice(0, 2) + ':' + day.start.slice(2))} - ${convertTime(day.end.slice(0, 2) + ':' + day.end.slice(2))}`;
-    hours[day.day].push(hour);
-  });
+    submitNotes(restaurant.yelpId, restaurant.userId, dishName, dishRating, dishNotes);
+  }
 
-  console.log(restaurant.location);
+  handleChange(e, { name, value }) {
+    this.setState({ [name]: value });
+    console.log(this.state);
+  }
 
-  return (
-    <div>
-      <Item.Group>
-        <Item>
-          <div className="mapbox">
-            <Item.Image
-              size='medium'
-              className="restaurantInfoImage"
-              src={restaurant.image_url} />
+  handleRate(e, { rating }) {
+    this.setState({ dishRating: rating });
+    console.log(this.state);
+  }
 
-            <div id="reviews">
-              <div>
-                <span className='labels'>Price range:</span> {`${restaurant.price}`}
-              </div>
-              <div>
-                <span className='labels'>Address:</span> {`${restaurant.location}`}
-              </div>
-              <div>
-                <span className='labels'>Contact:</span> {`${restaurant.display_phone}`}
-              </div>
-              <div>
-                <span className='ratings'><Rating icon='star' size='huge' rating={restaurant.rating} maxRating={5} disabled /></span>
-              </div>
-              <div>
-                <span className='labels'>Reviews: </span> {`${restaurant.review_count}`}
+  render() {
+    const { restaurant } = this.props;
+    const { convertToDay } = this.state;
+    const d = new Date();
+    const n = d.getDay();
+
+    let hours = {
+      '0': [],
+      '1': [],
+      '2': [],
+      '3': [],
+      '4': [],
+      '5': [],
+      '6': []
+    };
+
+    restaurant.hours.map(day => {
+      const hour = `${convertTime(
+        day.start.slice(0, 2) + ':' + day.start.slice(2)
+      )} - ${convertTime(day.end.slice(0, 2) + ':' + day.end.slice(2))}`;
+      hours[day.day].push(hour);
+    });
+
+    return (
+      <div>
+        <Item.Group>
+          <Item>
+            <div className="mapbox">
+              <Item.Image
+                size="medium"
+                className="restaurantInfoImage"
+                src={restaurant.image_url}
+              />
+
+              <div id="reviews">
+                <div>
+                  <span className="labels">Price range:</span>
+                  {`${restaurant.price}`}
+                </div>
+                <div>
+                  <span className="labels">Address:</span>
+                  {`${restaurant.location}`}
+                </div>
+                <div>
+                  <span className="labels">Contact:</span>
+                  {`${restaurant.display_phone}`}
+                </div>
+                <div>
+                  <span className="ratings">
+                    <Rating
+                      icon="star"
+                      size="huge"
+                      rating={restaurant.rating}
+                      maxRating={5}
+                      disabled
+                    />
+                  </span>
+                </div>
+                <div>
+                  <span className="labels">Reviews: </span>
+                  {`${restaurant.review_count}`}
+                </div>
               </div>
             </div>
-          </div>
-          <Item.Content className="restaurantInfoContent">
-            <Item.Header className="restaurantInfoHeader"><a href={restaurant.url}>{restaurant.name}</a></Item.Header>
-            <Item.Description>
-              <div className="descriptionContent">
-                <div className="details">
-                  <Form>
-                    <TextArea id="noteForm" style={{ minHeight: 200, maxHeight: 200 }} placeholder='What was good here ?' />
-                    <Button id="saveButton" color='red'>Save</Button>
-                  </Form>
-                </div>
-                <div className="hours">
-                  <Table celled collapsing>
-                    <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell>Day</Table.HeaderCell>
-                        <Table.HeaderCell>Hours</Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                      {
-                        Object.keys(hours).map((day, idx) => {
+            <Item.Content className="restaurantInfoContent">
+              <Item.Header className="restaurantInfoHeader">
+                <a href={restaurant.url}>{restaurant.name}</a>
+              </Item.Header>
+              <Item.Description>
+                <div className="descriptionContent">
+                  <div className="details">
+                    <Form id="noteForm">
+                      <Form.Group widths={1}>
+                        <Form.Input
+                          label="Dish name"
+                          name="dishName"
+                          placeholder="Pan fried ice-cream"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group widths={1}>
+                        <Form.Input
+                          label="How was it?"
+                          name="dishNotes"
+                          placeholder="A little watery"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group widths={1}>
+                        <Rating
+                          icon="heart"
+                          defaultRating={0}
+                          maxRating={5}
+                          onRate={this.handleRate}
+                        />
+                      </Form.Group>
+                      <Button type="submit" color="instagram" onClick={this.handleSubmit}>
+                        Submit
+                      </Button>
+                    </Form>
+                  </div>
+                  <div className="hours">
+                    <Table celled collapsing>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell>Day</Table.HeaderCell>
+                          <Table.HeaderCell>Hours</Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        {Object.keys(hours).map((day, idx) => {
                           return (
                             <Table.Row>
                               <Table.Cell>{convertToDay[idx]}</Table.Cell>
                               <Table.Cell>
-                                {(hours[day].join(', ') || 'Closed')} <span id="openNow">{(n === idx ? 'Open Now' : '')}</span>
+                                {hours[day].join(', ') || 'Closed'}
+                                <span id="openNow">{n === idx ? 'Open Now' : ''}</span>
                               </Table.Cell>
-
                             </Table.Row>
                           );
-                        })
-                      }
-                    </Table.Body>
-                  </Table>
+                        })}
+                      </Table.Body>
+                    </Table>
+                  </div>
                 </div>
-              </div>
-            </Item.Description>
-          </Item.Content>
-        </Item>
-      </Item.Group>
-    </div>
-  )
-};
-
-const mapStateToProps = (state) => {
-  return {
-    restaurant: state.restaurantInfo.restaurant,
+              </Item.Description>
+            </Item.Content>
+          </Item>
+        </Item.Group>
+      </div>
+    );
   }
+}
+// const RestaurantInfo = ({ restaurant, handleChange, handleSubmit }) => {
+//   const hours = {
+//     '0': [],
+//     '1': [],
+//     '2': [],
+//     '3': [],
+//     '4': [],
+//     '5': [],
+//     '6': []
+//   };
+
+//   const d = new Date();
+//   const n = d.getDay();
+
+//   console.log(n);
+
+//   const convertToDay = {
+//     '0': 'Sunday',
+//     '1': 'Monday',
+//     '2': 'Tuesday',
+//     '3': 'Wednesday',
+//     '4': 'Thursday',
+//     '5': 'Friday',
+//     '6': 'Saturday'
+//   };
+
+// restaurant.hours.map(day => {
+//   const hour = `${convertTime(day.start.slice(0, 2) + ':' + day.start.slice(2))} - ${convertTime(
+//     day.end.slice(0, 2) + ':' + day.end.slice(2)
+//   )}`;
+//   hours[day.day].push(hour);
+// });
+
+//   return (
+//     <div>
+//       <Item.Group>
+//         <Item>
+//           <div className="mapbox">
+//             <Item.Image size="medium" className="restaurantInfoImage" src={restaurant.image_url} />
+
+//             <div id="reviews">
+//               <div>
+//                 <span className="labels">Price range:</span>
+//                 {`${restaurant.price}`}
+//               </div>
+//               <div>
+//                 <span className="labels">Address:</span>
+//                 {`${restaurant.location}`}
+//               </div>
+//               <div>
+//                 <span className="labels">Contact:</span>
+//                 {`${restaurant.display_phone}`}
+//               </div>
+//               <div>
+//                 <span className="ratings">
+//                   <Rating
+//                     icon="star"
+//                     size="huge"
+//                     rating={restaurant.rating}
+//                     maxRating={5}
+//                     disabled
+//                   />
+//                 </span>
+//               </div>
+//               <div>
+//                 <span className="labels">Reviews: </span>
+//                 {`${restaurant.review_count}`}
+//               </div>
+//             </div>
+//           </div>
+//           <Item.Content className="restaurantInfoContent">
+//             <Item.Header className="restaurantInfoHeader">
+//               <a href={restaurant.url}>{restaurant.name}</a>
+//             </Item.Header>
+//             <Item.Description>
+//               <div className="descriptionContent">
+//                 <div className="details">
+//                   <Form id="noteForm">
+//                     <Form.Group widths={1}>
+//                       <Form.Input
+//                         label="Dish name"
+//                         placeholder="Pan fried ice-cream"
+//                         onChange={handleChange}
+//                       />
+//                     </Form.Group>
+//                     <Form.Group widths={1}>
+//                       <Rating icon="heart" defaultRating={0} maxRating={5} />
+//                     </Form.Group>
+//                     <Form.Group widths={1}>
+//                       <Form.Input
+//                         label="How was it?"
+//                         placeholder="A little watery"
+//                         onChange={handleChange}
+//                       />
+//                     </Form.Group>
+//                     <Button type="submit" color="instagram">
+//                       Submit
+//                     </Button>
+//                   </Form>
+//                 </div>
+//                 <div className="hours">
+//                   <Table celled collapsing>
+//                     <Table.Header>
+//                       <Table.Row>
+//                         <Table.HeaderCell>Day</Table.HeaderCell>
+//                         <Table.HeaderCell>Hours</Table.HeaderCell>
+//                       </Table.Row>
+//                     </Table.Header>
+//                     <Table.Body>
+//                       {Object.keys(hours).map((day, idx) => {
+//                         return (
+//                           <Table.Row>
+//                             <Table.Cell>{convertToDay[idx]}</Table.Cell>
+//                             <Table.Cell>
+//                               {hours[day].join(', ') || 'Closed'}
+//                               <span id="openNow">{n === idx ? 'Open Now' : ''}</span>
+//                             </Table.Cell>
+//                           </Table.Row>
+//                         );
+//                       })}
+//                     </Table.Body>
+//                   </Table>
+//                 </div>
+//               </div>
+//             </Item.Description>
+//           </Item.Content>
+//         </Item>
+//       </Item.Group>
+//     </div>
+//   );
+// };
+
+const mapStateToProps = state => {
+  return {
+    restaurant: state.restaurantInfo.restaurant
+  };
 };
 
-let wrappedRestaurantInfo = connect(mapStateToProps)(RestaurantInfo);
+const mapDispatchToProps = dispatch => {
+  return {
+    submitNotes: (userId, yelpId, dishName, dishRatings, dishNotes) => {
+      dispatch({
+        type: 'SUBMIT_NOTES',
+        payload: axios.post('restaurants/addNotes', {
+          userId,
+          yelpId,
+          dishName,
+          dishRatings,
+          dishNotes
+        })
+      });
+    }
+  };
+};
 
-export default wrappedRestaurantInfo;
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RestaurantInfo);

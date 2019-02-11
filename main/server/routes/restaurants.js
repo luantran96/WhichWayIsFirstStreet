@@ -79,7 +79,9 @@ router.get('/search', (req, res) => {
 });
 
 router.get('/getInfo', (req, res) => {
-  const { id } = req.query;
+  const {
+    id
+  } = req.query;
   console.log(req.query);
 
   db.findRestaurant(id, restaurant => {
@@ -88,13 +90,30 @@ router.get('/getInfo', (req, res) => {
 });
 
 router.delete('/delete', (req, res) => {
-  const { userId, yelpId } = req.query;
+  const {
+    userId,
+    yelpId
+  } = req.query;
   console.log(req.query);
 
   db.removeRestaurant(userId, yelpId, numDelete => {
     console.log('numDelete: ', numDelete);
-      res.json(yelpId);
+    res.json(yelpId);
   });
+});
+
+router.post('/addNotes', (req, res) => {
+  const {
+    yelpId,
+    userId,
+    dishName,
+    dishNotes,
+    dishRating
+  } = req.body;
+
+  console.log(req.body);
+
+  res.end();
 });
 
 module.exports = router;
