@@ -22,8 +22,6 @@ module.exports.addRestaurant = (restaurant, cb) => {
 
   hours = hours ? hours[0].open : [];
 
-  console.log('location: ', location);
-
   db.Restaurant
     .findOne({
       where: {

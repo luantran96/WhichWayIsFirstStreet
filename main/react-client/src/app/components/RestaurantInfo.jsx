@@ -19,8 +19,8 @@ class RestaurantInfo extends React.Component {
         '3': 'Wednesday',
         '4': 'Thursday',
         '5': 'Friday',
-        '6': 'Saturday'
-      }
+        '6': 'Saturday',
+      },
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -59,7 +59,7 @@ class RestaurantInfo extends React.Component {
       '3': [],
       '4': [],
       '5': [],
-      '6': []
+      '6': [],
     };
 
     restaurant.hours.map(day => {
@@ -143,7 +143,7 @@ class RestaurantInfo extends React.Component {
                         />
                       </Form.Group>
                       <Button type="submit" color="instagram" onClick={this.handleSubmit}>
-                        Submit
+                        Add
                       </Button>
                     </Form>
                   </div>
@@ -162,7 +162,7 @@ class RestaurantInfo extends React.Component {
                               <Table.Cell>{convertToDay[idx]}</Table.Cell>
                               <Table.Cell>
                                 {hours[day].join(', ') || 'Closed'}
-                                <span id="openNow">{n === idx ? 'Open Now' : ''}</span>
+                                <span id="openNow">{n === idx ? ' Open Now' : ''}</span>
                               </Table.Cell>
                             </Table.Row>
                           );
@@ -313,7 +313,7 @@ class RestaurantInfo extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    restaurant: state.restaurantInfo.restaurant
+    restaurant: state.restaurantInfo.restaurant,
   };
 };
 
@@ -327,10 +327,10 @@ const mapDispatchToProps = dispatch => {
           yelpId,
           dishName,
           dishRatings,
-          dishNotes
-        })
+          dishNotes,
+        }),
       });
-    }
+    },
   };
 };
 

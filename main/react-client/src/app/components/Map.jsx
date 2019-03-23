@@ -12,60 +12,60 @@ const mapStateToProps = state => ({
   markers: state.map.markers,
   infoWindows: state.map.infoWindows,
   destination: state.map.destination,
-  user: state.app.user
+  user: state.app.user,
 });
 
 const mapDispatchToProps = dispatch => ({
   updateUserMarker: marker =>
     dispatch({
       type: 'UPDATE_USER_MARKER',
-      payload: marker
+      payload: marker,
     }),
   recenterMap: (lat, lng) =>
     dispatch({
       type: 'RECENTER',
-      payload: [lat, lng]
+      payload: [lat, lng],
     }),
   init: () =>
     dispatch({
-      type: 'INIT_MAP'
+      type: 'INIT_MAP',
     }),
   changeRender: newRender =>
     dispatch({
       type: 'CHANGE_RENDER',
-      payload: newRender
+      payload: newRender,
     }),
   getRestaurantInfo: yelpId =>
     dispatch({
       type: 'GET_INFO',
       payload: axios.get('restaurants/getInfo', {
         params: {
-          id: yelpId
-        }
-      })
+          id: yelpId,
+        },
+      }),
     }),
   deleteMarkers: () =>
     dispatch({
-      type: 'DELETE_MARKERS'
+      type: 'DELETE_MARKERS',
     }),
   displayRoute: (marker, passedDestination = null) =>
     dispatch({
       type: 'DISPLAY_ROUTE',
       payload: {
         marker,
-        passedDestination
-      }
+        passedDestination,
+      },
     }),
   updateOrigin: coordinates =>
     dispatch({
       type: 'UPDATE_ORIGIN',
-      payload: coordinates
+      payload: coordinates,
     }),
 
   updateDestination: coordinates =>
     dispatch({
       type: 'UPDATE_DESTINATION',
-      payload: coordinates
+      payload: coordinates,
     }),
   fetchDirections: (origin, destination) =>
     dispatch({
@@ -75,9 +75,9 @@ const mapDispatchToProps = dispatch => ({
           end_lat: destination.lat,
           end_lng: destination.lng,
           start_lat: origin.lat,
-          start_lng: origin.lng
-        }
-      })
+          start_lng: origin.lng,
+        },
+      }),
     }),
   updateMap: (locations, markers, infoWindows) =>
     dispatch({
@@ -85,9 +85,9 @@ const mapDispatchToProps = dispatch => ({
       payload: {
         locations,
         markers,
-        infoWindows
-      }
-    })
+        infoWindows,
+      },
+    }),
 });
 
 class Map extends Component {
@@ -110,10 +110,9 @@ class Map extends Component {
       deleteMarkers,
       changeRender,
       getRestaurantInfo,
-      updateMap
+      updateMap,
     } = this.props;
     let newLocations = this.props.locations;
-
 
     let label = 0;
     const newInfoWindows = {};
@@ -136,16 +135,16 @@ class Map extends Component {
         const newMarker = new google.maps.Marker({
           position: {
             lat: newLocations[yelpId].coordinates.latitude,
-            lng: newLocations[yelpId].coordinates.longitude
+            lng: newLocations[yelpId].coordinates.longitude,
           },
           map,
           animation: google.maps.Animation.DROP,
           label: label.toString(),
-          title: newLocations[yelpId].title
+          title: newLocations[yelpId].title,
         });
 
         newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
-          content: contentStr
+          content: contentStr,
         });
 
         google.maps.event.addListener(newMarker, 'mouseover', () => {
@@ -165,19 +164,17 @@ class Map extends Component {
       }
     });
 
-    // updateMap(newLocations, markers, newInfoWindows);
-
     // If user location is found
     if (user.lat && user.lng) {
       if (!user.marker) {
         const userMarker = new google.maps.Marker({
           position: {
             lat: user.lat,
-            lng: user.lng
+            lng: user.lng,
           },
           map,
           animation: google.maps.Animation.DROP,
-          label: 'ME'
+          label: 'ME',
         });
         updateUserMarker(userMarker);
       }

@@ -12,8 +12,7 @@ const AuthRoute = ({ component: Component, user }) => {
         ) : (
           <Redirect
             to={{
-              pathname: '/login'
-              // state: { from: props.location }
+              pathname: '/login',
             }}
           />
         )
@@ -24,7 +23,7 @@ const AuthRoute = ({ component: Component, user }) => {
 
 const mapStateToProps = state => {
   return {
-    user: state.app.user
+    user: state.app.user,
   };
 };
 

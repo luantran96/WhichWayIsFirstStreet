@@ -54,7 +54,9 @@ class Nav extends React.Component {
             results={results}
           />
         </div>
-        <div id="login">
+        <div id="plan-trip">PLAN TRIP</div>
+
+        <div id="find-me-button" className="nav-button">
           <Icon name="location arrow" onClick={() => findMe()} />
         </div>
       </div>
@@ -78,7 +80,7 @@ const mapDispatchToProps = dispatch => ({
           },
           err => reject(err)
         );
-      })
+      }),
     });
   },
   addRestaurant: (result, userId) => {
@@ -86,19 +88,19 @@ const mapDispatchToProps = dispatch => ({
       type: 'ADD_RESTAURANT_TO_DB',
       payload: axios.post('restaurants/add', {
         id: result.yelpId,
-        userId
-      })
+        userId,
+      }),
     });
   },
   resetSearchResults: () => {
     dispatch({
-      type: 'RESET_RESULTS'
+      type: 'RESET_RESULTS',
     });
   },
   handleInputValue: value =>
     dispatch({
       type: 'START_SEARCH',
-      payload: value
+      payload: value,
     }),
   searchRestaurants: (value, lat, lng) =>
     dispatch({
@@ -107,15 +109,15 @@ const mapDispatchToProps = dispatch => ({
         params: {
           name: value,
           lat,
-          lng
-        }
-      })
+          lng,
+        },
+      }),
     }),
   showModal: bool =>
     dispatch({
       type: 'SHOW_MODAL',
-      payload: bool
-    })
+      payload: bool,
+    }),
 });
 
 export default connect(
@@ -125,7 +127,7 @@ export default connect(
     searchResults: state.nav.searchResults,
     value: state.nav.value,
     userId: state.app.user.uuid,
-    user: state.app.user
+    user: state.app.user,
   }),
   mapDispatchToProps
 )(Nav);

@@ -22,7 +22,6 @@ const User = sequelize.define('user', {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
   },
-
   email: {
     type: Sequelize.STRING,
     unique: true,
@@ -74,6 +73,26 @@ const Restaurant = sequelize.define('restaurant', {
   hours: {
     type: Sequelize.ARRAY(Sequelize.JSON),
   },
+  // dishName: {
+  //   type: Sequelize.TEXT,
+  // },
+  // dishRatings: {
+  //   type: Sequelize.TEXT,
+  // },
+  // dishNotes: {
+  //   type: Sequelize.TEXT,
+  // },
+}, {
+  timestamps: true,
+});
+
+const Dish = sequelize.define('dish', {
+  uuid: {
+    primaryKey: true,
+    unique: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+  },
   dishName: {
     type: Sequelize.TEXT,
   },
@@ -83,8 +102,6 @@ const Restaurant = sequelize.define('restaurant', {
   dishNotes: {
     type: Sequelize.TEXT,
   },
-}, {
-  timestamps: true,
 });
 
 // Testing connection
@@ -96,10 +113,23 @@ sequelize
       as: 'Restaurants',
       foreignKey: 'userId',
     });
+
+    Restaurant.hasMany(Dish, {
+      as: 'Restaurants',
+      foreignKey: 'yelpId',
+    });
+
+    User.hasMany(Dish, {
+      as: 'Users',
+      foreignKey: 'userId',
+    });
+
+
     // {force : true}
-    
+
     User.sync()
       .then(() => {
+        Dish.sync();
         Restaurant.sync();
       });
   })

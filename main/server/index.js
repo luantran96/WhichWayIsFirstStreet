@@ -5,7 +5,6 @@ const session = require('express-session');
 const validator = require('express-validator');
 const morgan = require('morgan');
 const path = require('path');
-// const API = require('./../react-client/src/API.js');
 const flash = require('connect-flash');
 const routes = require('./routes/index');
 const users = require('./routes/users');
@@ -26,7 +25,9 @@ app.use(express.static(path.join(__dirname, '/../react-client/dist')));
 
 // Parse queries into body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 // Log requests to console
 app.use(morgan('tiny'));
@@ -67,7 +68,7 @@ app.listen(PORT, () => {
 // });
 
 // app.get('api/findUser', (req, res) => {
-  
+
 // });
 
 
@@ -89,7 +90,7 @@ app.listen(PORT, () => {
 //       res.json(info);
 //     } 
 //   });
-  
+
 // });
 
 // app.get('/getHours', (req, res) => {
@@ -143,7 +144,7 @@ app.listen(PORT, () => {
 // app.post('/login', (req, res) => {
 
 // });
- 
+
 // app.get('/search', (req, res) => {
 //   const { name } = req.query;
 //   const latitude = 37.691109;
@@ -224,7 +225,3 @@ app.listen(PORT, () => {
 //     res.end();
 //   });
 // });
-
-
-
-

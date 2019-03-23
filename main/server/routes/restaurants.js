@@ -112,7 +112,7 @@ router.post('/addNotes', (req, res) => {
   } = req.body;
 
   console.log(req.body);
-
+  
   res.end();
 });
 

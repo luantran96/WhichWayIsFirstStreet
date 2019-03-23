@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
   directions: state.app.directions,
   render: state.app.render,
   restaurant: state.restaurantInfo.restaurant,
-  userId: state.app.user.uuid
+  userId: state.app.user.uuid,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -32,18 +32,18 @@ const mapDispatchToProps = dispatch => ({
           },
           err => reject(err)
         );
-      })
+      }),
     });
   },
   removeMarkerFromMap: idx =>
     dispatch({
       type: 'REMOVE_MARKER',
-      payload: idx
+      payload: idx,
     }),
   updateRestaurantList: restaurants => {
     dispatch({
       type: 'UPDATE_RESTAURANTS_LIST',
-      payload: restaurants
+      payload: restaurants,
     });
   },
   deleteRestaurant: (yelpId, userId) =>
@@ -52,18 +52,18 @@ const mapDispatchToProps = dispatch => ({
       payload: axios.delete('restaurants/delete', {
         params: {
           yelpId,
-          userId
-        }
-      })
+          userId,
+        },
+      }),
     }),
   fetchRestaurants: userId =>
     dispatch({
       type: 'FETCH_RESTAURANTS',
       payload: axios.get('restaurants/selectAll', {
         params: {
-          userId
-        }
-      })
+          userId,
+        },
+      }),
     }),
 
   getRestaurantInfo: yelpId =>
@@ -71,9 +71,9 @@ const mapDispatchToProps = dispatch => ({
       type: 'GET_INFO',
       payload: axios.get('restaurants/getInfo', {
         params: {
-          id: yelpId
-        }
-      })
+          id: yelpId,
+        },
+      }),
     }),
   fetchDirections: (destination, origin) =>
     dispatch({
@@ -83,20 +83,20 @@ const mapDispatchToProps = dispatch => ({
           end_lat: destination.lat,
           end_lng: destination.lng,
           start_lat: origin.lat,
-          start_lng: origin.lng
-        }
-      })
+          start_lng: origin.lng,
+        },
+      }),
     }),
   changeRender: newRender =>
     dispatch({
       type: 'CHANGE_RENDER',
-      payload: newRender
+      payload: newRender,
     }),
   updateDestination: coordinates =>
     dispatch({
       type: 'UPDATE_DESTINATION',
-      payload: coordinates
-    })
+      payload: coordinates,
+    }),
 });
 
 class Main extends React.Component {
@@ -139,7 +139,7 @@ class Main extends React.Component {
     // Hardcoded origin position
     const currentPosition = {
       lat: 37.787484,
-      lng: -122.396397
+      lng: -122.396397,
     };
 
     fetchDirections(restaurant.coordinates, currentPosition);
@@ -194,7 +194,7 @@ Main.propTypes = {
   fetchRestaurants: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
   findMe: PropTypes.func.isRequired,
-  getRestaurantInfo: PropTypes.func.isRequired
+  getRestaurantInfo: PropTypes.func.isRequired,
 };
 const wrappedMain = connect(
   mapStateToProps,
@@ -202,3 +202,7 @@ const wrappedMain = connect(
 )(Main);
 
 export default wrappedMain;
+
+
+
+
