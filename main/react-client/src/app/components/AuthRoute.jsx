@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 const AuthRoute = ({ component: Component, user }) => {
   return (
     <Route
-      // {...rest}
       render={props =>
         user ? (
           <Component {...props} />

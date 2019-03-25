@@ -13,7 +13,6 @@ class Login extends React.Component {
   }
 
   update(e) {
-    // console.log(e.target.name, e.target.value);
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -23,7 +22,6 @@ class Login extends React.Component {
     e.preventDefault();
 
     const { email, password } = this.state;
-    console.log(this.state);
     this.props.authenticate(email, password).then(() => {
       this.props.history.push('/');
     });
@@ -70,11 +68,6 @@ class Login extends React.Component {
     );
   }
 }
-
-// .then((res) => {
-//   console.log(res);
-//   this.props.history.push('/');
-// })
 
 const mapStateToProps = state => {
   return {

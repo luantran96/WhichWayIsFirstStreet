@@ -5,10 +5,6 @@ const db = require('./../../database-postgres/user');
 const router = express.Router();
 
 
-// router.get('/login', (req, res) => {
-//   res.sendFile(path.join(__dirname, '/../../react-client/dist/login.html'));
-// });
-
 router.get('/login', (req, res) => {
   console.log(req.query);
 

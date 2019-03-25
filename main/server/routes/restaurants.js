@@ -4,6 +4,7 @@ const path = require('path');
 
 const KEY = require('./../../react-client/src/API');
 const db = require('../../database-postgres/restaurant');
+const dishDB = require('../../database-postgres/dish');
 
 const router = express.Router();
 
@@ -80,12 +81,22 @@ router.get('/search', (req, res) => {
 
 router.get('/getInfo', (req, res) => {
   const {
-    id
+    id,
+    userId
   } = req.query;
-  console.log(req.query);
 
   db.findRestaurant(id, restaurant => {
-    res.json(restaurant);
+
+    dishDB.findAllDishes(userId, id, (dishes) => {
+
+      console.log('dishes: ', dishes);
+      let copy = Object.assign({}, restaurant);
+      copy.dishes = dishes;
+
+      res.json(copy);
+
+    });
+
   });
 });
 
@@ -112,8 +123,10 @@ router.post('/addNotes', (req, res) => {
   } = req.body;
 
   console.log(req.body);
-  
-  res.end();
+
+  dishDB.addDish(req.body, () => {
+    res.end();
+  });
 });
 
 module.exports = router;

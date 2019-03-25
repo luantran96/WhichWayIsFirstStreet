@@ -56,8 +56,10 @@ module.exports.addUser = (newUser, cb) => {
 
 module.exports.checkUser = (user, cb) => {
   db.User.findOne({
-    where: { email: user.email },
-  })
+      where: {
+        email: user.email
+      },
+    })
     .then((foundUser) => {
       // Find user email in database and get hash
       if (foundUser) {
@@ -66,6 +68,7 @@ module.exports.checkUser = (user, cb) => {
         // compare stored hash with provided hash
         // If true, login user in
         if (bcrypt.compareSync(user.password, storedHash)) {
+          
           cb(foundUser, true);
         } else {
           // Else, re-prompts login

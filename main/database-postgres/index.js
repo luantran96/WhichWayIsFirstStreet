@@ -115,7 +115,7 @@ sequelize
     });
 
     Restaurant.hasMany(Dish, {
-      as: 'Restaurants',
+      as: 'Dishes',
       foreignKey: 'yelpId',
     });
 
@@ -124,13 +124,12 @@ sequelize
       foreignKey: 'userId',
     });
 
-
-    // {force : true}
-
     User.sync()
       .then(() => {
-        Dish.sync();
-        Restaurant.sync();
+        Dish.sync()
+          .then(() => {
+            Restaurant.sync();
+          });
       });
   })
   .catch((err) => {
@@ -142,4 +141,5 @@ sequelize
 module.exports = {
   User,
   Restaurant,
+  Dish
 };

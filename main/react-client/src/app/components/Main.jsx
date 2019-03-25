@@ -66,12 +66,13 @@ const mapDispatchToProps = dispatch => ({
       }),
     }),
 
-  getRestaurantInfo: yelpId =>
+  getRestaurantInfo: (yelpId, userId) =>
     dispatch({
       type: 'GET_INFO',
       payload: axios.get('restaurants/getInfo', {
         params: {
           id: yelpId,
+          userId,
         },
       }),
     }),
@@ -117,9 +118,9 @@ class Main extends React.Component {
   }
 
   showDetails(restaurant) {
-    const { getRestaurantInfo, changeRender } = this.props;
+    const { getRestaurantInfo, changeRender, userId } = this.props;
 
-    getRestaurantInfo(restaurant.yelpId);
+    getRestaurantInfo(restaurant.yelpId, userId);
     changeRender('restaurantInfo');
   }
 

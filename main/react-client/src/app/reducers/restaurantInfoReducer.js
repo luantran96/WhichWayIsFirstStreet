@@ -9,9 +9,14 @@ let reducer = (state = {
     }
     case 'GET_INFO_FULFILLED':
       {
+
+        // console.log(action.payload.data[0].dishes)
+        
+        action.payload.data[0].dishes = action.payload.data.dishes;
+
         return {
           ...state,
-          restaurant: action.payload.data[0]
+          restaurant: action.payload.data[0],
         };
       }
 
