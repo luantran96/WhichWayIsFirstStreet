@@ -35,12 +35,13 @@ const mapDispatchToProps = dispatch => ({
       type: 'CHANGE_RENDER',
       payload: newRender,
     }),
-  getRestaurantInfo: yelpId =>
+  getRestaurantInfo: (yelpId, userId) =>
     dispatch({
       type: 'GET_INFO',
       payload: axios.get('restaurants/getInfo', {
         params: {
           id: yelpId,
+          userId,
         },
       }),
     }),
@@ -118,7 +119,7 @@ class Map extends Component {
     const newInfoWindows = {};
     const markers = [];
 
-    // console.log('newLocations: ==> ', newLocations);
+    console.log('newLocations: ==> ', newLocations);
 
     Object.keys(newLocations).forEach(yelpId => {
       label += 1;
@@ -156,7 +157,10 @@ class Map extends Component {
         });
 
         google.maps.event.addListener(newMarker, 'click', () => {
-          getRestaurantInfo(newLocations[yelpId].yelpId);
+          console.log(user);
+          console.log(yelpId);
+
+          getRestaurantInfo(yelpId, user.uuid);
           changeRender('restaurantInfo');
         });
 

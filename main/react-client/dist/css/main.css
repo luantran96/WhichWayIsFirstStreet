@@ -83,6 +83,13 @@ h1#title {
     font-size: 50px;
 }
 
+h1.dishes-title {
+    margin: auto;
+    margin-top: 1em;
+    padding-bottom: 1em;
+    
+}
+
 #left {
     width:70%;
     height: 100%;
@@ -125,7 +132,7 @@ h1#title {
 
 #noteForm {
     box-shadow: 0 2px 4px rgba(0,0,0,0.17), 0 -1px 0px rgba(0,0,0,0.02);
-    border: 1px red solid;
+    padding: 1em;
 }
 
 .fields > .rating {
@@ -133,9 +140,9 @@ h1#title {
 }
 
 .dish-list {
-    border: 1px blue solid;
     display: flex;
     flex-wrap: wrap;
+    height: auto;
 }
 
 .dish-list > div {
@@ -232,13 +239,13 @@ h1#title {
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent>.hours {
     height:170px;
     margin-left: 35px;
-    min-width: 300px;
+    min-width: 350px;
     max-width: 70%;
     /* border: 2px solid red; */
 }
 
 .ui.items>.item>.restaurantInfoContent>.restaurantInfoHeader>a {
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .ui.items>.item>.restaurantInfoContent {

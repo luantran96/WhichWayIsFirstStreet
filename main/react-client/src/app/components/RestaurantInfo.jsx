@@ -72,7 +72,7 @@ class RestaurantInfo extends React.Component {
       <div>
         <Item.Group>
           <Item>
-            <div className="mapbox">
+            <div className="mapbox animated fadeInLeft">
               <Item.Image
                 size="medium"
                 className="restaurantInfoImage"
@@ -110,10 +110,10 @@ class RestaurantInfo extends React.Component {
               </div>
             </div>
             <Item.Content className="restaurantInfoContent">
-              <Item.Header className="restaurantInfoHeader">
+              <Item.Header className="restaurantInfoHeader animated fadeInDown">
                 <a href={restaurant.url}>{restaurant.name}</a>
               </Item.Header>
-              <Item.Description>
+              <Item.Description className="animated fadeInUp">
                 <div className="descriptionContent">
                   <div className="details">
                     <Form id="noteForm">
@@ -147,7 +147,7 @@ class RestaurantInfo extends React.Component {
                     </Form>
 
                     <div className="dish-list">
-                      Dishes
+                      <h1 className="dishes-title">Dishes</h1>
                       {restaurant.dishes.map(dish => {
                         return (
                           <div>
@@ -159,8 +159,7 @@ class RestaurantInfo extends React.Component {
                       })}
                     </div>
                   </div>
-
-                  <div className="hours">
+                  <div className="hours animated fadeInRight">
                     <Table celled collapsing>
                       <Table.Header>
                         <Table.Row>
