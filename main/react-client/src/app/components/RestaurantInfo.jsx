@@ -1,6 +1,7 @@
 import React from 'react';
 import convertTime from 'convert-time';
 import { Table, Rating, Item, Form, Button } from 'semantic-ui-react';
+import DishInfo from './DishInfo.jsx';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -149,13 +150,7 @@ class RestaurantInfo extends React.Component {
                     <div className="dish-list">
                       <h1 className="dishes-title">Dishes</h1>
                       {restaurant.dishes.map(dish => {
-                        return (
-                          <div>
-                            <div>Dish: {dish.dishName}</div>
-                            <div>{dish.dishNotes}</div>
-                            <Rating icon="heart" defaultRating={dish.dishRatings} />
-                          </div>
-                        );
+                        return <DishInfo dish={dish} />;
                       })}
                     </div>
                   </div>
