@@ -68,8 +68,11 @@ html, body {
 }
 
 .restaurantInfo-left {
-    /* border: 3px solid blue; */
     flex: 2;
+}
+
+.restaurantInfo-left > div {
+    margin-right: 10px;
 }
 
 .restaurantInfo-right {
@@ -160,6 +163,7 @@ h1.dishes-title {
 
 
 #noteForm {
+    border: 1px solid #CCC;
     box-shadow: 0 2px 4px rgba(0,0,0,0.17), 0 -1px 0px rgba(0,0,0,0.02);
     padding: 1em;
 }
@@ -180,18 +184,19 @@ h1.dishes-title {
 }
 
 
-.dish-list > div:nth-child(odd) {
+/* .dish-list > div:nth-child(odd) {
     flex: 0 0 100%;
     background: #ddd;
-}
+} */
 
 .info {
     display: flex;
     justify-content: center;
     border: 1px solid #CCC;
     border-radius: 5px;
-    margin-right: 10px;
-    box-shadow:  0 10px 20px -10px rgba(0,0,0,0.2); 
+    /* margin-right: 10px; */
+    /* box-shadow:  0 10px 20px -10px rgba(0,0,0,0.2);  */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.17), 0 -1px 0px rgba(0,0,0,0.02);
 }
 
 .info-header {
@@ -282,7 +287,7 @@ h1.dishes-title {
     margin-top: 10px;
 }
 
-.icon {
+.contact-icon {
     width: 40px;
 }
 
@@ -297,7 +302,8 @@ h1.dishes-title {
 }
 
 .ui.form {
-    margin-top: 85px;
+    margin-top: 60px;
+    border-top: 1px solid #DDD;
 }
 
 .ui.search>.results .result .image img { 

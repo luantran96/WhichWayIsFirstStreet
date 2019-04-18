@@ -91,16 +91,12 @@ class RestaurantInfo extends React.Component {
               <div>
                 <span className="restaurant-name"> {restaurant.name} </span>{' '}
               </div>
-              {/* <div>
-                <span className="labels">Price range:</span>
-                {`${restaurant.price}`}
-              </div> */}
               <div>
-              <img className="icon" src="/static/images/contacts-1s-200px.svg" />
+                <img className="contact-icon " src="/static/images/contacts-1s-200px.svg" />
                 {`${restaurant.location}`}
               </div>
               <div>
-                <img className="icon" src="/static/images/phone-1s-200px.svg" />
+                <img className="contact-icon " src="/static/images/phone-1s-200px.svg" />
                 {`${restaurant.display_phone}`}
               </div>
               <div>
@@ -120,6 +116,46 @@ class RestaurantInfo extends React.Component {
               </div>
             </div>
           </div>
+
+          <div className="restaurantInfoContent">
+          <div>
+            <div className="descriptionContent">
+              <div className="details">
+                <Form id="noteForm">
+                  <Form.Group widths={1}>
+                    <Form.Input
+                      label="Dish name"
+                      name="dishName"
+                      placeholder="Ex: Padsee Ew"
+                      onChange={this.handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group widths={1}>
+                    <Form.Input
+                      label="Description"
+                      name="dishNotes"
+                      placeholder="Ex: Too Dry"
+                      onChange={this.handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group widths={1}>
+                    <Rating icon="heart" defaultRating={0} maxRating={5} onRate={this.handleRate} />
+                  </Form.Group>
+                  <Button type="submit" color="instagram" onClick={this.handleSubmit}>
+                    Add
+                  </Button>
+                </Form>
+
+                <div className="dish-list">
+                  <h1 className="dishes-title">Dishes</h1>
+                  {restaurant.dishes.map(dish => {
+                    return <DishInfo dish={dish} />;
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         </div>
 
         <div className="restaurantInfo-right">

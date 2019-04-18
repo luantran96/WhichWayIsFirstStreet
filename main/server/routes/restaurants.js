@@ -113,6 +113,11 @@ router.delete('/delete', (req, res) => {
   });
 });
 
+/**
+ * @param {string} s
+ * @return {string}
+ */
+
 router.post('/addNotes', (req, res) => {
   const {
     yelpId,
@@ -125,7 +130,19 @@ router.post('/addNotes', (req, res) => {
   console.log(req.body);
 
   dishDB.addDish(req.body, () => {
-    res.end();
+    db.findRestaurant(yelpId, restaurant => {
+
+      dishDB.findAllDishes(userId, yelpId, dishes => {
+
+        console.log('dishes: ', dishes);
+        let copy = Object.assign({}, restaurant);
+        copy.dishes = dishes;
+
+        res.json(copy);
+
+      });
+
+    });
   });
 });
 
