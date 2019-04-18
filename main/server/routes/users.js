@@ -6,7 +6,6 @@ const router = express.Router();
 
 
 router.get('/login', (req, res) => {
-  console.log(req.query);
 
   const { email, password } = req.query;
   db.checkUser({

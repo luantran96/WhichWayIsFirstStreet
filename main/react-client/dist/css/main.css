@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -10,6 +14,15 @@ html, body {
 #app {
     width: 100%;
     height: 100%;   
+}
+
+#page-content {
+    display: fex;
+    border: 3px yellow solid;
+}
+
+#page-content > div {
+    flex: 1;
 }
 
 .ui.items>.list-item>.image>img {
@@ -46,6 +59,22 @@ html, body {
     height: 50px;
     width: 400px;
     box-shadow:  0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+.restaurantInfo {
+    border: 3px solid red;
+    display: flex;
+    width: 50vw;
+}
+
+.restaurantInfo-left {
+    border: 3px solid blue;
+    flex: 1;
+}
+
+.restaurantInfo-right {
+    border: 3px solid purple;
+    flex: 1;
 }
 
 
@@ -157,23 +186,20 @@ h1.dishes-title {
 }
 
 .mapbox {
-    max-width: 30%;
-    height: auto;
     padding: 5px;
     border: 1px solid #ccc;
-    justify-content: center;
     display: flex;
+    justify-content: center;
     flex-direction: column;
     margin-right: 20px;
     box-shadow:  0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
 #details {
-    padding: 20px;
-    height: 300px;
-    min-width: 990px;
-    max-width: 30%;
-    margin: auto;
+    padding: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #map {
     height: 100%;
@@ -212,7 +238,7 @@ h1.dishes-title {
     left: 130px;
 }
 
-.ui.items>.item>.restaurantInfoContent>.description{  
+.ui.items>.item>.restaurantInfoContent>.description {  
     /* margin-top: 40px; */
     /* border: 1px solid red; */
 }
@@ -252,7 +278,7 @@ h1.dishes-title {
     margin-top: 10px;
 }
 
-.ui.items>.item> .mapbox > .restaurantInfoImage>img {
+img.restaurantInfoImage {
     width: 300px;
     height: 220px;
     border-radius: 2px 2px 0 0;

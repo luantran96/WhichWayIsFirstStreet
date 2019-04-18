@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
 const validator = require('express-validator');
+const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
 const flash = require('connect-flash');
@@ -17,6 +18,8 @@ const app = express();
 
 // Setup cors headers
 app.use(cors());
+
+app.use(cookieParser());
 
 // Set static folder
 // app.use('/users', express.static(path.join(__dirname, '/../react-client/dist')));

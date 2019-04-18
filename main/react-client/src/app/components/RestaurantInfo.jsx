@@ -70,118 +70,108 @@ class RestaurantInfo extends React.Component {
     });
 
     return (
-      <div>
-        <Item.Group>
-          <Item>
-            <div className="mapbox animated fadeInLeft">
-              <Item.Image
-                size="medium"
-                className="restaurantInfoImage"
-                src={restaurant.image_url}
-              />
+      <div className="restaurantInfo">
+        <div className="restaurantInfo-left">
+          <div className="mapbox">
+            <img className="restaurantInfoImage" src={restaurant.image_url} />
+            <div id="reviews">
+              <div>
+                <span className="labels">Price range:</span>
+                {`${restaurant.price}`}
+              </div>
+              <div>
+                <span className="labels">Address:</span>
+                {`${restaurant.location}`}
+              </div>
+              <div>
+                <span className="labels">Contact:</span>
+                {`${restaurant.display_phone}`}
+              </div>
+              <div>
+                <span className="ratings">
+                  <Rating
+                    icon="star"
+                    size="huge"
+                    rating={restaurant.rating}
+                    maxRating={5}
+                    disabled
+                  />
+                </span>
+              </div>
+              <div>
+                <span className="labels">Reviews: </span>
+                {`${restaurant.review_count}`}
+              </div>
+            </div>
+          </div>
+        </div>
 
-              <div id="reviews">
-                <div>
-                  <span className="labels">Price range:</span>
-                  {`${restaurant.price}`}
-                </div>
-                <div>
-                  <span className="labels">Address:</span>
-                  {`${restaurant.location}`}
-                </div>
-                <div>
-                  <span className="labels">Contact:</span>
-                  {`${restaurant.display_phone}`}
-                </div>
-                <div>
-                  <span className="ratings">
-                    <Rating
-                      icon="star"
-                      size="huge"
-                      rating={restaurant.rating}
-                      maxRating={5}
-                      disabled
+        <div className="restaurantInfo-right">
+          <div className="hours">
+            <Table celled collapsing>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Day</Table.HeaderCell>
+                  <Table.HeaderCell>Hours</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {Object.keys(hours).map((day, idx) => {
+                  return (
+                    <Table.Row>
+                      <Table.Cell>{convertToDay[idx]}</Table.Cell>
+                      <Table.Cell>
+                        {hours[day].join(', ') || 'Closed'}
+                        <span id="openNow">{n === idx ? ' Open Now' : ''}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table>
+          </div>
+        </div>
+
+        {/* <div className="restaurantInfoContent">
+          <div>
+            <div className="descriptionContent">
+              <div className="details">
+                <Form id="noteForm">
+                  <Form.Group widths={1}>
+                    <Form.Input
+                      label="Dish name"
+                      name="dishName"
+                      placeholder="Pan fried ice-cream"
+                      onChange={this.handleChange}
                     />
-                  </span>
-                </div>
-                <div>
-                  <span className="labels">Reviews: </span>
-                  {`${restaurant.review_count}`}
+                  </Form.Group>
+                  <Form.Group widths={1}>
+                    <Form.Input
+                      label="How was it?"
+                      name="dishNotes"
+                      placeholder="A little watery"
+                      onChange={this.handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group widths={1}>
+                    <Rating icon="heart" defaultRating={0} maxRating={5} onRate={this.handleRate} />
+                  </Form.Group>
+                  <Button type="submit" color="instagram" onClick={this.handleSubmit}>
+                    Add
+                  </Button>
+                </Form>
+
+                <div className="dish-list">
+                  <h1 className="dishes-title">Dishes</h1>
+                  {restaurant.dishes.map(dish => {
+                    return <DishInfo dish={dish} />;
+                  })}
                 </div>
               </div>
             </div>
-            <Item.Content className="restaurantInfoContent">
-              <Item.Header className="restaurantInfoHeader animated fadeInDown">
-                <a href={restaurant.url}>{restaurant.name}</a>
-              </Item.Header>
-              <Item.Description className="animated fadeInUp">
-                <div className="descriptionContent">
-                  <div className="details">
-                    <Form id="noteForm">
-                      <Form.Group widths={1}>
-                        <Form.Input
-                          label="Dish name"
-                          name="dishName"
-                          placeholder="Pan fried ice-cream"
-                          onChange={this.handleChange}
-                        />
-                      </Form.Group>
-                      <Form.Group widths={1}>
-                        <Form.Input
-                          label="How was it?"
-                          name="dishNotes"
-                          placeholder="A little watery"
-                          onChange={this.handleChange}
-                        />
-                      </Form.Group>
-                      <Form.Group widths={1}>
-                        <Rating
-                          icon="heart"
-                          defaultRating={0}
-                          maxRating={5}
-                          onRate={this.handleRate}
-                        />
-                      </Form.Group>
-                      <Button type="submit" color="instagram" onClick={this.handleSubmit}>
-                        Add
-                      </Button>
-                    </Form>
-
-                    <div className="dish-list">
-                      <h1 className="dishes-title">Dishes</h1>
-                      {restaurant.dishes.map(dish => {
-                        return <DishInfo dish={dish} />;
-                      })}
-                    </div>
-                  </div>
-                  <div className="hours animated fadeInRight">
-                    <Table celled collapsing>
-                      <Table.Header>
-                        <Table.Row>
-                          <Table.HeaderCell>Day</Table.HeaderCell>
-                          <Table.HeaderCell>Hours</Table.HeaderCell>
-                        </Table.Row>
-                      </Table.Header>
-                      <Table.Body>
-                        {Object.keys(hours).map((day, idx) => {
-                          return (
-                            <Table.Row>
-                              <Table.Cell>{convertToDay[idx]}</Table.Cell>
-                              <Table.Cell>
-                                {hours[day].join(', ') || 'Closed'}
-                                <span id="openNow">{n === idx ? ' Open Now' : ''}</span>
-                              </Table.Cell>
-                            </Table.Row>
-                          );
-                        })}
-                      </Table.Body>
-                    </Table>
-                  </div>
-                </div>
-              </Item.Description>
-            </Item.Content>
-          </Item>
-        </Item.Group>
+          </div>
+        </div> */}
+        
       </div>
     );
   }
