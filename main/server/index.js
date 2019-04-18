@@ -24,7 +24,7 @@ app.use(cookieParser());
 // Set static folder
 // app.use('/users', express.static(path.join(__dirname, '/../react-client/dist')));
 app.use(express.static(path.join(__dirname, '/../react-client/dist')));
-
+app.use(express.static(path.join(__dirname, '/../')));
 
 // Parse queries into body
 app.use(bodyParser.json());

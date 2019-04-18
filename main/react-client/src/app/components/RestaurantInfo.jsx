@@ -1,6 +1,7 @@
 import React from 'react';
 import convertTime from 'convert-time';
-import { Table, Rating, Item, Form, Button } from 'semantic-ui-react';
+import { Table, Rating, Form, Button } from 'semantic-ui-react';
+// import phoneIcon from './../../../../static/images/phone-1s-200px.svg'
 import DishInfo from './DishInfo.jsx';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -75,21 +76,31 @@ class RestaurantInfo extends React.Component {
           <div className="info">
             <div className="info-header">
               <div className="restaurantInfoImage">
-                <img src={restaurant.image_url} />
+                {/* <img src={restaurant.image_url} /> */}
+                <figure className="imghvr-hinge-down">
+                  <img src={restaurant.image_url} alt="restaurant" />
+                  <figcaption>
+                    <h3>
+                      <a href={restaurant.url}>View more on Yelp</a>
+                    </h3>
+                  </figcaption>
+                </figure>
               </div>
             </div>
             <div id="reviews">
-              <div><span className="restaurant-name"> {restaurant.name} </span> </div>
+              <div>
+                <span className="restaurant-name"> {restaurant.name} </span>{' '}
+              </div>
               {/* <div>
                 <span className="labels">Price range:</span>
                 {`${restaurant.price}`}
               </div> */}
               <div>
-                {/* <span className="labels">Address:</span> */}
+              <img className="icon" src="/static/images/contacts-1s-200px.svg" />
                 {`${restaurant.location}`}
               </div>
               <div>
-                {/* <span className="labels">Contact:</span> */}
+                <img className="icon" src="/static/images/phone-1s-200px.svg" />
                 {`${restaurant.display_phone}`}
               </div>
               <div>

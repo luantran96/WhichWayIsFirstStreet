@@ -282,13 +282,18 @@ h1.dishes-title {
     margin-top: 10px;
 }
 
+.icon {
+    width: 40px;
+}
 
-.restaurantInfoImage > img {
-    width: 200px;
-    height: 200px;
-    /* padding: 10px; */
+.restaurantInfoImage > figure > img {
+    width: 216px;
+    height: 216px;
     margin: 0;
-    /* border-radius: 50%; */
+}
+
+.restaurantInfoImage > figure {
+    display: block;
 }
 
 .ui.form {
