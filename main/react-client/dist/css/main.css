@@ -18,7 +18,7 @@ html, body {
 
 #page-content {
     display: fex;
-    border: 3px yellow solid;
+    /* border: 3px yellow solid; */
 }
 
 #page-content > div {
@@ -62,18 +62,18 @@ html, body {
 }
 
 .restaurantInfo {
-    border: 3px solid red;
+    /* border: 3px solid red; */
     display: flex;
-    width: 50vw;
+    width: 80vw;
 }
 
 .restaurantInfo-left {
-    border: 3px solid blue;
-    flex: 1;
+    /* border: 3px solid blue; */
+    flex: 2;
 }
 
 .restaurantInfo-right {
-    border: 3px solid purple;
+    /* border: 3px solid purple; */
     flex: 1;
 }
 
@@ -185,14 +185,17 @@ h1.dishes-title {
     background: #ddd;
 }
 
-.mapbox {
-    padding: 5px;
-    border: 1px solid #ccc;
+.info {
     display: flex;
     justify-content: center;
-    flex-direction: column;
-    margin-right: 20px;
-    box-shadow:  0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    margin-right: 10px;
+    box-shadow:  0 10px 20px -10px rgba(0,0,0,0.2); 
+}
+
+.info-header {
+    flex: 1;
 }
 
 #details {
@@ -201,6 +204,12 @@ h1.dishes-title {
     justify-content: center;
     align-items: center;
 }
+
+.restaurant-name {
+    font-size: 25px;
+    font-weight: bold;
+}
+
 #map {
     height: 100%;
     width: 100%;
@@ -238,11 +247,6 @@ h1.dishes-title {
     left: 130px;
 }
 
-.ui.items>.item>.restaurantInfoContent>.description {  
-    /* margin-top: 40px; */
-    /* border: 1px solid red; */
-}
-
 .ui.items>.item>.restaurantInfoContent>.description>.descriptionContent{  
     display: flex;
     height: 250px;
@@ -278,12 +282,13 @@ h1.dishes-title {
     margin-top: 10px;
 }
 
-img.restaurantInfoImage {
-    width: 300px;
-    height: 220px;
-    border-radius: 2px 2px 0 0;
-    padding: 0;
+
+.restaurantInfoImage > img {
+    width: 200px;
+    height: 200px;
+    /* padding: 10px; */
     margin: 0;
+    /* border-radius: 50%; */
 }
 
 .ui.form {
@@ -296,9 +301,11 @@ width: 80px;
 }
 
 #reviews {
-    height: 150px;
-    padding-right: 25px;
-    font-size: 14px;
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
 }
 .ui.table td, .ui.table th {
     width: 50%;

@@ -72,19 +72,24 @@ class RestaurantInfo extends React.Component {
     return (
       <div className="restaurantInfo">
         <div className="restaurantInfo-left">
-          <div className="mapbox">
-            <img className="restaurantInfoImage" src={restaurant.image_url} />
+          <div className="info">
+            <div className="info-header">
+              <div className="restaurantInfoImage">
+                <img src={restaurant.image_url} />
+              </div>
+            </div>
             <div id="reviews">
-              <div>
+              <div><span className="restaurant-name"> {restaurant.name} </span> </div>
+              {/* <div>
                 <span className="labels">Price range:</span>
                 {`${restaurant.price}`}
-              </div>
+              </div> */}
               <div>
-                <span className="labels">Address:</span>
+                {/* <span className="labels">Address:</span> */}
                 {`${restaurant.location}`}
               </div>
               <div>
-                <span className="labels">Contact:</span>
+                {/* <span className="labels">Contact:</span> */}
                 {`${restaurant.display_phone}`}
               </div>
               <div>
@@ -99,8 +104,8 @@ class RestaurantInfo extends React.Component {
                 </span>
               </div>
               <div>
-                <span className="labels">Reviews: </span>
-                {`${restaurant.review_count}`}
+                <span>Based on </span>
+                {`${restaurant.review_count}`} reviews
               </div>
             </div>
           </div>
@@ -171,7 +176,6 @@ class RestaurantInfo extends React.Component {
             </div>
           </div>
         </div> */}
-        
       </div>
     );
   }
