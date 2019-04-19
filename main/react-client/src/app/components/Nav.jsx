@@ -35,31 +35,37 @@ class Nav extends React.Component {
 
     setTimeout(() => {
       this.props.searchRestaurants(search_value, user.lat, user.lng);
-    }, 50);
+    }, 100);
   }
 
   render() {
     const { isLoading, value, results, findMe } = this.props;
     return (
-      <div id="nav-bar">
-        <div>
-          <Search
-            fluid
-            id="search"
-            loading={isLoading}
-            onResultSelect={this.updateRestaurants}
-            placeholder="Search"
-            onSearchChange={_.debounce(this.handleSearchChange, 50, { leading: false })}
-            value={value}
-            results={results}
-          />
-        </div>
-        <div id="plan-trip">PLAN TRIP</div>
 
-        <div id="find-me-button" className="nav-button">
-          <Icon name="location arrow" onClick={() => findMe()} />
-        </div>
+      <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo right">Eaten.</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+          <li><a href="#">Plan Trip</a></li>
+        </ul>
       </div>
+    </nav>
+
+      // <div id="nav-bar">
+      //   <div>
+      //     <Search
+      //       fluid
+      //       id="search"
+      //       loading={isLoading}
+      //       onResultSelect={this.updateRestaurants}
+      //       placeholder="Search"
+      //       onSearchChange={_.debounce(this.handleSearchChange, 100, { leading: true })}
+      //       value={value}
+      //       results={results}
+      //     />
+      //   </div>
+      //   <div id="plan-trip">PLAN TRIP</div>
+      // </div>
     );
   }
 }

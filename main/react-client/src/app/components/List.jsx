@@ -9,7 +9,7 @@ const List = ({
   handleButtonClick,
   showDetails,
   price,
-  filterBy
+  filterBy,
 }) => (
   <div>
     <nav className="navbar navbar-expand-md navbar-dark bg-dark shadow mb-3 rounded">
@@ -68,19 +68,19 @@ const List = ({
 
 const mapStateToProps = state => ({
   restaurants: state.app.restaurants,
-  price: state.nav.price
+  price: state.nav.price,
 });
 
 const mapDispatchToProps = dispatch => ({
   filterBy: type =>
     dispatch({
       type: 'FILTER_BY',
-      payload: type
-    })
+      payload: type,
+    }),
 });
 
 List.contextTypes = {
-  store: PropTypes.instanceOf(Object)
+  store: PropTypes.instanceOf(Object),
 };
 
 export default connect(

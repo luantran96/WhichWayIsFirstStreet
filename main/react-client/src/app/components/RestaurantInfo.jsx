@@ -37,8 +37,12 @@ class RestaurantInfo extends React.Component {
     submitNotes(restaurant.yelpId, restaurant.userId, dishName, dishRating, dishNotes);
   }
 
-  handleChange(e, { name, value }) {
-    this.setState({ [name]: value });
+  handleChange(e) {
+
+    console.log(e.target.value);
+    console.log(e.target.id);
+
+    this.setState({[e.target.id]: e.target.value });
     console.log(this.state);
   }
 
@@ -118,10 +122,54 @@ class RestaurantInfo extends React.Component {
           </div>
 
           <div className="restaurantInfoContent">
-          <div>
-            <div className="descriptionContent">
-              <div className="details">
-                <Form id="noteForm">
+            <div>
+              <div className="descriptionContent">
+                <div className="notes-content">
+                  <div id="noteForm">
+                    <div className="row">
+                      <div className="input-field col s12">
+                        <input
+                          id="dishName"
+                          onChange={this.handleChange}
+                          required
+                          type="text"
+                          className="validate"
+                        />
+                        <label for="disabled">Dish</label>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="input-field col s12">
+                        <input
+                          id="dishNotes"
+                          onChange={this.handleChange}
+                          required
+                          type="text"
+                          className="validate"
+                        />
+                        <label for="disabled">How was it?</label>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="input-field col s12">
+                        <input
+                          onChange={this.handleChange}
+                          required
+                          type="text"
+                          className="validate"
+                        />
+                        <label for="disabled">Reviews</label>
+                      </div>
+                    </div>
+
+                    <a
+                      onClick={this.handleSubmit}
+                      className="btn-floating btn-large waves-effect waves-light red">
+                      <i class="material-icons">add</i>
+                    </a>
+                  </div>
+
+                  {/* <Form id="noteForm">
                   <Form.Group widths={1}>
                     <Form.Input
                       label="Dish name"
@@ -144,18 +192,17 @@ class RestaurantInfo extends React.Component {
                   <Button type="submit" color="instagram" onClick={this.handleSubmit}>
                     Add
                   </Button>
-                </Form>
+                </Form> */}
 
-                <div className="dish-list">
-                  <h1 className="dishes-title">Dishes</h1>
-                  {restaurant.dishes.map(dish => {
-                    return <DishInfo dish={dish} />;
-                  })}
+                  <div className="dish-list">
+                    {restaurant.dishes.map(dish => {
+                      return <DishInfo dish={dish} />;
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
 
         <div className="restaurantInfo-right">

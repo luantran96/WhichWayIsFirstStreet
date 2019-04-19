@@ -123,7 +123,10 @@ const reducer = (state = {
     {
       const yelpId = action.payload.data;
       let locations = Object.assign({}, state.locations);
+      let restaurants = state.restaurants.slice();
 
+      const idx = restaurants.findIndex(restaurant => restaurant.yelpId === yelpId);
+      restaurants.splice(idx, 1);
       locations[yelpId].marker.setMap(null);
 
       delete locations[yelpId];
@@ -138,6 +141,7 @@ const reducer = (state = {
       return {
         ...state,
         locations,
+        restaurants,
       };
     }
 
