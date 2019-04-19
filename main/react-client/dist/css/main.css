@@ -48,15 +48,15 @@ html, body {
     font-size: 20px;
 }
 
-#nav-bar {
+/* #nav-bar {
     display: grid;
     grid-template-columns: repeat(10, 1fr) ;
-}
+} */
 
 
 #search {
-    grid-column: 1/3;
-    height: 50px;
+    /* grid-column: 1/3; */
+    height: 30px;
     width: 400px;
     box-shadow:  0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
@@ -351,7 +351,6 @@ width: 80px;
 
 .ui.items>.list-item>.content {
     padding-top:20px;
-    margin-bottom: 5px;
 }
 
 

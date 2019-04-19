@@ -28,7 +28,7 @@ const ListItem = ({
           </Item.Description>
           <Item.Description>
             <b>
-              <i>{restaurant.distance ? restaurant.distance.toFixed(1) + ' miles' : ''}</i>
+              <i className="animated fadeIn">{restaurant.distance ? restaurant.distance.toFixed(1) + ' miles' : ''}</i>
             </b>
           </Item.Description>
           <Item.Extra>

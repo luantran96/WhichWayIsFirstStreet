@@ -41,29 +41,46 @@ class Nav extends React.Component {
   render() {
     const { isLoading, value, results, findMe } = this.props;
     return (
-
       <nav>
-      <div class="nav-wrapper">
-        <a href="#" class="brand-logo right">Eaten.</a>
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
-          <li><a href="#">Plan Trip</a></li>
-        </ul>
-      </div>
-    </nav>
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo center">
+            Eaten.
+          </a>
+          <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li>
+              <Search
+                fluid
+                id="search"
+                loading={isLoading}
+                onResultSelect={this.updateRestaurants}
+                placeholder="Search"
+                onSearchChange={_.debounce(this.handleSearchChange, 100, { leading: true })}
+                value={value}
+                results={results}
+              />
+            </li>
+          </ul>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li>
+              <a href="#">Plan Trip</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
 
       // <div id="nav-bar">
-      //   <div>
-      //     <Search
-      //       fluid
-      //       id="search"
-      //       loading={isLoading}
-      //       onResultSelect={this.updateRestaurants}
-      //       placeholder="Search"
-      //       onSearchChange={_.debounce(this.handleSearchChange, 100, { leading: true })}
-      //       value={value}
-      //       results={results}
-      //     />
-      //   </div>
+      // <div>
+      // <Search
+      //   fluid
+      //   id="search"
+      //   loading={isLoading}
+      //   onResultSelect={this.updateRestaurants}
+      //   placeholder="Search"
+      //   onSearchChange={_.debounce(this.handleSearchChange, 100, { leading: true })}
+      //   value={value}
+      //   results={results}
+      // />
+      // </div>
       //   <div id="plan-trip">PLAN TRIP</div>
       // </div>
     );
