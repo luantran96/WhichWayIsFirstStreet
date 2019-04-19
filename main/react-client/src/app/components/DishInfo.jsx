@@ -11,7 +11,10 @@ const DishInfo = ({ dish }) => {
             <p>{dish.dishNotes}</p>
           </div>
           <div className="card-action">
-            <a href="#">{dish.dishRatings}</a>
+            <a href="#">
+              <img src={`/static/stars/regular/regular_${dish.dishRatings}.png`} />
+              {/* <img className="contact-icon " src="/static/images/contacts-1s-200px.svg" /> */}
+            </a>
           </div>
         </div>
       </div>

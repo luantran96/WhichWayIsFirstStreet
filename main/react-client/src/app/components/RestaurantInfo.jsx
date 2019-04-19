@@ -38,11 +38,10 @@ class RestaurantInfo extends React.Component {
   }
 
   handleChange(e) {
-
     console.log(e.target.value);
     console.log(e.target.id);
 
-    this.setState({[e.target.id]: e.target.value });
+    this.setState({ [e.target.id]: e.target.value });
     console.log(this.state);
   }
 
@@ -80,7 +79,6 @@ class RestaurantInfo extends React.Component {
           <div className="info">
             <div className="info-header">
               <div className="restaurantInfoImage">
-                {/* <img src={restaurant.image_url} /> */}
                 <figure className="imghvr-hinge-down">
                   <img src={restaurant.image_url} alt="restaurant" />
                   <figcaption>
@@ -135,7 +133,7 @@ class RestaurantInfo extends React.Component {
                           type="text"
                           className="validate"
                         />
-                        <label for="disabled">Dish</label>
+                        <label for="dishName">Dish</label>
                       </div>
                     </div>
                     <div className="row">
@@ -147,18 +145,19 @@ class RestaurantInfo extends React.Component {
                           type="text"
                           className="validate"
                         />
-                        <label for="disabled">How was it?</label>
+                        <label for="dishNotes">How was it?</label>
                       </div>
                     </div>
                     <div className="row">
                       <div className="input-field col s12">
-                        <input
-                          onChange={this.handleChange}
-                          required
-                          type="text"
-                          className="validate"
-                        />
-                        <label for="disabled">Reviews</label>
+                        <form action="#">
+                          <p class="range-field">
+                            <input 
+                            id="dishRating"
+                            onChange={this.handleChange}
+                            className="active" type="range" min="0" max="5" />
+                          </p>
+                        </form>
                       </div>
                     </div>
 
