@@ -12,7 +12,7 @@ class RestaurantInfo extends React.Component {
 
     this.state = {
       dishName: '',
-      dishRating: '',
+      dishRating: 5,
       dishNotes: '',
       convertToDay: {
         '0': 'Sunday',

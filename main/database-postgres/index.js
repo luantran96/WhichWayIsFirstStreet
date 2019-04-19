@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('luantran', '', '', {
-  host: process.env.DATABASE_URL,
+const sequelize = new Sequelize('postgres', 'postgres', 'postgres', {
+  host: 'database',
   dialect: 'postgres',
 
   pool: {
@@ -73,15 +73,6 @@ const Restaurant = sequelize.define('restaurant', {
   hours: {
     type: Sequelize.ARRAY(Sequelize.JSON),
   },
-  // dishName: {
-  //   type: Sequelize.TEXT,
-  // },
-  // dishRatings: {
-  //   type: Sequelize.TEXT,
-  // },
-  // dishNotes: {
-  //   type: Sequelize.TEXT,
-  // },
 }, {
   timestamps: true,
 });
@@ -126,9 +117,10 @@ sequelize
 
     User.sync()
       .then(() => {
-        Dish.sync()
+        Restaurant.sync()
           .then(() => {
-            Restaurant.sync();
+            Dish.sync();
+            
           });
       });
   })
