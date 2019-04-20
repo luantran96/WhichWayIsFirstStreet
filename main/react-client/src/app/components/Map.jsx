@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
   infoWindows: state.map.infoWindows,
   destination: state.map.destination,
   user: state.app.user,
+  restaurants: state.app.restaurants,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -112,15 +113,17 @@ class Map extends Component {
       changeRender,
       getRestaurantInfo,
       updateMap,
+      restaurants,
     } = this.props;
+
     let newLocations = this.props.locations;
 
     let label = 0;
     const newInfoWindows = {};
-    const markers = [];
 
     console.log('newLocations: ==> ', newLocations);
-
+    console.log("restaurants ==> :", restaurants);
+    
     Object.keys(newLocations).forEach(yelpId => {
       label += 1;
       // If marker hasn't been drawn on Map

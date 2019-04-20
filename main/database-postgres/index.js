@@ -1,7 +1,19 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('postgres', 'postgres', 'postgres', {
-  host: 'database',
+// const sequelize = new Sequelize('postgres', 'postgres', 'postgres', {
+//   host: 'database',
+//   dialect: 'postgres',
+
+//   pool: {
+//     max: 5,
+//     min: 0,
+//     acquire: 30000,
+//     idle: 10000,
+//   },
+// });
+
+const sequelize = new Sequelize('luantran', '', '', {
+  host: 'localhost',
   dialect: 'postgres',
 
   pool: {

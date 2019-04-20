@@ -1,18 +1,20 @@
 const geolib = require('geolib');
 
-const reducer = (state = {
-  restaurants: [],
-  restaurant_reviews: undefined,
-  directions: undefined,
-  destination: undefined,
-  locations: [],
-  restaurantToAdd: undefined,
-  render: 'directions',
-  isOpen: false,
-  user: null,
-}, action) => {
+const reducer = (
+  state = {
+    restaurants: [],
+    restaurant_reviews: undefined,
+    directions: undefined,
+    destination: undefined,
+    locations: [],
+    restaurantToAdd: undefined,
+    render: 'directions',
+    isOpen: false,
+    user: null,
+  },
+  action
+) => {
   switch (action.type) {
-
     case 'UPDATE_USER_MARKER': {
       let { user } = state;
       user.marker = action.payload;
@@ -22,47 +24,41 @@ const reducer = (state = {
       };
     }
 
-    case 'SHOW_MODAL':
-    {
+    case 'SHOW_MODAL': {
       return {
         ...state,
         isOpen: action.payload,
       };
     }
 
-    case 'AUTHENTICATE_USER_FULFILLED':
-    {
+    case 'AUTHENTICATE_USER_FULFILLED': {
       return {
         ...state,
         user: action.payload.data,
       };
     }
 
-    case 'UPDATE_RESTAURANTS_LIST':
-    {
+    case 'UPDATE_RESTAURANTS_LIST': {
       return {
         ...state,
         restaurants: action.payload,
       };
     }
-    case 'CHANGE_RENDER':
-    {
+    case 'CHANGE_RENDER': {
       return {
         ...state,
         render: action.payload,
       };
     }
 
-    case 'REGISTER_USER_FULFILLED':
-    {
+    case 'REGISTER_USER_FULFILLED': {
       return {
         ...state,
         user: action.payload.data,
       };
     }
 
-    case 'FIND_ME_FULFILLED':
-    {
+    case 'FIND_ME_FULFILLED': {
       console.log(action);
 
       const user = { ...state.user };
@@ -72,16 +68,20 @@ const reducer = (state = {
       user.lng = action.payload[1];
 
       const MeterToMileFactor = 0.000621371;
-      
-      restaurants.forEach((restaurant) => {
-        restaurant.distance = (geolib.getDistance({
-          latitude: restaurant.coordinates.latitude,
-          longitude: restaurant.coordinates.longitude,
-          accuracy: 1,
-        }, {
-          latitude: user.lat,
-          lng: user.lng,
-        })) * MeterToMileFactor;
+
+      restaurants.forEach(restaurant => {
+        restaurant.distance =
+          geolib.getDistance(
+            {
+              latitude: restaurant.coordinates.latitude,
+              longitude: restaurant.coordinates.longitude,
+              accuracy: 1,
+            },
+            {
+              latitude: user.lat,
+              lng: user.lng,
+            }
+          ) * MeterToMileFactor;
       });
 
       return {
@@ -91,19 +91,27 @@ const reducer = (state = {
       };
     }
 
-    case 'FILTER_BY':
-    {
-      const restaurants = state.restaurants.slice();
+    case 'FILTER_BY': {
+      let restaurants = state.restaurants.slice();
+      let locations = Object.assign({}, state.locations);
       const type = action.payload;
 
+      console.log(locations);
+
       if (type === 'reviews') {
-        console.log("IN HERE");
         restaurants.sort((a, b) => b.review_count - a.review_count);
       } else if (type === 'distance') {
         restaurants.sort((a, b) => a.distance - b.distance);
       } else if (type === 'ratings') {
         restaurants.sort((a, b) => b.rating - a.rating);
       }
+
+      restaurants.forEach(restaurant => {
+        locations[restaurant.yelpId].marker.setMap(null);
+        locations[restaurant.yelpId].marker = null;
+      });
+
+      //TODO: FIX THIS
 
       const newLocations = restaurants.map(restaurant => ({
         yelpId: restaurant.yelpId,
@@ -112,15 +120,16 @@ const reducer = (state = {
         address: restaurant.location,
       }));
 
+      // const newLocations = {};
+
       return {
         ...state,
         restaurants,
-        locations: newLocations,
+        locations,
       };
     }
 
-    case 'DELETE_RESTAURANT_FULFILLED':
-    {
+    case 'DELETE_RESTAURANT_FULFILLED': {
       const yelpId = action.payload.data;
       let locations = Object.assign({}, state.locations);
       let restaurants = state.restaurants.slice();
@@ -131,13 +140,6 @@ const reducer = (state = {
 
       delete locations[yelpId];
 
-      // const locations = restaurants.map(restaurant => ({
-      //   yelpId: restaurant.yelpId,
-      //   coordinates: restaurant.coordinates,
-      //   title: restaurant.name,
-      //   address: restaurant.location,
-      // }));
-
       return {
         ...state,
         locations,
@@ -145,8 +147,7 @@ const reducer = (state = {
       };
     }
 
-    case 'FETCH_RESTAURANTS_FULFILLED':
-    {
+    case 'FETCH_RESTAURANTS_FULFILLED': {
       const restaurants = action.payload.data;
 
       const locations = {};
@@ -156,7 +157,7 @@ const reducer = (state = {
           coordinates: restaurant.coordinates,
           title: restaurant.name,
           address: restaurant.location,
-          marker: null
+          marker: null,
         };
       });
 
@@ -167,8 +168,7 @@ const reducer = (state = {
       };
     }
 
-    case 'ADD_RESTAURANT_TO_DB_FULFILLED':
-    {
+    case 'ADD_RESTAURANT_TO_DB_FULFILLED': {
       const restaurants = state.restaurants.slice();
       const locations = Object.assign({}, state.locations);
       const newRestaurant = action.payload.data;
@@ -188,8 +188,7 @@ const reducer = (state = {
       };
     }
 
-    case 'FETCH_DIRECTIONS_FULFILLED':
-    {
+    case 'FETCH_DIRECTIONS_FULFILLED': {
       const directions = action.payload.data[0];
 
       return {
