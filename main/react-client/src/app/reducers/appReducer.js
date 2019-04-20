@@ -59,8 +59,7 @@ const reducer = (
     }
 
     case 'FIND_ME_FULFILLED': {
-      console.log(action);
-
+      
       const user = { ...state.user };
       const restaurants = state.restaurants.slice();
 
@@ -93,10 +92,7 @@ const reducer = (
 
     case 'FILTER_BY': {
       let restaurants = state.restaurants.slice();
-      let locations = Object.assign({}, state.locations);
       const type = action.payload;
-
-      console.log(locations);
 
       if (type === 'reviews') {
         restaurants.sort((a, b) => b.review_count - a.review_count);
@@ -107,25 +103,13 @@ const reducer = (
       }
 
       restaurants.forEach(restaurant => {
-        locations[restaurant.yelpId].marker.setMap(null);
-        locations[restaurant.yelpId].marker = null;
+        restaurant.marker.setMap(null);
+        restaurant.marker = null;
       });
-
-      //TODO: FIX THIS
-
-      const newLocations = restaurants.map(restaurant => ({
-        yelpId: restaurant.yelpId,
-        coordinates: restaurant.coordinates,
-        title: restaurant.name,
-        address: restaurant.location,
-      }));
-
-      // const newLocations = {};
 
       return {
         ...state,
         restaurants,
-        locations,
       };
     }
 

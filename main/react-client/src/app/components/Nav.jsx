@@ -35,7 +35,7 @@ class Nav extends React.Component {
 
     setTimeout(() => {
       this.props.searchRestaurants(search_value, user.lat, user.lng);
-    }, 100);
+    }, 50);
   }
 
   render() {
@@ -54,7 +54,7 @@ class Nav extends React.Component {
                 loading={isLoading}
                 onResultSelect={this.updateRestaurants}
                 placeholder="Search"
-                onSearchChange={_.debounce(this.handleSearchChange, 100, { leading: true })}
+                onSearchChange={_.debounce(this.handleSearchChange, 50, { leading: false })}
                 value={value}
                 results={results}
               />

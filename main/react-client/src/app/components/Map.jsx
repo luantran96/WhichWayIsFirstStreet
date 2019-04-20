@@ -121,30 +121,27 @@ class Map extends Component {
     let label = 0;
     const newInfoWindows = {};
 
-    console.log('newLocations: ==> ', newLocations);
-    console.log("restaurants ==> :", restaurants);
-    
-    Object.keys(newLocations).forEach(yelpId => {
+    restaurants.forEach(restaurant => {
       label += 1;
       // If marker hasn't been drawn on Map
-      if (!newLocations[yelpId].marker) {
+      if (!restaurant.marker) {
         const contentStr =
           '<div id="content">' +
-          `<h4 id="firstHeading">${newLocations[yelpId].title}</h4>` +
+          `<h4 id="firstHeading">${restaurant.name}</h4>` +
           '<div id="bodyContent">' +
-          `<p>${newLocations[yelpId].address}</p>` +
+          `<p>${restaurant.location}</p>` +
           '</div>' +
           '</div>';
 
         const newMarker = new google.maps.Marker({
           position: {
-            lat: newLocations[yelpId].coordinates.latitude,
-            lng: newLocations[yelpId].coordinates.longitude,
+            lat: restaurant.coordinates.latitude,
+            lng: restaurant.coordinates.longitude,
           },
           map,
           animation: google.maps.Animation.DROP,
           label: label.toString(),
-          title: newLocations[yelpId].title,
+          title: restaurant.title,
         });
 
         newInfoWindows[newMarker.label] = new google.maps.InfoWindow({
@@ -160,15 +157,14 @@ class Map extends Component {
         });
 
         google.maps.event.addListener(newMarker, 'click', () => {
-          console.log(user);
-          console.log(yelpId);
 
           getRestaurantInfo(yelpId, user.uuid);
           changeRender('restaurantInfo');
         });
 
-        newLocations[yelpId].marker = newMarker;
+        restaurant.marker = newMarker;
       }
+
     });
 
     // If user location is found
