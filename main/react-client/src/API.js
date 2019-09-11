@@ -1,3 +1,0 @@
-
-module.exports.YELP = 'u30gFxndwu1hMDTZBPrn0JDZfZV8SIQQzQMcxFhCWpkaawd4wwcLiedTgUFddUFteXzHvfP_8tOLtYVebvZ0BBaeilsaz2P8Vy7CARZ89mXkax8ctIZjvflxDBoDXHYx';
-module.exports.GOOGLE = 'AIzaSyCFrrwWmBCPV2bueD6nic1DbtHtFSlbaVc';
