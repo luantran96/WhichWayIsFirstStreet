@@ -121,9 +121,10 @@ sequelize
         foreignKey: 'userId',
       });
   
-      await User.sync({force: true});
+      await User.sync();
       await Restaurant.sync();
       await Dish.sync();
+      
     } catch(err) {
       console.error('Unable to connect to the database:', err);
     }

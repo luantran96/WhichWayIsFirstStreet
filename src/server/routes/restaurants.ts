@@ -22,26 +22,21 @@ router.get('/', (req, res) => {
 });
 
 router.get('/selectAll', (req, res) => {
-  const {
-    userId
-  } = req.query;
+  const { userId } = req.query;
 
-  restaurant.findAllRestaurants(userId, (restaurants) => {
+  restaurant.findAllRestaurants(userId, restaurants => {
     res.json(restaurants);
   });
 });
 
 router.post('/add', (req, res) => {
-  const {
-    id,
-    userId
-  } = req.body;
+  const { id, userId } = req.body;
 
   console.log('id: ', req.body);
   const options = {
     url: `https://api.yelp.com/v3/businesses/${id}`,
     headers: {
-      'Authorization': `Bearer ${KEY.YELP}`,
+      Authorization: `Bearer ${KEY.YELP}`,
     },
   };
 
@@ -51,7 +46,7 @@ router.post('/add', (req, res) => {
 
       info.userId = userId;
 
-      restaurant.addRestaurant(info, (newRestaurant) => {
+      restaurant.addRestaurant(info, newRestaurant => {
         if (newRestaurant) {
           res.json(newRestaurant);
         } else {
@@ -63,11 +58,7 @@ router.post('/add', (req, res) => {
 });
 
 router.get('/search', (req, res) => {
-  let {
-    name,
-    lat,
-    lng
-  } = req.query;
+  let { name, lat, lng } = req.query;
 
   lat = lat || 37.691109;
   lng = lng || -122.472221;
@@ -75,7 +66,7 @@ router.get('/search', (req, res) => {
   const options = {
     url: `https://api.yelp.com/v3/businesses/search?term=${name}&latitude=${lat}&longitude=${lng}`,
     headers: {
-      'Authorization': `Bearer ${KEY.YELP}`,
+      Authorization: `Bearer ${KEY.YELP}`,
     },
   };
 
@@ -89,31 +80,21 @@ router.get('/search', (req, res) => {
 });
 
 router.get('/getInfo', (req, res) => {
-  const {
-    id,
-    userId
-  } = req.query;
+  const { id, userId } = req.query;
 
   restaurant.findRestaurant(id, restaurant => {
-
-    dish.findAllDishes(userId, id, (dishes) => {
-
+    dish.findAllDishes(userId, id, dishes => {
       console.log('dishes: ', dishes);
       let copy = Object.assign({}, restaurant);
       copy.dishes = dishes;
 
       res.json(copy);
-
     });
-
   });
 });
 
 router.delete('/delete', (req, res) => {
-  const {
-    userId,
-    yelpId
-  } = req.query;
+  const { userId, yelpId } = req.query;
   console.log(req.query);
 
   restaurant.removeRestaurant(userId, yelpId, numDelete => {
@@ -128,29 +109,19 @@ router.delete('/delete', (req, res) => {
  */
 
 router.post('/addNotes', (req, res) => {
-  const {
-    yelpId,
-    userId,
-    dishName,
-    dishNotes,
-    dishRating
-  } = req.body;
+  const { yelpId, userId, dishName, dishNotes, dishRating } = req.body;
 
   console.log(req.body);
 
   dish.addDish(req.body, () => {
     restaurant.findRestaurant(yelpId, restaurant => {
-
       dish.findAllDishes(userId, yelpId, dishes => {
-
         console.log('dishes: ', dishes);
         let copy = Object.assign({}, restaurant);
         copy.dishes = dishes;
 
         res.json(copy);
-
       });
-
     });
   });
 });

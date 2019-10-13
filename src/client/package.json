@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack -d -p",
-    "start": "node --inspect=5858 -r ts-node/register ./src/server/index.ts",
+    "start": "node ./src/server/index.ts",
     "build:dev": "webpack -d --watch",
     "build:start": "nodemon",
     "prettier": "prettier"

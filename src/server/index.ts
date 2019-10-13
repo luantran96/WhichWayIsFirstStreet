@@ -14,12 +14,11 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import cors from 'cors';
+import cors from '../client/node_modules/cors/lib';
 import path from 'path';
 import users from './routes/users';
 import restaurants from './routes/restaurants';
 import routes from './routes/index';
-
 
 const PORT = process.env.PORT || 3000;
 
@@ -37,9 +36,9 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 // Parse queries into body
 app.use(bodyParser.json());
 app.use(
-	bodyParser.urlencoded({
-		extended: false
-	})
+  bodyParser.urlencoded({
+    extended: false,
+  })
 );
 
 // Log requests to console
@@ -51,7 +50,5 @@ app.use('/restaurants', restaurants);
 app.use('/', routes);
 
 app.listen(PORT, () => {
-	console.log(`listening on port ${PORT}!`);
+  console.log(`listening on port ${PORT}!`);
 });
-
-

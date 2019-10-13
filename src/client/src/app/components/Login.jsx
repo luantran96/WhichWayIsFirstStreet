@@ -59,13 +59,22 @@ class Login extends React.Component {
             />
             <label htmlFor="inputPassword">Password</label>
           </div>
-          <button className="btn btn-lg btn-primary btn-block" type="submit">
+          {/* <button className="btn" type="submit">
             Login
           </button>
           <Link to="/register">
-            {/* {' '} */}
             <p className="mt-3 mb-3 text-center mt-15 h5">Sign up</p>
-          </Link>
+          </Link> */}
+          <div className="flex justify-content-between">
+            <button className="btn" type="submit">
+              Login
+            </button>
+            <Link to="/register">
+              <button className="btn" type="submit">
+                Register
+              </button>
+            </Link>
+          </div>
           <p className="mt-5 mb-3 text-muted text-center">&copy; 2018-2019</p>
         </form>
       </>

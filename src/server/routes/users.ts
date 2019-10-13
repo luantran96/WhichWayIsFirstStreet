@@ -1,48 +1,30 @@
 import express from 'express';
 import path from 'path';
-import * as db from '../../../db/user';
-
-// const db = require('./../..//user');
+import * as user from '../../../db/user';
 
 const router = express.Router();
 
-router.get('/login', (req, res) => {
-
+router.get('/login', async (req, res) => {
   const { email, password } = req.query;
-  db.checkUser({
+  const foundUser = await user.findUser({
     email,
     password,
-  }, (user, found) => {
-    res.status(200).json(user);
-
-    // res.json(user, found);
-
-    // console.log('Is user found: ', found);
-    // if (found) {
-    //   // move to dashboard
-
-    //   res.redirect('/');
-    // } else {
-    //   res.sendFile(path.join(__dirname, '/../../react-client/dist/login.html'));
-    // }
   });
-});
 
-// router.get('/register', (req, res) => {
-//   res.sendFile(path.join(__dirname, '/../../react-client/dist/register.html'));
-// });
+  res.json(foundUser);
+});
 
 router.get('/register', (req, res) => {
   const { email, password } = req.query;
-
-  console.log('IM HERE');
-
-  db.addUser({
-    email,
-    password,
-  }, (user) => {
-    res.status(200).json(user);
-  });
+  user.addUser(
+    {
+      email,
+      password,
+    },
+    user => {
+      res.status(200).json(user);
+    }
+  );
 });
 
 export default router;
