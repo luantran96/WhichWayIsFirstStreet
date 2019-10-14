@@ -12,3 +12,9 @@
 	background: #0facf3;
 	color: #fff;
 }
+
+#google-signIn {
+	margin: 1em 0;
+	height: 50px;
+	width: 200px;
+}

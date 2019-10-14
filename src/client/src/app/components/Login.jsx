@@ -12,6 +12,36 @@ class Login extends React.Component {
     };
   }
 
+  componentDidMount() {
+    window.gapi.load('auth2', () => {
+      window.gapi.auth2
+        .init({
+          client_id:
+            '719382954741-ess7tdllgodqm1pmc1t3996tthm96u28.apps.googleusercontent.com',
+        })
+        .then(() => {
+          window.gapi.signin2.render('google-signIn', {
+            scope: 'profile email',
+            width: 390,
+            height: 50,
+            theme: 'dark',
+            onsuccess: this.onSignIn,
+            // 'onfailure': this.onFailure
+          });
+        });
+    });
+  }
+
+  onSignIn(googleUser) {
+    const profile = googleUser.getBasicProfile();
+    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    console.log('Full Name: ' + profile.getName());
+    console.log('Given Name: ' + profile.getGivenName());
+    console.log('Family Name: ' + profile.getFamilyName());
+    console.log("Image URL: " + profile.getImageUrl());
+    console.log("Email: " + profile.getEmail());
+  };
+
   update(e) {
     this.setState({
       [e.target.name]: e.target.value,
@@ -31,8 +61,8 @@ class Login extends React.Component {
     return (
       <>
         <h1 id="title">Eaten.</h1>
-
         <form className="form-signin" onSubmit={this.authenticate.bind(this)}>
+          <div id="google-signIn" />
           <div className="form-label-group">
             <input
               onChange={this.update.bind(this)}
@@ -59,12 +89,6 @@ class Login extends React.Component {
             />
             <label htmlFor="inputPassword">Password</label>
           </div>
-          {/* <button className="btn" type="submit">
-            Login
-          </button>
-          <Link to="/register">
-            <p className="mt-3 mb-3 text-center mt-15 h5">Sign up</p>
-          </Link> */}
           <div className="flex justify-content-between">
             <button className="btn" type="submit">
               Login

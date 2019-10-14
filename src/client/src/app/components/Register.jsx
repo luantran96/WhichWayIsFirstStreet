@@ -21,7 +21,6 @@ class Register extends React.Component {
     e.preventDefault();
 
     const { email, password } = this.state;
-    console.log(this.state);
     this.props.authenticate(email, password).then(() => {
       this.props.history.push('/');
     });
@@ -31,7 +30,6 @@ class Register extends React.Component {
     return (
       <>
         <h1 id="title">Eaten.</h1>
-
         <form className="form-signin" onSubmit={this.authenticate.bind(this)}>
           <div className="form-label-group">
             <input
